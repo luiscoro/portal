@@ -5,15 +5,12 @@ const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("./catchAsyncErrors");
 
 // Verificar si el usuario ha iniciado sesión
-exports.isAuthenticatedUsuario = catchAsyncErrors(async (req, res, next) => {
+exports.authenticatedUsuario = catchAsyncErrors(async (req, res, next) => {
   const { token } = req.cookies;
 
   if (!token) {
     return next(
-      new ErrorHandler(
-        "Es necesario iniciar sesión para acceder a este recurso.",
-        401
-      )
+      new ErrorHandler("Inicia sesión para comprar en nuestra tienda.", 401)
     );
   }
 

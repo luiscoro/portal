@@ -10,22 +10,19 @@ const {
   deletePedido,
 } = require("../controllers/pedidoController");
 
-const {
-  isAuthenticatedUsuario,
-  authorizeRoles,
-} = require("../middlewares/auth");
+const { authenticatedUsuario, authorizeRoles } = require("../middlewares/auth");
 
-router.route("/pedido/nuevo").post(isAuthenticatedUsuario, createPedido);
+router.route("/pedido/nuevo").post(authenticatedUsuario, createPedido);
 
-router.route("/pedido/:id").get(isAuthenticatedUsuario, getSinglePedido);
-router.route("/pedidos").get(isAuthenticatedUsuario, Pedidos);
+router.route("/pedido/:id").get(authenticatedUsuario, getSinglePedido);
+router.route("/pedidos").get(authenticatedUsuario, Pedidos);
 
 router
   .route("/admin/pedidos/")
-  .get(isAuthenticatedUsuario, authorizeRoles("admin"), getPedidos);
+  .get(authenticatedUsuario, authorizeRoles("admin"), getPedidos);
 router
   .route("/admin/pedido/:id")
-  .put(isAuthenticatedUsuario, authorizeRoles("admin"), updatePedido)
-  .delete(isAuthenticatedUsuario, authorizeRoles("admin"), deletePedido);
+  .put(authenticatedUsuario, authorizeRoles("admin"), updatePedido)
+  .delete(authenticatedUsuario, authorizeRoles("admin"), deletePedido);
 
 module.exports = router;

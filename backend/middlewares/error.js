@@ -33,7 +33,9 @@ module.exports = (err, req, res, next) => {
 
     // Mensaje en caso de ingresar un campo único duplicado
     if (err.code === 11000) {
-      const message = `Duplicado ${Object.keys(err.keyValue)} ingresado`;
+      const message = `Ya existe un registro con el ${Object.keys(
+        err.keyValue
+      )} ingresado`;
       error = new ErrorHandler(message, 400);
     }
 

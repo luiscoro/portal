@@ -10,10 +10,7 @@ const {
   deleteNoticia,
 } = require("../controllers/noticiaController");
 
-const {
-  isAuthenticatedUsuario,
-  authorizeRoles,
-} = require("../middlewares/auth");
+const { authenticatedUsuario, authorizeRoles } = require("../middlewares/auth");
 
 router.route("/noticias").get(getNoticias);
 router.route("/admin/noticias").get(getAdminNoticias);
@@ -21,11 +18,11 @@ router.route("/noticia/:id").get(getSingleNoticia);
 
 router
   .route("/admin/noticia/nueva")
-  .post(isAuthenticatedUsuario, authorizeRoles("admin"), createNoticia);
+  .post(authenticatedUsuario, authorizeRoles("admin"), createNoticia);
 
 router
   .route("/admin/noticia/:id")
-  .put(isAuthenticatedUsuario, authorizeRoles("admin"), updateNoticia)
-  .delete(isAuthenticatedUsuario, authorizeRoles("admin"), deleteNoticia);
+  .put(authenticatedUsuario, authorizeRoles("admin"), updateNoticia)
+  .delete(authenticatedUsuario, authorizeRoles("admin"), deleteNoticia);
 
 module.exports = router;

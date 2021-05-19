@@ -12,7 +12,8 @@ const Footer = () => {
             <div className="row">
               <div className="col-sm-6">
                 <p className="copy-right-text text-center text-sm-left">
-                  Copyright <CopyrightYear /> - Todos los derechos reservados
+                  Copyright <CopyrightYear style={{ color: "#777777" }} /> -
+                  Todos los derechos reservados
                 </p>
               </div>
 

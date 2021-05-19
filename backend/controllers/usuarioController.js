@@ -25,6 +25,14 @@ exports.createUsuario = catchAsyncErrors(async (req, res, next) => {
 exports.loginUsuario = catchAsyncErrors(async (req, res, next) => {
   const { email, password } = req.body;
 
+  function isValidEmail(m) {
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(m);
+  }
+
+  if (!isValidEmail(email)) {
+    return next(new ErrorHandler("xx", 400));
+  }
+
   if (!email || !password) {
     return next(new ErrorHandler("Ingrese correo y contraseña", 400));
   }
@@ -37,9 +45,9 @@ exports.loginUsuario = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  const isPasswordMatched = await usuario.comparePassword(password);
+  const esPassword = await usuario.comparePassword(password);
 
-  if (!isPasswordMatched) {
+  if (!esPassword) {
     return next(
       new ErrorHandler("Las credenciales ingresadas son incorrectas", 401)
     );
@@ -64,11 +72,9 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
   await usuario.save({ validateBeforeSave: false });
 
-  const resetUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/password/reset/${resetToken}`;
+  const resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
 
-  const message = `El token para restablecer la contraseña es el siguiente:\n\n${resetUrl}\n\nEn caso de no haber solicitado esto, ignora el correo enviado.`;
+  const message = `La dirección para restablecer la contraseña es la siguiente:\n\n${resetUrl}\n\nEn caso de no haber solicitado esto, ignora el correo enviado.`;
 
   try {
     await sendEmail({
@@ -79,7 +85,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: `El correo fue enviado a: ${usuario.email}`,
+      message: `Correo enviado a: ${usuario.email}`,
     });
   } catch (error) {
     usuario.resetPasswordToken = undefined;
@@ -99,7 +105,7 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 
   const usuario = await Usuario.findOne({
     resetPasswordToken,
-    resetPasswordExpire: { $gt: d },
+    resetPasswordExpire: { $gt: Date.now() },
   });
 
   if (!usuario) {
@@ -137,8 +143,8 @@ exports.getUsuarioProfile = catchAsyncErrors(async (req, res, next) => {
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
   const usuario = await Usuario.findById(req.usuario.id).select("+password");
 
-  const isMatched = await usuario.comparePassword(req.body.oldPassword);
-  if (!isMatched) {
+  const esIgual = await usuario.comparePassword(req.body.oldPassword);
+  if (!esIgual) {
     return next(new ErrorHandler("La contraseña anterior es incorrecta"));
   }
 
@@ -148,7 +154,7 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
   sendToken(usuario, 200, res);
 });
 
-exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
+exports.updatePerfil = catchAsyncErrors(async (req, res, next) => {
   const newUsuarioData = {
     nombre: req.body.nombre,
     email: req.body.email,

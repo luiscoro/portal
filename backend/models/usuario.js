@@ -11,7 +11,7 @@ const usuarioSchema = new mongoose.Schema({
   nombre: {
     type: String,
     required: [true, "Ingrese el nombre"],
-    unique: true,
+    unique: false,
     maxLength: [50, "El nombre no puede exceder los 50 caracteres"],
   },
   email: {
@@ -64,7 +64,7 @@ usuarioSchema.methods.getResetPasswordToken = function () {
     .update(resetToken)
     .digest("hex");
 
-  this.resetPasswordExpire = d + 10 * 60 * 1000;
+  this.resetPasswordExpire = Date.now() + 30 * 60 * 1000;
 
   return resetToken;
 };

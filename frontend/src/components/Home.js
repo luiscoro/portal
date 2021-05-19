@@ -1,8 +1,11 @@
 import React from "react";
+import MetaData from "./section/MetaData";
 
 const Home = () => {
   return (
     <>
+      <MetaData title={"Inicio"} />
+
       {/* banner-section start */}
       <section className="banner-section">
         <div className="base-layer">
@@ -130,13 +133,13 @@ const Home = () => {
       {/* player-section start */}
       <section
         className="player-section base-overlay bg_img"
-        data-background="assets/images/bg/home-one-banner-two.jpg"
+        data-background=""
       >
         <div className="single-player-slider owl-carousel">
           <div className="single-player-details-area d-flex flex-wrap">
             <div className="thumb">
               <div className="thumb-inner">
-                <img src="assets/images/ragbi/player-1.png" alt="image" />
+                <img src="assets/images/ragbi/player-1.png" alt="" />
               </div>
             </div>
             <div className="details text-center">
@@ -174,7 +177,7 @@ const Home = () => {
           <div className="single-player-details-area d-flex flex-wrap">
             <div className="thumb">
               <div className="thumb-inner">
-                <img src="assets/images/ragbi/player-1.png" alt="image" />
+                <img src="assets/images/ragbi/player-1.png" alt="" />
               </div>
             </div>
             <div className="details text-center">

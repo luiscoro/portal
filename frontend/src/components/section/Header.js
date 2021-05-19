@@ -1,7 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { useDispatch, useSelector } from "react-redux";
+import { useAlert } from "react-alert";
+
+import { logout } from "../../actions/usuarioActions";
+
 const Header = () => {
+  const alert = useAlert();
+  const dispatch = useDispatch();
+
+  const { usuario, loading } = useSelector((state) => state.auth);
+  /*   const { itemsCesta } = useSelector((state) => state.cesta); */
+
+  const logoutHandler = () => {
+    dispatch(logout());
+    alert.success("La sesión se ha cerrado.");
+  };
+
   return (
     <>
       {/* header section  */}
@@ -34,7 +50,13 @@ const Header = () => {
                   <div className="header-cart-menu-area">
                     <div className="header-cart-menu-btn toggle-close">
                       <i className="fa fa-cart-plus" />
-                      <sup className="header-total-cart-number">02</sup>
+                      &nbsp;
+                      <sup
+                        className="header-total-cart-number"
+                        style={{ fontSize: "90%", fontWeight: "bold" }}
+                      >
+                        22
+                      </sup>
                     </div>
                     <div className="shopping-cart-dropdown">
                       <h5 className="title">Shopping Cart</h5>
@@ -91,8 +113,74 @@ const Header = () => {
                     </div>
                   </div>
                   <div className="login-registration-area">
-                    <i className="fa fa-user" />
-                    <a href="login.html">Login</a>
+                    {!usuario ? (
+                      !loading && (
+                        <div className="ml-4 dropdown d-inline">
+                          <Link
+                            to="#"
+                            className="btn dropdown-toggle text-#255ba3 mr-4"
+                            type="button"
+                            id="dropDownMenuButton"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i className="fa fa-user" />
+                            MI CUENTA
+                          </Link>
+                          <div
+                            className="dropdown-menu"
+                            aria-labelledby="dropDownMenuButton"
+                          >
+                            <Link className="dropdown-item" to="/login">
+                              Iniciar sesión
+                            </Link>
+                            <hr className="dropdown-divider" />
+                            <Link className="dropdown-item" to="/registro">
+                              Registrarse
+                            </Link>
+                          </div>
+                        </div>
+                      )
+                    ) : (
+                      <div className="ml-4 dropdown d-inline">
+                        <Link
+                          to="#"
+                          className="btn dropdown-toggle text-#255ba3 mr-4"
+                          type="button"
+                          id="dropDownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i className="fa fa-user" />
+                          {usuario && usuario.nombre}
+                        </Link>
+                        <div
+                          className="dropdown-menu"
+                          aria-labelledby="dropDownMenuButton"
+                        >
+                          {usuario && usuario.rol === "admin" && (
+                            <Link className="dropdown-item" to="/dashboard">
+                              Dashboard
+                            </Link>
+                          )}
+                          <Link className="dropdown-item" to="/orders/me">
+                            Pedidos
+                          </Link>
+                          <Link className="dropdown-item" to="/perfil">
+                            Perfil
+                          </Link>
+                          <Link
+                            className="dropdown-item text-danger"
+                            to="/"
+                            onClick={logoutHandler}
+                          >
+                            Cerrar sesión
+                          </Link>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

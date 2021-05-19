@@ -13,10 +13,7 @@ const {
   deleteRevision,
 } = require("../controllers/productoController");
 
-const {
-  isAuthenticatedUsuario,
-  authorizeRoles,
-} = require("../middlewares/auth");
+const { authenticatedUsuario, authorizeRoles } = require("../middlewares/auth");
 
 router.route("/productos").get(getProductos);
 router.route("/admin/productos").get(getAdminProductos);
@@ -24,15 +21,15 @@ router.route("/producto/:id").get(getSingleProducto);
 
 router
   .route("/admin/producto/nuevo")
-  .post(isAuthenticatedUsuario, authorizeRoles("admin"), createProducto);
+  .post(authenticatedUsuario, authorizeRoles("admin"), createProducto);
 
 router
   .route("/admin/producto/:id")
-  .put(isAuthenticatedUsuario, authorizeRoles("admin"), updateProducto)
-  .delete(isAuthenticatedUsuario, authorizeRoles("admin"), deleteProducto);
+  .put(authenticatedUsuario, authorizeRoles("admin"), updateProducto)
+  .delete(authenticatedUsuario, authorizeRoles("admin"), deleteProducto);
 
-router.route("/revision").put(isAuthenticatedUsuario, createRevisionProducto);
-router.route("/revisiones").get(isAuthenticatedUsuario, getRevisionesProducto);
-router.route("/revisiones").delete(isAuthenticatedUsuario, deleteRevision);
+router.route("/revision").put(authenticatedUsuario, createRevisionProducto);
+router.route("/revisiones").get(authenticatedUsuario, getRevisionesProducto);
+router.route("/revisiones").delete(authenticatedUsuario, deleteRevision);
 
 module.exports = router;
