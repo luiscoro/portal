@@ -1,4 +1,4 @@
-const Product = require("../models/producto");
+const Producto = require("../models/producto");
 
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");

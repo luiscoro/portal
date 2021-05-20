@@ -5517,7 +5517,8 @@ span.is-active:after {
 }
 
 /* checkout-section css end */
-/* sidebar css start */
+
+/* dashboard */
 @media (max-width: 991px) {
   .sidebar {
     margin-top: 50px;
