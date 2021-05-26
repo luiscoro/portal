@@ -127,14 +127,14 @@ export const productoReducer = (state = {}, action) => {
       return {
         ...state,
         loading: false,
-        isDeleted: action.payload,
+        esEliminado: action.payload,
       };
 
     case UPDATE_PRODUCTO_SUCCESS:
       return {
         ...state,
         loading: false,
-        isUpdated: action.payload,
+        esActualizado: action.payload,
       };
 
     case DELETE_PRODUCTO_FAIL:
@@ -147,13 +147,13 @@ export const productoReducer = (state = {}, action) => {
     case DELETE_PRODUCTO_RESET:
       return {
         ...state,
-        isDeleted: false,
+        esEliminado: false,
       };
 
     case UPDATE_PRODUCTO_RESET:
       return {
         ...state,
-        isUpdated: false,
+        esActualizado: false,
       };
 
     case CLEAR_ERRORS:
@@ -278,7 +278,7 @@ export const revisionReducer = (state = {}, action) => {
       return {
         ...state,
         loading: false,
-        isDeleted: action.payload,
+        esEliminado: action.payload,
       };
 
     case DELETE_REVISION_FAIL:
@@ -290,7 +290,7 @@ export const revisionReducer = (state = {}, action) => {
     case DELETE_REVISION_RESET:
       return {
         ...state,
-        isDeleted: false,
+        esEliminado: false,
       };
 
     case CLEAR_ERRORS:

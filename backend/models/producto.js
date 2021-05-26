@@ -6,18 +6,14 @@ d.setHours(d.getHours() - 5);
 const productoSchema = new mongoose.Schema({
   nombre: {
     type: String,
-    required: [true, "Ingrese el nombre"],
     trim: true,
-    maxLength: [100, "El nombre no puede exceder los 100 caracteres"],
   },
   precio: {
     type: Number,
-    required: [true, "Ingrese el precio"],
     default: 0.0,
   },
   descripcion: {
     type: String,
-    required: [true, "Ingrese la descripción"],
   },
   calificaciones: {
     type: Number,
@@ -37,19 +33,17 @@ const productoSchema = new mongoose.Schema({
   ],
   categoria: {
     type: String,
-    required: [true, "Seleccione la categoría del producto"],
+    required: [true, "Seleccione una categoría correcta"],
     enum: {
       values: ["Camisetas", "Uniformes", "Calentadores", "Accesorios"],
-      message: "Seleccione una categoría correcta",
     },
   },
   marca: {
     type: String,
-    required: [false, "Ingrese la marca del producto"],
+    required: false,
   },
   stock: {
     type: Number,
-    required: [true, "Ingrese el stock del producto"],
     default: 0,
   },
   numeroRevisiones: {

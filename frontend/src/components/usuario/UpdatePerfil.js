@@ -21,7 +21,9 @@ const UpdatePerfil = ({ history }) => {
   const dispatch = useDispatch();
 
   const { usuario } = useSelector((state) => state.auth);
-  const { error, isUpdated, loading } = useSelector((state) => state.usuario);
+  const { error, esActualizado, loading } = useSelector(
+    (state) => state.usuario
+  );
 
   useEffect(() => {
     if (usuario) {
@@ -34,7 +36,7 @@ const UpdatePerfil = ({ history }) => {
       dispatch(clearErrors());
     }
 
-    if (isUpdated) {
+    if (esActualizado) {
       alert.success("Los datos han sido actualizados con éxito");
       dispatch(loadUsuario());
 
@@ -44,7 +46,7 @@ const UpdatePerfil = ({ history }) => {
         type: UPDATE_PERFIL_RESET,
       });
     }
-  }, [dispatch, alert, error, history, usuario, isUpdated]);
+  }, [dispatch, alert, error, history, usuario, esActualizado]);
 
   const submitHandler = (e) => {
     e.preventDefault();

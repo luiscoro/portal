@@ -30,7 +30,7 @@ import {
 const reducer = combineReducers({
   productos: productosReducer,
   productoDetails: productoDetailsReducer,
-  createProduct: createProductoReducer,
+  createProducto: createProductoReducer,
   producto: productoReducer,
   productoRevisiones: productoRevisionesReducer,
   revision: revisionReducer,

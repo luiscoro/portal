@@ -120,14 +120,14 @@ export const usuarioReducer = (state = {}, action) => {
       return {
         ...state,
         loading: false,
-        isUpdated: action.payload,
+        esActualizado: action.payload,
       };
 
     case DELETE_USUARIO_SUCCESS:
       return {
         ...state,
         loading: false,
-        isDeleted: action.payload,
+        esEliminado: action.payload,
       };
 
     case UPDATE_PERFIL_RESET:
@@ -135,13 +135,13 @@ export const usuarioReducer = (state = {}, action) => {
     case UPDATE_USUARIO_RESET:
       return {
         ...state,
-        isUpdated: false,
+        esActualizado: false,
       };
 
     case DELETE_USUARIO_RESET:
       return {
         ...state,
-        isDeleted: false,
+        esEliminado: false,
       };
 
     case UPDATE_PERFIL_FAIL:

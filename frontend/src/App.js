@@ -4,7 +4,14 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Footer from "./components/section/Footer";
 import Header from "./components/section/Header";
 import Home from "./components/Home";
+
+//ADMIN
 import Dashboard from "./components/admin/Dashboard";
+import CreateProducto from "./components/admin/CreateProducto";
+import ListProductos from "./components/admin/ListProductos";
+import UpdateProducto from "./components/admin/UpdateProducto";
+
+//USUARIO
 import Login from "./components/usuario/Login";
 import Registro from "./components/usuario/Registro";
 import ForgotPassword from "./components/usuario/ForgotPassword";
@@ -53,6 +60,25 @@ function App() {
           path="/dashboard"
           esAdmin={true}
           component={Dashboard}
+          exact
+        />
+
+        <PrivateRoute
+          path="/admin-producto"
+          esAdmin={true}
+          component={CreateProducto}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-productos"
+          esAdmin={true}
+          component={ListProductos}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-producto/:id"
+          esAdmin={true}
+          component={UpdateProducto}
           exact
         />
         {!loading && (!authenticatedUsuario || usuario.rol !== "admin") && (

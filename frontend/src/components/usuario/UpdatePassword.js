@@ -15,7 +15,9 @@ const UpdatePassword = ({ history }) => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { error, isUpdated, loading } = useSelector((state) => state.usuario);
+  const { error, esActualizado, loading } = useSelector(
+    (state) => state.usuario
+  );
 
   useEffect(() => {
     if (error) {
@@ -23,7 +25,7 @@ const UpdatePassword = ({ history }) => {
       dispatch(clearErrors());
     }
 
-    if (isUpdated) {
+    if (esActualizado) {
       alert.success("La contraseña ha sido actualizada con éxito");
 
       history.push("/perfil");
@@ -32,7 +34,7 @@ const UpdatePassword = ({ history }) => {
         type: UPDATE_PASSWORD_RESET,
       });
     }
-  }, [dispatch, alert, error, history, isUpdated]);
+  }, [dispatch, alert, error, history, esActualizado]);
 
   const submitHandler = (e) => {
     e.preventDefault();

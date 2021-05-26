@@ -19,18 +19,24 @@ const Sidebar = () => {
               aria-expanded="false"
               className="dropdown-toggle"
             >
-              <i className="fa fa-product-hunt"></i> Products
+              <i className="fa fa-product-hunt"></i> Productos
             </a>
             <ul className="collapse list-unstyled" id="productSubmenu">
               <li>
-                <Link to="/admin/products">
-                  <i className="fa fa-clipboard"></i> All
+                <Link to="/admin-productos">
+                  <i className="fa fa-clipboard"></i> Listado
                 </Link>
               </li>
 
               <li>
-                <Link to="/admin/product">
-                  <i className="fa fa-plus"></i> Create
+                <Link to="/admin-producto">
+                  <i className="fa fa-plus"></i> Nuevo
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/admin-revisiones">
+                  <i className="fa fa-star"></i> Revisiones
                 </Link>
               </li>
             </ul>
@@ -38,19 +44,13 @@ const Sidebar = () => {
 
           <li>
             <Link to="/admin/orders">
-              <i className="fa fa-shopping-basket"></i> Orders
+              <i className="fa fa-shopping-basket"></i> Pedidos
             </Link>
           </li>
 
           <li>
             <Link to="/admin/users">
-              <i className="fa fa-users"></i> Users
-            </Link>
-          </li>
-
-          <li>
-            <Link to="/admin/reviews">
-              <i className="fa fa-star"></i> Reviews
+              <i className="fa fa-users"></i> Usuarios
             </Link>
           </li>
         </ul>

@@ -154,14 +154,14 @@ export const pedidoReducer = (state = {}, action) => {
       return {
         ...state,
         loading: false,
-        isUpdated: action.payload,
+        esActualizado: action.payload,
       };
 
     case DELETE_PEDIDO_SUCCESS:
       return {
         ...state,
         loading: false,
-        isDeleted: action.payload,
+        esEliminado: action.payload,
       };
 
     case UPDATE_PEDIDO_FAIL:
@@ -174,13 +174,13 @@ export const pedidoReducer = (state = {}, action) => {
     case UPDATE_PEDIDO_RESET:
       return {
         ...state,
-        isUpdated: false,
+        esActualizado: false,
       };
 
     case DELETE_PEDIDO_RESET:
       return {
         ...state,
-        isDeleted: false,
+        esEliminado: false,
       };
 
     case CLEAR_ERRORS:

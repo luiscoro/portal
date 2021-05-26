@@ -3572,7 +3572,7 @@ span.is-active:after {
   text-transform: capitalize;
   font-weight: 500;
 }
-
+/* 
 .pagination {
   margin-top: 50px;
   justify-content: center;
@@ -3630,7 +3630,7 @@ span.is-active:after {
   background-color: #06083b !important;
   border-color: #06083b !important;
   color: #ffffff;
-}
+} */
 
 .main-area .post-item {
   padding-bottom: 30px;
@@ -7085,6 +7085,11 @@ span.is-active:after {
 
 /* Admin Sidebar */
 
+.dashboard {
+  margin-top: 146px;
+  width: 80%;
+}
+
 .sidebar-wrapper {
   display: flex;
   width: 100%;
@@ -7165,4 +7170,25 @@ ul.CTAs a {
   display: block;
   border-radius: 5px;
   margin-bottom: 5px;
+}
+
+label {
+  margin-bottom: 0.5rem;
+  float: left;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+/* Pagination */
+.page-item.active .page-link {
+  background-color: #b1c904;
+  border-color: #b1c904;
+}
+
+.page-link {
+  color: #b1c904;
+}
+
+.page-link:hover {
+  color: #b1c904;
 }

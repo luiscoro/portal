@@ -6,6 +6,20 @@ const APIFeatures = require("../utils/apiFeatures");
 const cloudinary = require("cloudinary");
 
 exports.createProducto = catchAsyncErrors(async (req, res, next) => {
+  const { nombre, precio, descripcion } = req.body;
+
+  if (!nombre) {
+    return next(new ErrorHandler("El nombre es obligatorio", 400));
+  }
+
+  if (!descripcion) {
+    return next(new ErrorHandler("La descripción es obligatoria", 400));
+  }
+
+  if (precio <= 0) {
+    return next(new ErrorHandler("Ingrese un precio válido ", 400));
+  }
+
   let imagenes = [];
   if (typeof req.body.imagenes === "string") {
     imagenes.push(req.body.imagenes);
