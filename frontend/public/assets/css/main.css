@@ -513,7 +513,7 @@ button:focus,
 input:focus,
 textarea:focus,
 select:focus {
-  outline: none;
+  outline: 1px solid #b1c904;
 }
 
 button {
@@ -7088,6 +7088,7 @@ span.is-active:after {
 .dashboard {
   margin-top: 146px;
   width: 80%;
+  justify-content: center;
 }
 
 .sidebar-wrapper {
@@ -7102,6 +7103,7 @@ span.is-active:after {
   top: 0;
   z-index: 10;
 }
+
 #sidebar {
   min-width: 90%;
   max-width: 100%;
@@ -7109,11 +7111,25 @@ span.is-active:after {
   color: #fff;
   transition: all 0.3s;
 }
-@media screen and (max-width: 570px) {
+
+@media screen and (max-width: 960px) {
   #sidebar {
-    min-width: 40%;
+    min-width: 100% !important;
   }
 }
+
+@media screen and (max-width: 720px) {
+  .dashboard {
+    margin-left: 15%;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .dashboard {
+    margin-left: 15%;
+  }
+}
+
 #sidebar.active {
   margin-left: -250px;
 }

@@ -311,7 +311,7 @@ export const getUsuarioDetails = (id) => async (dispatch) => {
 };
 
 // Eliminar usuario - ADMIN
-export const deleteUser = (id) => async (dispatch) => {
+export const deleteUsuario = (id) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_USUARIO_REQUEST });
 

@@ -116,7 +116,7 @@ const UpdateProducto = ({ match, history }) => {
   return (
     <>
       {" "}
-      <MetaData title={"Nuevo producto"} />
+      <MetaData title={"Actualizar producto"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />

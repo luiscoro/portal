@@ -9,7 +9,9 @@ import Home from "./components/Home";
 import Dashboard from "./components/admin/Dashboard";
 import CreateProducto from "./components/admin/CreateProducto";
 import ListProductos from "./components/admin/ListProductos";
+import ListUsuarios from "./components/admin/ListUsuarios";
 import UpdateProducto from "./components/admin/UpdateProducto";
+import UpdateUsuario from "./components/admin/UpdateUsuario";
 
 //USUARIO
 import Login from "./components/usuario/Login";
@@ -79,6 +81,18 @@ function App() {
           path="/admin-producto/:id"
           esAdmin={true}
           component={UpdateProducto}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-usuarios"
+          esAdmin={true}
+          component={ListUsuarios}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-usuario/:id"
+          esAdmin={true}
+          component={UpdateUsuario}
           exact
         />
         {!loading && (!authenticatedUsuario || usuario.rol !== "admin") && (

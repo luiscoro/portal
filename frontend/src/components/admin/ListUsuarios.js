@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MDBDataTable } from "mdbreact";
-
 import MetaData from "../section/MetaData";
 import Loader from "../section/Loader";
 import Sidebar from "./Sidebar";
@@ -9,23 +8,24 @@ import Sidebar from "./Sidebar";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAdminProductos,
-  deleteProducto,
+  getUsuarios,
+  deleteUsuario,
   clearErrors,
-} from "../../actions/productoActions";
-import { DELETE_PRODUCTO_RESET } from "../../constants/productoConstants";
+} from "../../actions/usuarioActions";
+import { DELETE_USUARIO_RESET } from "../../constants/usuarioConstants";
 
-const ListProductos = ({ history }) => {
+const ListUsuarios = ({ history }) => {
   const alert = useAlert();
   const dispatch = useDispatch();
-
-  const { loading, error, productos } = useSelector((state) => state.productos);
+  const { loading, error, usuarios } = useSelector(
+    (state) => state.getUsuarios
+  );
   const { error: deleteError, esEliminado } = useSelector(
-    (state) => state.producto
+    (state) => state.usuario
   );
 
   useEffect(() => {
-    dispatch(getAdminProductos());
+    dispatch(getUsuarios());
 
     if (error) {
       alert.error(error);
@@ -38,13 +38,13 @@ const ListProductos = ({ history }) => {
     }
 
     if (esEliminado) {
-      alert.success("El producto se ha eliminado con éxito");
-      history.push("/admin-productos");
-      dispatch({ type: DELETE_PRODUCTO_RESET });
+      alert.success("El usuario se ha eliminado con éxito");
+      history.push("/admin-usuarios");
+      dispatch({ type: DELETE_USUARIO_RESET });
     }
   }, [dispatch, alert, error, deleteError, esEliminado, history]);
 
-  const setProductos = () => {
+  const setUsuarios = () => {
     const data = {
       columns: [
         {
@@ -58,13 +58,13 @@ const ListProductos = ({ history }) => {
           sort: "asc",
         },
         {
-          label: "Precio",
-          field: "precio",
+          label: "Correo electrónico",
+          field: "email",
           sort: "asc",
         },
         {
-          label: "Stock",
-          field: "stock",
+          label: "Rol",
+          field: "rol",
           sort: "asc",
         },
         {
@@ -75,16 +75,16 @@ const ListProductos = ({ history }) => {
       rows: [],
     };
 
-    productos.forEach((producto) => {
+    usuarios.forEach((usuario) => {
       data.rows.push({
-        id: producto._id,
-        nombre: producto.nombre,
-        precio: `$${producto.precio}`,
-        stock: producto.stock,
+        id: usuario._id,
+        nombre: usuario.nombre,
+        email: usuario.email,
+        rol: usuario.rol,
         acciones: (
           <>
             <Link
-              to={`/admin-producto/${producto._id}`}
+              to={`/admin-usuario/${usuario._id}`}
               className="btn btn-primary py-1 px-2"
             >
               <i className="fa fa-pencil"></i>
@@ -93,7 +93,7 @@ const ListProductos = ({ history }) => {
               className="btn btn-danger py-1 px-2 ml-2"
               onClick={() => {
                 if (window.confirm("'Está seguro de eliminar el registro'?")) {
-                  deleteProductoHandler(producto._id);
+                  deleteUsuarioHandler(usuario._id);
                 }
               }}
             >
@@ -107,25 +107,26 @@ const ListProductos = ({ history }) => {
     return data;
   };
 
-  const deleteProductoHandler = (id) => {
-    dispatch(deleteProducto(id));
+  const deleteUsuarioHandler = (id) => {
+    dispatch(deleteUsuario(id));
   };
   return (
     <>
-      <MetaData title={"Listar productos"} />
+      <MetaData title={"Listar usuarios"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
         </div>
         <div className="dashboard">
-          <div className="col-12 col-md-10">
-            <>
-              <h3 className="my-4">Listado de productos</h3>
-              {loading ? (
-                <Loader />
-              ) : (
+          {loading ? (
+            <Loader />
+          ) : (
+            <div className="col-12 col-md-10">
+              <>
+                <h3 className="my-4">Listado de usuarios</h3>
+
                 <MDBDataTable
-                  data={setProductos()}
+                  data={setUsuarios()}
                   className="px-3"
                   bordered
                   striped
@@ -135,13 +136,13 @@ const ListProductos = ({ history }) => {
                   infoLabel={["", "-", "de", "registros"]}
                   noRecordsFoundLabel="No se encontró ningún registro"
                 />
-              )}
-            </>
-          </div>
+              </>
+            </div>
+          )}
         </div>
       </div>
     </>
   );
 };
 
-export default ListProductos;
+export default ListUsuarios;

@@ -73,7 +73,7 @@ const Dashboard = () => {
                       </div>
                       <Link
                         className="card-footer text-white clearfix small z-1"
-                        to="/admin/productos"
+                        to="/admin-productos"
                       >
                         <span className="float-left" style={{ color: "white" }}>
                           Ver Detalles
@@ -123,7 +123,7 @@ const Dashboard = () => {
                       </div>
                       <Link
                         className="card-footer text-white clearfix small z-1"
-                        to="/admin/usuarios"
+                        to="/admin-usuarios"
                       >
                         <span className="float-left" style={{ color: "white" }}>
                           Ver Detalles

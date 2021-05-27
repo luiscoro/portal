@@ -49,7 +49,7 @@ const Sidebar = () => {
           </li>
 
           <li>
-            <Link to="/admin/users">
+            <Link to="/admin-usuarios">
               <i className="fa fa-users"></i> Usuarios
             </Link>
           </li>
