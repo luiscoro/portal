@@ -49,19 +49,13 @@ const Sidebar = () => {
           </li>
 
           <li>
-            <Link to="/admin-usuarios">
-              <i className="fa fa-users"></i> Usuarios
-            </Link>
-          </li>
-
-          <li>
             <a
               href="#noticiaSubmenu"
               data-toggle="collapse"
               aria-expanded="false"
               className="dropdown-toggle"
             >
-              <i className="fa fa-product-hunt"></i> Noticias
+              <i className="fa fa-newspaper-o"></i> Noticias
             </a>
             <ul className="collapse list-unstyled" id="noticiaSubmenu">
               <li>
@@ -76,6 +70,12 @@ const Sidebar = () => {
                 </Link>
               </li>
             </ul>
+          </li>
+
+          <li>
+            <Link to="/admin-usuarios">
+              <i className="fa fa-users"></i> Usuarios
+            </Link>
           </li>
         </ul>
       </nav>

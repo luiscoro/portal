@@ -130,8 +130,9 @@ const CreateNoticia = ({ history }) => {
                               </div>
 
                               <img
+                                //defaultValue={}
                                 src={imagenPreview}
-                                alt=""
+                                alt="Imagen"
                                 className="mt-3 mr-2"
                                 width="55"
                                 height="52"
