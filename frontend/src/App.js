@@ -14,7 +14,7 @@ import ListNoticias from "./components/admin/ListNoticias";
 import ListUsuarios from "./components/admin/ListUsuarios";
 import UpdateProducto from "./components/admin/UpdateProducto";
 import UpdateUsuario from "./components/admin/UpdateUsuario";
-// import UpdateNoticia from "./components/admin/UpdateNoticia";
+import UpdateNoticia from "./components/admin/UpdateNoticia";
 
 //USUARIO
 import Login from "./components/usuario/Login";
@@ -76,7 +76,7 @@ function App() {
           component={ListProductos}
           exact
         />
-         
+
         <PrivateRoute
           path="/admin-producto/:id"
           esAdmin={true}
@@ -107,11 +107,11 @@ function App() {
           exact
         />
 
-{/* <PrivateRoute
+        <PrivateRoute
           path="/admin-noticia/:id"
           esAdmin={true}
           component={UpdateNoticia}
-        /> */}
+        />
 
         {!loading && (!authenticatedUsuario || usuario.rol !== "admin") && (
           <Footer />

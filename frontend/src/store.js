@@ -12,10 +12,11 @@ import {
   revisionReducer,
 } from "./reducers/productoReducers";
 
-import { createNoticiaReducer,
-noticiasReducer,
-noticiaReducer,
-noticiaDetailsReducer
+import {
+  createNoticiaReducer,
+  noticiasReducer,
+  noticiaReducer,
+  noticiaDetailsReducer,
 } from "./reducers/noticiaReducers";
 import {
   authReducer,
@@ -37,12 +38,10 @@ const reducer = combineReducers({
   productos: productosReducer,
   noticias: noticiasReducer,
   productoDetails: productoDetailsReducer,
-
   noticiaDetails: noticiaDetailsReducer,
-  
   createProducto: createProductoReducer,
   producto: productoReducer,
-   noticia:noticiaReducer,
+  noticia: noticiaReducer,
   productoRevisiones: productoRevisionesReducer,
   revision: revisionReducer,
   auth: authReducer,

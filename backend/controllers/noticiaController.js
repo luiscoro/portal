@@ -52,6 +52,8 @@ exports.getNoticias = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+//ADMINISTRADOR
+
 exports.getAdminNoticias = catchAsyncErrors(async (req, res, next) => {
   const noticias = await Noticia.find();
 
@@ -75,36 +77,32 @@ exports.getSingleNoticia = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.updateNoticia = catchAsyncErrors(async (req, res, next) => {
+  let noticia = await Noticia.findById(req.params.id);
 
-// Update user profile   =>   /api/v1/me/update
+  if (!noticia) {
+    return next(new ErrorHandler("Noticia no encontrada", 404));
+  }
+
   const newNoticiaData = {
-
     titulo: req.body.titulo,
     descripcion: req.body.descripcion,
-    
   };
 
-  // Update avatar
   if (req.body.imagen !== "") {
-    const noticia = await Noticia.findById(req.noticia.id);
-
-    const image_id = noticia.imagen.public_id;
-    const res = await cloudinary.v2.uploader.destroy(image_id);
+    const imagen_id = noticia.imagen.public_id;
+    const res = await cloudinary.v2.uploader.destroy(imagen_id);
 
     const result = await cloudinary.v2.uploader.upload(req.body.imagen, {
       folder: "noticias",
-      // width: 150,
-      // crop: "scale",
     });
 
     newNoticiaData.imagen = {
       public_id: result.public_id,
       url: result.secure_url,
-    }
-
-
+    };
   }
-  const noticia = await Noticia.findByIdAndUpdate(req.noticia.id, newNoticiaData, {
+
+  noticia = await Noticia.findByIdAndUpdate(req.params.id, newNoticiaData, {
     new: true,
     runValidators: true,
     useFindAndModify: false,
@@ -112,24 +110,17 @@ exports.updateNoticia = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    noticia
   });
-
-  }
-)
+});
 
 exports.deleteNoticia = catchAsyncErrors(async (req, res, next) => {
   const noticia = await Noticia.findById(req.params.id);
 
   if (!noticia) {
-    return next(
-      new ErrorHandler(`Noticia no fue encontrada con el id: ${req.params.id}`)
-    );
+    return next(new ErrorHandler("Noticia no encontrada", 404));
   }
-
-  // Remove avatar from cloudinary
-  const image_id = noticia.imagen.public_id;
-  await cloudinary.v2.uploader.destroy(image_id);
+  const imagen_id = noticia.imagen.public_id;
+  await cloudinary.v2.uploader.destroy(imagen_id);
 
   await noticia.remove();
 
