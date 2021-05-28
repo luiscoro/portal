@@ -49,6 +49,10 @@ const CreateNoticia = ({ history }) => {
   };
 
   const onChange = (e) => {
+
+    setImagenPreview("");
+    setImagen("");
+
     if (e.target.name === "imagen") {
       const reader = new FileReader();
 

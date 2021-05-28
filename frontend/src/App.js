@@ -10,9 +10,11 @@ import Dashboard from "./components/admin/Dashboard";
 import CreateProducto from "./components/admin/CreateProducto";
 import CreateNoticia from "./components/admin/CreateNoticia";
 import ListProductos from "./components/admin/ListProductos";
+import ListNoticias from "./components/admin/ListNoticias";
 import ListUsuarios from "./components/admin/ListUsuarios";
 import UpdateProducto from "./components/admin/UpdateProducto";
 import UpdateUsuario from "./components/admin/UpdateUsuario";
+// import UpdateNoticia from "./components/admin/UpdateNoticia";
 
 //USUARIO
 import Login from "./components/usuario/Login";
@@ -74,6 +76,7 @@ function App() {
           component={ListProductos}
           exact
         />
+         
         <PrivateRoute
           path="/admin-producto/:id"
           esAdmin={true}
@@ -90,12 +93,26 @@ function App() {
           esAdmin={true}
           component={UpdateUsuario}
         />
+
         <PrivateRoute
           path="/admin-noticia"
           esAdmin={true}
           component={CreateNoticia}
           exact
         />
+        <PrivateRoute
+          path="/admin-noticias"
+          esAdmin={true}
+          component={ListNoticias}
+          exact
+        />
+
+{/* <PrivateRoute
+          path="/admin-noticia/:id"
+          esAdmin={true}
+          component={UpdateNoticia}
+        /> */}
+
         {!loading && (!authenticatedUsuario || usuario.rol !== "admin") && (
           <Footer />
         )}

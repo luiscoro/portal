@@ -63,13 +63,7 @@ const UpdateProducto = ({ match, history }) => {
       dispatch({ type: UPDATE_PRODUCTO_RESET });
     }
   }, [
-    dispatch,
-    error,
-    esActualizado,
-    history,
-    updateError,
-    producto,
-    productoId,
+    dispatch,   error,   history, esActualizado,  updateError,    producto,    productoId,
   ]);
 
   const submitHandler = (e) => {

@@ -75,43 +75,36 @@ exports.getSingleNoticia = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.updateNoticia = catchAsyncErrors(async (req, res, next) => {
-  let noticia = await Noticia.findById(req.params.id);
 
-  if (!noticia) {
-    return next(new ErrorHandler("Noticia no encontrada", 404));
-  }
+// Update user profile   =>   /api/v1/me/update
+  const newNoticiaData = {
 
-  let imagen = [];
-  if (typeof req.body.imagen === "string") {
-    imagen.push(req.body.imagen);
-  } else {
-    imagen = req.body.imagen;
-  }
+    titulo: req.body.titulo,
+    descripcion: req.body.descripcion,
+    
+  };
 
-  if (imagen !== undefined) {
-    for (let i = 0; i < noticia.imagen.length; i++) {
-      const result = await cloudinary.v2.uploader.destroy(
-        noticia.imagen[i].public_id
-      );
+  // Update avatar
+  if (req.body.imagen !== "") {
+    const noticia = await Noticia.findById(req.noticia.id);
+
+    const image_id = noticia.imagen.public_id;
+    const res = await cloudinary.v2.uploader.destroy(image_id);
+
+    const result = await cloudinary.v2.uploader.upload(req.body.imagen, {
+      folder: "noticias",
+      // width: 150,
+      // crop: "scale",
+    });
+
+    newNoticiaData.imagen = {
+      public_id: result.public_id,
+      url: result.secure_url,
     }
 
-    let imagenLink = [];
 
-    for (let i = 0; i < imagen.length; i++) {
-      const result = await cloudinary.v2.uploader.upload(imagen[i], {
-        folder: "noticias",
-      });
-
-      imagenLink.push({
-        public_id: result.public_id,
-        url: result.secure_url,
-      });
-    }
-
-    req.body.imagen = imagenLink;
   }
-
-  noticia = await Noticia.findByIdAndUpdate(req.params.id, req.body, {
+  const noticia = await Noticia.findByIdAndUpdate(req.noticia.id, newNoticiaData, {
     new: true,
     runValidators: true,
     useFindAndModify: false,
@@ -119,27 +112,28 @@ exports.updateNoticia = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    noticia,
+    noticia
   });
-});
+
+  }
+)
 
 exports.deleteNoticia = catchAsyncErrors(async (req, res, next) => {
   const noticia = await Noticia.findById(req.params.id);
 
   if (!noticia) {
-    return next(new ErrorHandler("Noticia no encontrada", 404));
-  }
-
-  for (let i = 0; i < noticia.imagen.length; i++) {
-    const result = await cloudinary.v2.uploader.destroy(
-      noticia.imagen[i].public_id
+    return next(
+      new ErrorHandler(`Noticia no fue encontrada con el id: ${req.params.id}`)
     );
   }
+
+  // Remove avatar from cloudinary
+  const image_id = noticia.imagen.public_id;
+  await cloudinary.v2.uploader.destroy(image_id);
 
   await noticia.remove();
 
   res.status(200).json({
     success: true,
-    message: "Noticia eliminada.",
   });
 });

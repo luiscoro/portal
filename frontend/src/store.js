@@ -12,7 +12,11 @@ import {
   revisionReducer,
 } from "./reducers/productoReducers";
 
-import { createNoticiaReducer } from "./reducers/noticiaReducers";
+import { createNoticiaReducer,
+noticiasReducer,
+noticiaReducer,
+noticiaDetailsReducer
+} from "./reducers/noticiaReducers";
 import {
   authReducer,
   forgotPasswordReducer,
@@ -31,9 +35,14 @@ import {
 
 const reducer = combineReducers({
   productos: productosReducer,
+  noticias: noticiasReducer,
   productoDetails: productoDetailsReducer,
+
+  noticiaDetails: noticiaDetailsReducer,
+  
   createProducto: createProductoReducer,
   producto: productoReducer,
+   noticia:noticiaReducer,
   productoRevisiones: productoRevisionesReducer,
   revision: revisionReducer,
   auth: authReducer,
