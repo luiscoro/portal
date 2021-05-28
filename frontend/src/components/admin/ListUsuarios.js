@@ -4,8 +4,8 @@ import { MDBDataTable } from "mdbreact";
 import MetaData from "../section/MetaData";
 import Loader from "../section/Loader";
 import Sidebar from "./Sidebar";
-
-import { useAlert } from "react-alert";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getUsuarios,
@@ -15,7 +15,8 @@ import {
 import { DELETE_USUARIO_RESET } from "../../constants/usuarioConstants";
 
 const ListUsuarios = ({ history }) => {
-  const alert = useAlert();
+  const MySwal = withReactContent(Swal);
+  const bandera = parseInt(localStorage.getItem("actualizado"));
   const dispatch = useDispatch();
   const { loading, error, usuarios } = useSelector(
     (state) => state.getUsuarios
@@ -27,22 +28,55 @@ const ListUsuarios = ({ history }) => {
   useEffect(() => {
     dispatch(getUsuarios());
 
+    if (bandera == 1) {
+      localStorage.setItem("actualizado", 0);
+      window.location.reload();
+    }
     if (error) {
-      alert.error(error);
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "warning",
+        iconColor: "orange",
+        title: error,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
       dispatch(clearErrors());
     }
 
     if (deleteError) {
-      alert.error(deleteError);
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "error",
+        iconColor: "red",
+        title: error,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
       dispatch(clearErrors());
     }
 
     if (esEliminado) {
-      alert.success("El usuario se ha eliminado con éxito");
       history.push("/admin-usuarios");
       dispatch({ type: DELETE_USUARIO_RESET });
     }
-  }, [dispatch, alert, error, deleteError, esEliminado, history]);
+  }, [dispatch, error, deleteError, esEliminado, history]);
 
   const setUsuarios = () => {
     const data = {
@@ -92,9 +126,27 @@ const ListUsuarios = ({ history }) => {
             <button
               className="btn btn-danger py-1 px-2 ml-2"
               onClick={() => {
-                if (window.confirm("'Está seguro de eliminar el registro'?")) {
-                  deleteUsuarioHandler(usuario._id);
-                }
+                MySwal.fire({
+                  background: "#f5ede4",
+                  title: "¿Está seguro de eliminar al usuario?",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Si",
+                  cancelButtonText: "Cancelar",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    MySwal.fire({
+                      background: "#f5ede4",
+                      title: "El usuario ha sido eliminado con éxito",
+                      showConfirmButton: false,
+                      showCloseButton: false,
+                      timer: 2000,
+                    });
+                    deleteUsuarioHandler(usuario._id);
+                  }
+                });
               }}
             >
               <i className="fa fa-trash"></i>

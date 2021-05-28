@@ -5,25 +5,18 @@ const APIFeatures = require("../utils/apiFeatures");
 const cloudinary = require("cloudinary");
 
 exports.createNoticia = catchAsyncErrors(async (req, res, next) => {
-  let imagen = [];
-  if (typeof req.body.imagen === "string") {
-    imagen.push(req.body.imagen);
-  } else {
-    imagen = req.body.imagen;
-  }
+  //const { titulo, descripcion } = req.body;
 
-  let imagenLink = [];
+  let imagenLink = {};
 
-  for (let i = 0; i < imagen.length; i++) {
-    const result = await cloudinary.v2.uploader.upload(imagen[i], {
-      folder: "noticias",
-    });
+  const result = await cloudinary.v2.uploader.upload(req.body.imagen, {
+    folder: "noticias",
+  });
 
-    imagenLink.push({
-      public_id: result.public_id,
-      url: result.secure_url,
-    });
-  }
+  imagenLink = {
+    public_id: result.public_id,
+    url: result.secure_url,
+  };
 
   req.body.imagen = imagenLink;
   req.body.usuario = req.usuario.id;

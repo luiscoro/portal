@@ -6,26 +6,23 @@ d.setHours(d.getHours() - 5);
 const noticiaSchema = new mongoose.Schema({
   titulo: {
     type: String,
-    required: [true, "Ingrese el nombre"],
+    unique: true,
     trim: true,
   },
-  contenido: {
+  descripcion: {
     type: String,
-    required: [true, "Ingrese el contenido"],
     trim: true,
   },
-  imagen: [
-    {
-      public_id: {
-        type: String,
-        required: true,
-      },
-      url: {
-        type: String,
-        required: true,
-      },
+  imagen: {
+    public_id: {
+      type: String,
+      required: true,
     },
-  ],
+    url: {
+      type: String,
+      required: true,
+    },
+  },
   usuario: {
     type: mongoose.Schema.ObjectId,
     ref: "Usuario",

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import MetaData from "../section/MetaData";
 import Sidebar from "./Sidebar";
-
-import { useAlert } from "react-alert";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import { createProducto, clearErrors } from "../../actions/productoActions";
 import { CREATE_PRODUCTO_RESET } from "../../constants/productoConstants";
@@ -20,23 +20,23 @@ const CreateProducto = ({ history }) => {
 
   const categorias = ["Camisetas", "Uniformes", "Calentadores", "Accesorios"];
 
-  const alert = useAlert();
+  const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { error, success } = useSelector((state) => state.createProducto);
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      //alert.error(error);
       dispatch(clearErrors());
     }
 
     if (success) {
       history.push("/admin-productos");
-      alert.success("El producto ha sido creado con éxito");
+      //alert.success("El producto ha sido creado con éxito");
       dispatch({ type: CREATE_PRODUCTO_RESET });
     }
-  }, [dispatch, alert, error, success, history]);
+  }, [dispatch, error, success, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();

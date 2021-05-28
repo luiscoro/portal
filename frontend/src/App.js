@@ -8,6 +8,7 @@ import Home from "./components/Home";
 //ADMIN
 import Dashboard from "./components/admin/Dashboard";
 import CreateProducto from "./components/admin/CreateProducto";
+import CreateNoticia from "./components/admin/CreateNoticia";
 import ListProductos from "./components/admin/ListProductos";
 import ListUsuarios from "./components/admin/ListUsuarios";
 import UpdateProducto from "./components/admin/UpdateProducto";
@@ -47,11 +48,7 @@ function App() {
           <Route path="/password/olvido" component={ForgotPassword} exact />
           <Route path="/password/reset/:token" component={NewPassword} exact />
           <PrivateRoute path="/perfil" component={Perfil} exact />
-          <PrivateRoute
-            path="/perfil/actualizar"
-            component={UpdatePerfil}
-            exact
-          />
+          <PrivateRoute path="/perfil/actualizar" component={UpdatePerfil} />
           <PrivateRoute
             path="/password/actualizar"
             component={UpdatePassword}
@@ -81,7 +78,6 @@ function App() {
           path="/admin-producto/:id"
           esAdmin={true}
           component={UpdateProducto}
-          exact
         />
         <PrivateRoute
           path="/admin-usuarios"
@@ -93,6 +89,11 @@ function App() {
           path="/admin-usuario/:id"
           esAdmin={true}
           component={UpdateUsuario}
+        />
+        <PrivateRoute
+          path="/admin-noticia"
+          esAdmin={true}
+          component={CreateNoticia}
           exact
         />
         {!loading && (!authenticatedUsuario || usuario.rol !== "admin") && (

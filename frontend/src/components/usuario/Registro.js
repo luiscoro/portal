@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import MetaData from "../section/MetaData";
-import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { registro, clearErrors } from "../../actions/usuarioActions";
 
@@ -10,7 +11,7 @@ const Registro = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const alert = useAlert();
+  const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { authenticatedUsuario, error, loading } = useSelector(
@@ -20,14 +21,47 @@ const Registro = ({ history }) => {
   useEffect(() => {
     if (authenticatedUsuario) {
       history.push("/");
-      alert.success("La cuenta ha sido creada con éxito");
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "success",
+        iconColor: "green",
+        title: "La cuenta ha sido creada con éxito",
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
     }
 
     if (error) {
-      alert.error(error);
+      if (error != "Usuario sin token") {
+        MySwal.fire({
+          background: "#f5ede4",
+          toast: true,
+          showCloseButton: true,
+          icon: "warning",
+          iconColor: "orange",
+          title: error,
+          animation: false,
+          position: "bottom",
+          showConfirmButton: false,
+          timer: 5000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+      }
       dispatch(clearErrors());
     }
-  }, [dispatch, alert, authenticatedUsuario, error, history]);
+  }, [dispatch, authenticatedUsuario, error, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();

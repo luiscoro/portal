@@ -2,12 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useAlert } from "react-alert";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { logout } from "../../actions/usuarioActions";
 
 const Header = () => {
-  const alert = useAlert();
+  const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { usuario, loading } = useSelector((state) => state.auth);
@@ -15,7 +15,22 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(logout());
-    alert.success("La sesión se ha cerrado.");
+    MySwal.fire({
+      background: "#f5ede4",
+      toast: true,
+      showCloseButton: true,
+      icon: "success",
+      iconColor: "green",
+      title: "La sesión ha sido cerrada",
+      position: "bottom",
+      showConfirmButton: false,
+      timer: 5000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseover", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
   };
 
   return (

@@ -10,20 +10,14 @@ d.setHours(d.getHours() - 5);
 const usuarioSchema = new mongoose.Schema({
   nombre: {
     type: String,
-    required: [true, "Ingrese el nombre"],
     unique: false,
-    maxLength: [50, "El nombre no puede exceder los 50 caracteres"],
   },
   email: {
     type: String,
-    required: true,
     unique: true,
-    validate: [validator.isEmail, "Ingrese un correo válido"],
   },
   password: {
     type: String,
-    required: [true, "Ingrese la contraseña"],
-    minlength: [6, "La contraseña debe tener al menos 6 caracteres"],
     select: false,
   },
   rol: {

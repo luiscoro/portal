@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-
 import MetaData from "../section/MetaData";
 import Sidebar from "./Sidebar";
-
-import { useAlert } from "react-alert";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateProducto,
@@ -25,7 +24,7 @@ const UpdateProducto = ({ match, history }) => {
 
   const categorias = ["Camisetas", "Uniformes", "Calentadores", "Accesorios"];
 
-  const alert = useAlert();
+  const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { error, producto } = useSelector((state) => state.productoDetails);
@@ -49,23 +48,22 @@ const UpdateProducto = ({ match, history }) => {
     }
 
     if (error) {
-      alert.error(error);
+      //alert.error(error);
       dispatch(clearErrors());
     }
 
     if (updateError) {
-      alert.error(updateError);
+      //alert.error(updateError);
       dispatch(clearErrors());
     }
 
     if (esActualizado) {
       history.push("/admin-productos");
-      alert.success("El producto ha sido actualizado con éxito");
+      // alert.success("El producto ha sido actualizado con éxito");
       dispatch({ type: UPDATE_PRODUCTO_RESET });
     }
   }, [
     dispatch,
-    alert,
     error,
     esActualizado,
     history,

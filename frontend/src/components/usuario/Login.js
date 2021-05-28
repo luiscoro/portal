@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import Loader from "../section/Loader";
 import MetaData from "../section/MetaData";
-
-import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { login, clearErrors } from "../../actions/usuarioActions";
 
@@ -12,7 +11,7 @@ const Login = ({ history, location }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const alert = useAlert();
+  const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { authenticatedUsuario, error, loading } = useSelector(
@@ -28,10 +27,27 @@ const Login = ({ history, location }) => {
     }
 
     if (error) {
-      alert.success(error);
+      if (error != "Usuario sin token") {
+        MySwal.fire({
+          background: "#f5ede4",
+          toast: true,
+          showCloseButton: true,
+          icon: "warning",
+          iconColor: "orange",
+          title: error,
+          position: "bottom",
+          showConfirmButton: false,
+          timer: 5000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseover", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+      }
       dispatch(clearErrors());
     }
-  }, [dispatch, alert, error, authenticatedUsuario, redirect, history]);
+  }, [dispatch, error, authenticatedUsuario, redirect, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();

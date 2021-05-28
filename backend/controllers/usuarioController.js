@@ -13,6 +13,23 @@ d.setHours(d.getHours() - 5);
 exports.createUsuario = catchAsyncErrors(async (req, res, next) => {
   const { nombre, email, password } = req.body;
 
+  function validEmail(m) {
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(m);
+  }
+
+  if (!validEmail(email)) {
+    return next(new ErrorHandler("Ingrese un correo electrónico válido", 400));
+  }
+
+  if (!password) {
+    return next(
+      new ErrorHandler(
+        "Ingrese una contraseña con una combinación de al menos seis caracteres, entre mayúsculas, minúsculas y números",
+        400
+      )
+    );
+  }
+
   const usuario = await Usuario.create({
     nombre,
     email,
@@ -25,18 +42,6 @@ exports.createUsuario = catchAsyncErrors(async (req, res, next) => {
 exports.loginUsuario = catchAsyncErrors(async (req, res, next) => {
   const { email, password } = req.body;
 
-  function isValidEmail(m) {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(m);
-  }
-
-  if (!isValidEmail(email)) {
-    return next(new ErrorHandler("xx", 400));
-  }
-
-  if (!email || !password) {
-    return next(new ErrorHandler("Ingrese correo y contraseña", 400));
-  }
-
   const usuario = await Usuario.findOne({ email }).select("+password");
 
   if (!usuario) {
@@ -48,9 +53,7 @@ exports.loginUsuario = catchAsyncErrors(async (req, res, next) => {
   const esPassword = await usuario.comparePassword(password);
 
   if (!esPassword) {
-    return next(
-      new ErrorHandler("Las credenciales ingresadas son incorrectas", 401)
-    );
+    return next(new ErrorHandler("La contraseña ingresada es incorrecta", 401));
   }
 
   sendToken(usuario, 200, res);

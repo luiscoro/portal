@@ -7208,3 +7208,16 @@ label {
 .page-link:hover {
   color: #b1c904;
 }
+
+/*ALERTS */
+
+.swal2-popup.swal2-toast .swal2-close {
+  grid-column: 3/3;
+  grid-row: 1/99;
+  align-self: center;
+  width: 0.8em;
+  height: 0.8em;
+  margin: 0;
+  font-size: 2em;
+  color: #777;
+}

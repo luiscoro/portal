@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import MetaData from "../section/MetaData";
-
-import { useAlert } from "react-alert";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import { updatePassword, clearErrors } from "../../actions/usuarioActions";
 import { UPDATE_PASSWORD_RESET } from "../../constants/usuarioConstants";
@@ -12,7 +12,7 @@ const UpdatePassword = ({ history }) => {
   const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
 
-  const alert = useAlert();
+  const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { error, esActualizado, loading } = useSelector(
@@ -21,12 +21,12 @@ const UpdatePassword = ({ history }) => {
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      //alert.error(error);
       dispatch(clearErrors());
     }
 
     if (esActualizado) {
-      alert.success("La contraseña ha sido actualizada con éxito");
+      // alert.success("La contraseña ha sido actualizada con éxito");
 
       history.push("/perfil");
 
@@ -34,7 +34,7 @@ const UpdatePassword = ({ history }) => {
         type: UPDATE_PASSWORD_RESET,
       });
     }
-  }, [dispatch, alert, error, history, esActualizado]);
+  }, [dispatch, error, history, esActualizado]);
 
   const submitHandler = (e) => {
     e.preventDefault();

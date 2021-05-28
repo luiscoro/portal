@@ -9,9 +9,7 @@ exports.authenticatedUsuario = catchAsyncErrors(async (req, res, next) => {
   const { token } = req.cookies;
 
   if (!token) {
-    return next(
-      new ErrorHandler("Inicia sesión para comprar en nuestra tienda.", 401)
-    );
+    return next(new ErrorHandler("Usuario sin token", 401));
   }
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -24,12 +22,7 @@ exports.authenticatedUsuario = catchAsyncErrors(async (req, res, next) => {
 exports.authorizeRoles = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.usuario.rol)) {
-      return next(
-        new ErrorHandler(
-          `El rol (${req.usuario.rol}) no tiene permisos para acceder a este recurso`,
-          403
-        )
-      );
+      return next(new ErrorHandler(`Rol sin permiso`, 403));
     }
     next();
   };

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import MetaData from "../section/MetaData";
-
-import { useAlert } from "react-alert";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -17,7 +17,7 @@ const UpdatePerfil = ({ history }) => {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
 
-  const alert = useAlert();
+  const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { usuario } = useSelector((state) => state.auth);
@@ -32,12 +32,12 @@ const UpdatePerfil = ({ history }) => {
     }
 
     if (error) {
-      alert.error(error);
+      //alert.error(error);
       dispatch(clearErrors());
     }
 
     if (esActualizado) {
-      alert.success("Los datos han sido actualizados con éxito");
+      // alert.success("Los datos han sido actualizados con éxito");
       dispatch(loadUsuario());
 
       history.push("/perfil");
@@ -46,7 +46,7 @@ const UpdatePerfil = ({ history }) => {
         type: UPDATE_PERFIL_RESET,
       });
     }
-  }, [dispatch, alert, error, history, usuario, esActualizado]);
+  }, [dispatch, error, history, usuario, esActualizado]);
 
   const submitHandler = (e) => {
     e.preventDefault();

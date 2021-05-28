@@ -53,6 +53,30 @@ const Sidebar = () => {
               <i className="fa fa-users"></i> Usuarios
             </Link>
           </li>
+
+          <li>
+            <a
+              href="#noticiaSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              className="dropdown-toggle"
+            >
+              <i className="fa fa-product-hunt"></i> Noticias
+            </a>
+            <ul className="collapse list-unstyled" id="noticiaSubmenu">
+              <li>
+                <Link to="/admin-noticias">
+                  <i className="fa fa-clipboard"></i> Listado
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/admin-noticia">
+                  <i className="fa fa-plus"></i> Nueva
+                </Link>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
     </div>

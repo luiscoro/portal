@@ -2,15 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import MetaData from "../section/MetaData";
-
-import { useAlert } from "react-alert";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPassword, clearErrors } from "../../actions/usuarioActions";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-
-  const alert = useAlert();
+  const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { error, loading, message } = useSelector(
@@ -19,14 +18,14 @@ const ForgotPassword = () => {
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      //alert.error(error);
       dispatch(clearErrors());
     }
 
     if (message) {
-      alert.success(message);
+      // alert.success(message);
     }
-  }, [dispatch, alert, error, message]);
+  }, [dispatch, error, message]);
 
   const submitHandler = (e) => {
     e.preventDefault();

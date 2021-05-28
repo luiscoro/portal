@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MDBDataTable } from "mdbreact";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import MetaData from "../section/MetaData";
 import Loader from "../section/Loader";
 import Sidebar from "./Sidebar";
-
-import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAdminProductos,
@@ -16,7 +15,7 @@ import {
 import { DELETE_PRODUCTO_RESET } from "../../constants/productoConstants";
 
 const ListProductos = ({ history }) => {
-  const alert = useAlert();
+  const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { loading, error, productos } = useSelector((state) => state.productos);
@@ -28,21 +27,21 @@ const ListProductos = ({ history }) => {
     dispatch(getAdminProductos());
 
     if (error) {
-      alert.error(error);
+      //alert.error(error);
       dispatch(clearErrors());
     }
 
     if (deleteError) {
-      alert.error(deleteError);
+      //alert.error(deleteError);
       dispatch(clearErrors());
     }
 
     if (esEliminado) {
-      alert.success("El producto se ha eliminado con éxito");
+      //alert.success("El producto se ha eliminado con éxito");
       history.push("/admin-productos");
       dispatch({ type: DELETE_PRODUCTO_RESET });
     }
-  }, [dispatch, alert, error, deleteError, esEliminado, history]);
+  }, [dispatch, error, deleteError, esEliminado, history]);
 
   const setProductos = () => {
     const data = {

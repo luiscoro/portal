@@ -11,6 +11,8 @@ import {
   productosReducer,
   revisionReducer,
 } from "./reducers/productoReducers";
+
+import { createNoticiaReducer } from "./reducers/noticiaReducers";
 import {
   authReducer,
   forgotPasswordReducer,
@@ -46,6 +48,7 @@ const reducer = combineReducers({
   pedidoDetails: pedidoDetailsReducer,
   pedido: pedidoReducer,
   createRevision: createRevisionReducer,
+  createNoticia: createNoticiaReducer,
 });
 
 let estadoInicial = {

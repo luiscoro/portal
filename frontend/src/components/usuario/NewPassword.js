@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MetaData from "../section/MetaData";
-
-import { useAlert } from "react-alert";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import { resetPassword, clearErrors } from "../../actions/usuarioActions";
 
@@ -9,22 +9,22 @@ const NewPassword = ({ history, match }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const alert = useAlert();
+  const MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { error, success } = useSelector((state) => state.forgotPassword);
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      //alert.error(error);
       dispatch(clearErrors());
     }
 
     if (success) {
-      alert.success("La contraseña ha sido actualizada con éxito.");
+      // alert.success("La contraseña ha sido actualizada con éxito.");
       history.push("/login");
     }
-  }, [dispatch, alert, error, success, history]);
+  }, [dispatch, error, success, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();
