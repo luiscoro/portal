@@ -11,17 +11,21 @@ import {
 } from "../../actions/noticiaActions";
 import { UPDATE_NOTICIA_RESET } from "../../constants/noticiaConstants";
 
+var MySwal;
+
 const UpdateNoticia = ({ match, history }) => {
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [imagen, setImagen] = useState("");
   const [imagenPreview, setImagenPreview] = useState("");
 
-  const MySwal = withReactContent(Swal);
+  MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
-  const { error, esActualizado } = useSelector((state) => state.noticia);
-  const { noticia } = useSelector((state) => state.noticiaDetails);
+  const { error, noticia } = useSelector((state) => state.noticiaDetails);
+  const { error: updateError, esActualizado } = useSelector(
+    (state) => state.noticia
+  );
 
   const noticiaId = match.params.id;
 
@@ -55,15 +59,42 @@ const UpdateNoticia = ({ match, history }) => {
       dispatch(clearErrors());
     }
 
+    if (updateError) {
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "error",
+        iconColor: "red",
+        title: updateError,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+      dispatch(clearErrors());
+    }
+
     if (esActualizado) {
       localStorage.setItem("actualizado", "1");
       history.push("/admin-noticias");
-
       dispatch({
         type: UPDATE_NOTICIA_RESET,
       });
     }
-  }, [dispatch, error, history, esActualizado, noticiaId, noticia]);
+  }, [
+    dispatch,
+    error,
+    history,
+    esActualizado,
+    updateError,
+    noticiaId,
+    noticia,
+  ]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -73,26 +104,7 @@ const UpdateNoticia = ({ match, history }) => {
     formData.set("descripcion", descripcion);
     formData.append("imagen", imagen);
 
-    MySwal.fire({
-      background: "#f5ede4",
-      title: "¿Está seguro de actualizar los datos de la noticia?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        MySwal.fire({
-          background: "#f5ede4",
-          title: "Los datos de la noticia han sido actualizados con éxito",
-          showConfirmButton: false,
-          showCloseButton: false,
-        });
-        dispatch(updateNoticia(noticia._id, formData));
-      }
-    });
+    dispatch(updateNoticia(noticia._id, formData));
   };
 
   const onChange = (e) => {
@@ -105,7 +117,9 @@ const UpdateNoticia = ({ match, history }) => {
       }
     };
 
-    reader.readAsDataURL(e.target.files[0]);
+    if (e.target.files[0] !== undefined) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
   };
 
   return (
@@ -170,7 +184,7 @@ const UpdateNoticia = ({ match, history }) => {
 
                               <img
                                 src={imagenPreview}
-                                alt="Imagen"
+                                alt=""
                                 className="mt-3 mr-2"
                                 width="55"
                                 height="52"

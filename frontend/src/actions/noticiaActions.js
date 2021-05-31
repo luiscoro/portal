@@ -3,6 +3,9 @@ import {
   ADMIN_NOTICIAS_FAIL,
   ADMIN_NOTICIAS_REQUEST,
   ADMIN_NOTICIAS_SUCCESS,
+  TOP_NOTICIAS_REQUEST,
+  TOP_NOTICIAS_SUCCESS,
+  TOP_NOTICIAS_FAIL,
   CREATE_NOTICIA_REQUEST,
   CREATE_NOTICIA_SUCCESS,
   CREATE_NOTICIA_FAIL,
@@ -31,6 +34,24 @@ export const getAdminNoticias = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ADMIN_NOTICIAS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const getNoticiasTop = () => async (dispatch) => {
+  try {
+    dispatch({ type: TOP_NOTICIAS_REQUEST });
+
+    const { data } = await axios.get(`/api/noticias/top`);
+
+    dispatch({
+      type: TOP_NOTICIAS_SUCCESS,
+      payload: data.noticias,
+    });
+  } catch (error) {
+    dispatch({
+      type: TOP_NOTICIAS_FAIL,
       payload: error.response.data.message,
     });
   }

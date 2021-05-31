@@ -6,8 +6,10 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { logout } from "../../actions/usuarioActions";
 
+var MySwal;
+
 const Header = () => {
-  const MySwal = withReactContent(Swal);
+  MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { usuario, loading } = useSelector((state) => state.auth);
@@ -19,9 +21,9 @@ const Header = () => {
       background: "#f5ede4",
       toast: true,
       showCloseButton: true,
-      icon: "success",
-      iconColor: "green",
-      title: "La sesión ha sido cerrada",
+      icon: "info",
+      iconColor: "blue",
+      title: "Sesión cerrada",
       position: "bottom",
       showConfirmButton: false,
       timer: 5000,
@@ -31,6 +33,9 @@ const Header = () => {
         toast.addEventListener("mouseleave", Swal.resumeTimer);
       },
     });
+    setTimeout(function () {
+      window.location.href = "/login";
+    }, 3000);
   };
 
   return (
@@ -207,7 +212,7 @@ const Header = () => {
             <nav className="navbar navbar-expand-xl p-0 align-items-start">
               <div className="site-logo site-title">
                 <Link to="/">
-                  <img src="assets/images/logo.png" alt="" />
+                  <img src="/assets/images/logo.png" alt="" />
                 </Link>
                 <span className="logo-icon">
                   <i className="flaticon-fire" />

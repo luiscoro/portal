@@ -2,6 +2,9 @@ import {
   ADMIN_NOTICIAS_REQUEST,
   ADMIN_NOTICIAS_SUCCESS,
   ADMIN_NOTICIAS_FAIL,
+  TOP_NOTICIAS_REQUEST,
+  TOP_NOTICIAS_SUCCESS,
+  TOP_NOTICIAS_FAIL,
   CREATE_NOTICIA_REQUEST,
   CREATE_NOTICIA_SUCCESS,
   CREATE_NOTICIA_FAIL,
@@ -23,6 +26,8 @@ import {
 export const noticiasReducer = (state = { noticias: [] }, action) => {
   switch (action.type) {
     // case GET_PRODUCTOS_REQUEST:
+
+    case TOP_NOTICIAS_REQUEST:
     case ADMIN_NOTICIAS_REQUEST:
       return {
         loading: true,
@@ -38,6 +43,7 @@ export const noticiasReducer = (state = { noticias: [] }, action) => {
     //     filteredProductosCount: action.payload.filteredProductosCount,
     //   };
 
+    case TOP_NOTICIAS_SUCCESS:
     case ADMIN_NOTICIAS_SUCCESS:
       return {
         loading: false,
@@ -45,6 +51,7 @@ export const noticiasReducer = (state = { noticias: [] }, action) => {
       };
 
     // case GET_NOTICIAS_FAIL:
+    case TOP_NOTICIAS_FAIL:
     case ADMIN_NOTICIAS_FAIL:
       return {
         loading: false,

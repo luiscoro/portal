@@ -14,6 +14,24 @@ const Sidebar = () => {
 
           <li>
             <a
+              href="#inforSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              className="dropdown-toggle"
+            >
+              <i className="fa fa-product-hunt"></i> Información
+            </a>
+            <ul className="collapse list-unstyled" id="inforSubmenu">
+              <li>
+                <Link to="/informacion">
+                  <i className="fa fa-clipboard"></i> Mostrar
+                </Link>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <a
               href="#productSubmenu"
               data-toggle="collapse"
               aria-expanded="false"

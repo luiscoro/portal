@@ -3,6 +3,13 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import {
+  createInformacionReducer,
+  informacionReducer,
+  updateInformacionReducer,
+  informacionDetailsReducer,
+} from "./reducers/informacionReducers";
+
+import {
   createProductoReducer,
   createRevisionReducer,
   productoDetailsReducer,
@@ -35,6 +42,10 @@ import {
 } from "./reducers/pedidoReducers";
 
 const reducer = combineReducers({
+  informacion: informacionReducer,
+  informacionDetails: informacionDetailsReducer,
+  createInformacion: createInformacionReducer,
+  updateInformacion: updateInformacionReducer,
   productos: productosReducer,
   noticias: noticiasReducer,
   productoDetails: productoDetailsReducer,

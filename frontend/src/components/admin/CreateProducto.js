@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { createProducto, clearErrors } from "../../actions/productoActions";
 import { CREATE_PRODUCTO_RESET } from "../../constants/productoConstants";
 
+var MySwal;
+
 const CreateProducto = ({ history }) => {
   const [nombre, setNombre] = useState("");
   const [precio, setPrecio] = useState(0);
@@ -20,20 +22,43 @@ const CreateProducto = ({ history }) => {
 
   const categorias = ["Camisetas", "Uniformes", "Calentadores", "Accesorios"];
 
-  const MySwal = withReactContent(Swal);
+  MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { error, success } = useSelector((state) => state.createProducto);
 
   useEffect(() => {
     if (error) {
-      //alert.error(error);
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "warning",
+        iconColor: "orange",
+        title: error,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
       dispatch(clearErrors());
     }
 
     if (success) {
       history.push("/admin-productos");
-      //alert.success("El producto ha sido creado con éxito");
+      MySwal.fire({
+        background: "#f5ede4",
+        icon: "success",
+        title: "El producto ha sido creado con éxito",
+        timer: 5000,
+        showConfirmButton: true,
+        confirmButtonColor: "#3085d6",
+        showCloseButton: false,
+      });
       dispatch({ type: CREATE_PRODUCTO_RESET });
     }
   }, [dispatch, error, success, history]);

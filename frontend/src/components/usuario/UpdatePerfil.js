@@ -13,11 +13,13 @@ import {
 } from "../../actions/usuarioActions";
 import { UPDATE_PERFIL_RESET } from "../../constants/usuarioConstants";
 
+var MySwal;
+
 const UpdatePerfil = ({ history }) => {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
 
-  const MySwal = withReactContent(Swal);
+  MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { usuario } = useSelector((state) => state.auth);
@@ -32,12 +34,35 @@ const UpdatePerfil = ({ history }) => {
     }
 
     if (error) {
-      //alert.error(error);
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "warning",
+        iconColor: "orange",
+        title: error,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
       dispatch(clearErrors());
     }
 
     if (esActualizado) {
-      // alert.success("Los datos han sido actualizados con éxito");
+      MySwal.fire({
+        background: "#f5ede4",
+        icon: "success",
+        title: "El perfil ha sido actualizado con éxito",
+        timer: 5000,
+        showConfirmButton: true,
+        confirmButtonColor: "#3085d6",
+        showCloseButton: false,
+      });
       dispatch(loadUsuario());
 
       history.push("/perfil");

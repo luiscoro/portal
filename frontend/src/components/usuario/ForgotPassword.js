@@ -7,9 +7,12 @@ import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPassword, clearErrors } from "../../actions/usuarioActions";
 
+var MySwal;
+
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const MySwal = withReactContent(Swal);
+
+  MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { error, loading, message } = useSelector(
@@ -18,12 +21,42 @@ const ForgotPassword = () => {
 
   useEffect(() => {
     if (error) {
-      //alert.error(error);
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "warning",
+        iconColor: "orange",
+        title: error,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
       dispatch(clearErrors());
     }
 
     if (message) {
-      // alert.success(message);
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "info",
+        iconColor: "blue",
+        title: message,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
     }
   }, [dispatch, error, message]);
 

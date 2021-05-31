@@ -9,7 +9,10 @@ import Home from "./components/Home";
 import Dashboard from "./components/admin/Dashboard";
 import CreateProducto from "./components/admin/CreateProducto";
 import CreateNoticia from "./components/admin/CreateNoticia";
+import CreateInformacion from "./components/admin/CreateInformacion";
 import ListProductos from "./components/admin/ListProductos";
+import ListInformacion from "./components/admin/ListInformacion";
+import UpdateInformacion from "./components/admin/UpdateInformacion";
 import ListNoticias from "./components/admin/ListNoticias";
 import ListUsuarios from "./components/admin/ListUsuarios";
 import UpdateProducto from "./components/admin/UpdateProducto";
@@ -28,7 +31,6 @@ import UpdatePerfil from "./components/usuario/UpdatePerfil";
 import PrivateRoute from "./components/route/PrivateRoute";
 import { loadUsuario } from "./actions/usuarioActions";
 import store from "./store";
-
 import { useSelector } from "react-redux";
 
 function App() {
@@ -43,27 +45,41 @@ function App() {
     <Router>
       <div className="main-wrapper color-variation-four">
         <Header />
-        <div className="main-wrapper color-variation-four">
-          <Route path="/" component={Home} exact />
-          <Route path="/login" component={Login} />
-          <Route path="/registro" component={Registro} />
-          <Route path="/password/olvido" component={ForgotPassword} exact />
-          <Route path="/password/reset/:token" component={NewPassword} exact />
-          <PrivateRoute path="/perfil" component={Perfil} exact />
-          <PrivateRoute path="/perfil/actualizar" component={UpdatePerfil} />
-          <PrivateRoute
-            path="/password/actualizar"
-            component={UpdatePassword}
-            exact
-          />
-        </div>
+        <Route path="/" component={Home} exact />
+        <Route path="/login" component={Login} />
+        <Route path="/registro" component={Registro} />
+        <Route path="/password/olvido" component={ForgotPassword} exact />
+        <Route path="/password/reset/:token" component={NewPassword} exact />
+        <PrivateRoute path="/perfil" component={Perfil} exact />
+        <PrivateRoute path="/perfil/actualizar" component={UpdatePerfil} />
+        <PrivateRoute
+          path="/password/actualizar"
+          component={UpdatePassword}
+          exact
+        />
         <PrivateRoute
           path="/dashboard"
           esAdmin={true}
           component={Dashboard}
           exact
         />
-
+        <PrivateRoute
+          path="/admin-informacion"
+          esAdmin={true}
+          component={CreateInformacion}
+          exact
+        />
+        <PrivateRoute
+          path="/informacion"
+          esAdmin={true}
+          component={ListInformacion}
+          exact
+        />
+        <PrivateRoute
+          path="/informacion/:id"
+          esAdmin={true}
+          component={UpdateInformacion}
+        />
         <PrivateRoute
           path="/admin-producto"
           esAdmin={true}
@@ -76,7 +92,6 @@ function App() {
           component={ListProductos}
           exact
         />
-
         <PrivateRoute
           path="/admin-producto/:id"
           esAdmin={true}
@@ -93,7 +108,6 @@ function App() {
           esAdmin={true}
           component={UpdateUsuario}
         />
-
         <PrivateRoute
           path="/admin-noticia"
           esAdmin={true}
@@ -106,13 +120,11 @@ function App() {
           component={ListNoticias}
           exact
         />
-
         <PrivateRoute
           path="/admin-noticia/:id"
           esAdmin={true}
           component={UpdateNoticia}
         />
-
         {!loading && (!authenticatedUsuario || usuario.rol !== "admin") && (
           <Footer />
         )}

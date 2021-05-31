@@ -20,7 +20,7 @@ const Footer = () => {
               <div className="col-sm-4">
                 <div className="site-logo site-title">
                   <Link to="/">
-                    <img src="assets/images/logo2.png" alt="" />
+                    <img src="/assets/images/logo2.png" alt="" />
                   </Link>
                   <span className="logo-icon">
                     <i className="flaticon-fire" />

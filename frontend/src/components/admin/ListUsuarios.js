@@ -14,9 +14,12 @@ import {
 } from "../../actions/usuarioActions";
 import { DELETE_USUARIO_RESET } from "../../constants/usuarioConstants";
 
+var MySwal;
+var bandera;
+
 const ListUsuarios = ({ history }) => {
-  const MySwal = withReactContent(Swal);
-  const bandera = parseInt(localStorage.getItem("actualizado"));
+  MySwal = withReactContent(Swal);
+  bandera = parseInt(localStorage.getItem("actualizado"));
   const dispatch = useDispatch();
   const { loading, error, usuarios } = useSelector(
     (state) => state.getUsuarios
@@ -28,10 +31,25 @@ const ListUsuarios = ({ history }) => {
   useEffect(() => {
     dispatch(getUsuarios());
 
-    if (bandera == 1) {
+    if (bandera === 1) {
       localStorage.setItem("actualizado", 0);
-      window.location.reload();
+      MySwal.fire({
+        background: "#f5ede4",
+        icon: "success",
+        title: "El usuario ha sido actualizado con éxito",
+        timer: 5000,
+        showConfirmButton: true,
+        confirmButtonColor: "#3085d6",
+        showCloseButton: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        } else {
+          window.location.reload();
+        }
+      });
     }
+
     if (error) {
       MySwal.fire({
         background: "#f5ede4",
@@ -59,7 +77,7 @@ const ListUsuarios = ({ history }) => {
         showCloseButton: true,
         icon: "error",
         iconColor: "red",
-        title: error,
+        title: deleteError,
         position: "bottom",
         showConfirmButton: false,
         timer: 5000,
@@ -137,14 +155,15 @@ const ListUsuarios = ({ history }) => {
                   cancelButtonText: "Cancelar",
                 }).then((result) => {
                   if (result.isConfirmed) {
+                    deleteUsuarioHandler(usuario._id);
                     MySwal.fire({
                       background: "#f5ede4",
+                      icon: "success",
                       title: "El usuario ha sido eliminado con éxito",
                       showConfirmButton: false,
                       showCloseButton: false,
-                      timer: 2000,
+                      timer: 3000,
                     });
-                    deleteUsuarioHandler(usuario._id);
                   }
                 });
               }}

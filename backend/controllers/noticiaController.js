@@ -5,12 +5,23 @@ const APIFeatures = require("../utils/apiFeatures");
 const cloudinary = require("cloudinary");
 
 exports.createNoticia = catchAsyncErrors(async (req, res, next) => {
-  //const { titulo, descripcion } = req.body;
+  const { titulo, descripcion } = req.body;
+
+  if (!titulo) {
+    return next(new ErrorHandler("Ingresa el título de la noticia", 401));
+  }
+
+  if (!descripcion) {
+    return next(new ErrorHandler("Ingresa la descripción de la noticia ", 401));
+  }
 
   let imagenLink = {};
 
   const result = await cloudinary.v2.uploader.upload(req.body.imagen, {
     folder: "noticias",
+    width: 539,
+    height: 340,
+    crop: "scale",
   });
 
   imagenLink = {
@@ -29,9 +40,18 @@ exports.createNoticia = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+exports.getNoticiasTop = catchAsyncErrors(async (req, res, next) => {
+  const noticias = await Noticia.find({}).sort({ fecha: -1 }).limit(2);
+
+  res.status(200).json({
+    success: true,
+    noticias,
+  });
+});
+
 exports.getNoticias = catchAsyncErrors(async (req, res, next) => {
   const resPerPage = 4;
-  const noticiasCount = await Noitcia.countDocuments();
+  const noticiasCount = await Noticia.countDocuments();
 
   const apiFeatures = new APIFeatures(Noticia.find(), req.query)
     .search()
@@ -83,6 +103,16 @@ exports.updateNoticia = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Noticia no encontrada", 404));
   }
 
+  const { titulo, descripcion } = req.body;
+
+  if (!titulo) {
+    return next(new ErrorHandler("Ingresa el título de la noticia", 401));
+  }
+
+  if (!descripcion) {
+    return next(new ErrorHandler("Ingresa la descripción de la noticia ", 401));
+  }
+
   const newNoticiaData = {
     titulo: req.body.titulo,
     descripcion: req.body.descripcion,
@@ -94,6 +124,9 @@ exports.updateNoticia = catchAsyncErrors(async (req, res, next) => {
 
     const result = await cloudinary.v2.uploader.upload(req.body.imagen, {
       folder: "noticias",
+      width: 539,
+      height: 340,
+      crop: "scale",
     });
 
     newNoticiaData.imagen = {

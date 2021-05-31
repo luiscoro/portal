@@ -5,23 +5,48 @@ import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import { resetPassword, clearErrors } from "../../actions/usuarioActions";
 
+var MySwal;
+
 const NewPassword = ({ history, match }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const MySwal = withReactContent(Swal);
+  MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { error, success } = useSelector((state) => state.forgotPassword);
 
   useEffect(() => {
     if (error) {
-      //alert.error(error);
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "warning",
+        iconColor: "orange",
+        title: error,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
       dispatch(clearErrors());
     }
 
     if (success) {
-      // alert.success("La contraseña ha sido actualizada con éxito.");
+      MySwal.fire({
+        background: "#f5ede4",
+        icon: "success",
+        title: "La contraseña ha sido cambiada con éxito",
+        timer: 5000,
+        showConfirmButton: true,
+        confirmButtonColor: "#3085d6",
+        showCloseButton: false,
+      });
       history.push("/login");
     }
   }, [dispatch, error, success, history]);

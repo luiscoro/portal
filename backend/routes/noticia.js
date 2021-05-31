@@ -5,6 +5,7 @@ const {
   createNoticia,
   getNoticias,
   getAdminNoticias,
+  getNoticiasTop,
   getSingleNoticia,
   updateNoticia,
   deleteNoticia,
@@ -14,6 +15,7 @@ const { authenticatedUsuario, authorizeRoles } = require("../middlewares/auth");
 
 router.route("/noticias").get(getNoticias);
 router.route("/admin/noticias").get(getAdminNoticias);
+router.route("/noticias/top").get(getNoticiasTop);
 router.route("/noticia/:id").get(getSingleNoticia);
 
 router

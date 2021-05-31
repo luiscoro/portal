@@ -11,6 +11,8 @@ import {
 } from "../../actions/productoActions";
 import { UPDATE_PRODUCTO_RESET } from "../../constants/productoConstants";
 
+var MySwal;
+
 const UpdateProducto = ({ match, history }) => {
   const [nombre, setNombre] = useState("");
   const [precio, setPrecio] = useState(0);
@@ -24,7 +26,7 @@ const UpdateProducto = ({ match, history }) => {
 
   const categorias = ["Camisetas", "Uniformes", "Calentadores", "Accesorios"];
 
-  const MySwal = withReactContent(Swal);
+  MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { error, producto } = useSelector((state) => state.productoDetails);
@@ -48,18 +50,48 @@ const UpdateProducto = ({ match, history }) => {
     }
 
     if (error) {
-      //alert.error(error);
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "warning",
+        iconColor: "orange",
+        title: error,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
       dispatch(clearErrors());
     }
 
     if (updateError) {
-      //alert.error(updateError);
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "warning",
+        iconColor: "orange",
+        title: updateError,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
       dispatch(clearErrors());
     }
 
     if (esActualizado) {
+      localStorage.setItem("actualizado", "1");
       history.push("/admin-productos");
-      // alert.success("El producto ha sido actualizado con éxito");
       dispatch({ type: UPDATE_PRODUCTO_RESET });
     }
   }, [
@@ -208,6 +240,7 @@ const UpdateProducto = ({ match, history }) => {
                                   className="custom-file-input"
                                   onChange={onChange}
                                   multiple
+                                  accept="image/*"
                                 />
                                 <label className="custom-file-label">
                                   Agregar imágenes

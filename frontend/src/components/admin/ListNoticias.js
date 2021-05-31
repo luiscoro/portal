@@ -14,13 +14,14 @@ import {
 } from "../../actions/noticiaActions";
 import { DELETE_NOTICIA_RESET } from "../../constants/noticiaConstants";
 
+var MySwal;
+var bandera;
+
 const ListNoticias = ({ history }) => {
-  const MySwal = withReactContent(Swal);
-  const bandera = parseInt(localStorage.getItem("actualizado"));
+  MySwal = withReactContent(Swal);
+  bandera = parseInt(localStorage.getItem("actualizado"));
   const dispatch = useDispatch();
-  const { loading, error, noticias } = useSelector(
-    (state) => state.noticias
-  );
+  const { loading, error, noticias } = useSelector((state) => state.noticias);
   const { error: deleteError, esEliminado } = useSelector(
     (state) => state.noticia
   );
@@ -28,10 +29,25 @@ const ListNoticias = ({ history }) => {
   useEffect(() => {
     dispatch(getAdminNoticias());
 
-    if (bandera == 1) {
+    if (bandera === 1) {
       localStorage.setItem("actualizado", 0);
-      window.location.reload();
+      MySwal.fire({
+        background: "#f5ede4",
+        icon: "success",
+        title: "La noticia ha sido actualizada con éxito",
+        timer: 5000,
+        showConfirmButton: true,
+        confirmButtonColor: "#3085d6",
+        showCloseButton: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        } else {
+          window.location.reload();
+        }
+      });
     }
+
     if (error) {
       MySwal.fire({
         background: "#f5ede4",
@@ -96,7 +112,7 @@ const ListNoticias = ({ history }) => {
           field: "descripcion",
           sort: "asc",
         },
-      
+
         {
           label: "Acciones",
           field: "acciones",
@@ -110,7 +126,7 @@ const ListNoticias = ({ history }) => {
         id: noticia._id,
         titulo: noticia.titulo,
         descripcion: noticia.descripcion,
-     
+
         acciones: (
           <>
             <Link
@@ -133,14 +149,15 @@ const ListNoticias = ({ history }) => {
                   cancelButtonText: "Cancelar",
                 }).then((result) => {
                   if (result.isConfirmed) {
+                    deleteNoticiaHandler(noticia._id);
                     MySwal.fire({
                       background: "#f5ede4",
+                      icon: "success",
                       title: "La noticia ha sido eliminada con éxito",
                       showConfirmButton: false,
                       showCloseButton: false,
-                      timer: 2000,
+                      timer: 3000,
                     });
-                    deleteNoticiaHandler(noticia._id);
                   }
                 });
               }}

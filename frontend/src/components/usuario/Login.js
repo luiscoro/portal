@@ -7,11 +7,13 @@ import MetaData from "../section/MetaData";
 import { useDispatch, useSelector } from "react-redux";
 import { login, clearErrors } from "../../actions/usuarioActions";
 
+var MySwal;
+
 const Login = ({ history, location }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const MySwal = withReactContent(Swal);
+  MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { authenticatedUsuario, error, loading } = useSelector(
@@ -27,7 +29,7 @@ const Login = ({ history, location }) => {
     }
 
     if (error) {
-      if (error != "Usuario sin token") {
+      if (error !== "Usuario sin token") {
         MySwal.fire({
           background: "#f5ede4",
           toast: true,
@@ -61,10 +63,7 @@ const Login = ({ history, location }) => {
         <>
           <MetaData title={"Login"} />
           {/* inner-banner-section start */}
-          <section
-            className="inner-banner-section bg_img base-overlay"
-            data-background="assets/images/bg/home-eight-banner.jpg"
-          >
+          <section className="inner-banner-section bg_img base-overlay">
             <div className="container">
               <div className="row justify-content-center">
                 <div className="col-lg-8">

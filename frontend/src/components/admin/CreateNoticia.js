@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { createNoticia, clearErrors } from "../../actions/noticiaActions";
 import { CREATE_NOTICIA_RESET } from "../../constants/noticiaConstants";
 
+var MySwal;
+
 const CreateNoticia = ({ history }) => {
   const [noticia, setNoticia] = useState({
     titulo: "",
@@ -19,20 +21,42 @@ const CreateNoticia = ({ history }) => {
   const [imagen, setImagen] = useState("");
   const [imagenPreview, setImagenPreview] = useState("");
 
-  const MySwal = withReactContent(Swal);
+  MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { error, success } = useSelector((state) => state.createNoticia);
 
   useEffect(() => {
     if (error) {
-      //alert.error(error);
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "warning",
+        iconColor: "orange",
+        title: error,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
       dispatch(clearErrors());
     }
 
     if (success) {
       history.push("/admin-noticias");
-      //alert.success("El producto ha sido creado con éxito");
+      MySwal.fire({
+        background: "#f5ede4",
+        icon: "success",
+        title: "La noticia ha sido creada con éxito",
+        showConfirmButton: false,
+        showCloseButton: false,
+        timer: 2000,
+      });
       dispatch({ type: CREATE_NOTICIA_RESET });
     }
   }, [dispatch, error, success, history]);
@@ -49,10 +73,6 @@ const CreateNoticia = ({ history }) => {
   };
 
   const onChange = (e) => {
-
-    setImagenPreview("");
-    setImagen("");
-
     if (e.target.name === "imagen") {
       const reader = new FileReader();
 
@@ -63,7 +83,12 @@ const CreateNoticia = ({ history }) => {
         }
       };
 
-      reader.readAsDataURL(e.target.files[0]);
+      if (e.target.files[0] !== undefined) {
+        reader.readAsDataURL(e.target.files[0]);
+      } else {
+        setImagenPreview("");
+        setImagen("");
+      }
     } else {
       setNoticia({ ...noticia, [e.target.name]: e.target.value });
     }
@@ -134,7 +159,6 @@ const CreateNoticia = ({ history }) => {
                               </div>
 
                               <img
-                                //defaultValue={}
                                 src={imagenPreview}
                                 alt="Imagen"
                                 className="mt-3 mr-2"

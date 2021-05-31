@@ -14,10 +14,13 @@ import {
 } from "../../actions/productoActions";
 import { DELETE_PRODUCTO_RESET } from "../../constants/productoConstants";
 
-const ListProductos = ({ history }) => {
-  const MySwal = withReactContent(Swal);
-  const dispatch = useDispatch();
+var MySwal;
+var bandera;
 
+const ListProductos = ({ history }) => {
+  MySwal = withReactContent(Swal);
+  bandera = parseInt(localStorage.getItem("actualizado"));
+  const dispatch = useDispatch();
   const { loading, error, productos } = useSelector((state) => state.productos);
   const { error: deleteError, esEliminado } = useSelector(
     (state) => state.producto
@@ -26,18 +29,66 @@ const ListProductos = ({ history }) => {
   useEffect(() => {
     dispatch(getAdminProductos());
 
+    if (bandera === 1) {
+      localStorage.setItem("actualizado", 0);
+      MySwal.fire({
+        background: "#f5ede4",
+        icon: "success",
+        title: "El producto ha sido actualizado con éxito",
+        timer: 5000,
+        showConfirmButton: true,
+        confirmButtonColor: "#3085d6",
+        showCloseButton: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        } else {
+          window.location.reload();
+        }
+      });
+    }
+
     if (error) {
-      //alert.error(error);
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "warning",
+        iconColor: "orange",
+        title: error,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
       dispatch(clearErrors());
     }
 
     if (deleteError) {
-      //alert.error(deleteError);
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "error",
+        iconColor: "red",
+        title: deleteError,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
       dispatch(clearErrors());
     }
 
     if (esEliminado) {
-      //alert.success("El producto se ha eliminado con éxito");
       history.push("/admin-productos");
       dispatch({ type: DELETE_PRODUCTO_RESET });
     }
@@ -91,9 +142,28 @@ const ListProductos = ({ history }) => {
             <button
               className="btn btn-danger py-1 px-2 ml-2"
               onClick={() => {
-                if (window.confirm("'Está seguro de eliminar el registro'?")) {
-                  deleteProductoHandler(producto._id);
-                }
+                MySwal.fire({
+                  background: "#f5ede4",
+                  title: "¿Está seguro de eliminar el producto?",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Si",
+                  cancelButtonText: "Cancelar",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    deleteProductoHandler(producto._id);
+                    MySwal.fire({
+                      background: "#f5ede4",
+                      icon: "success",
+                      title: "El producto ha sido eliminado con éxito",
+                      showConfirmButton: false,
+                      showCloseButton: false,
+                      timer: 3000,
+                    });
+                  }
+                });
               }}
             >
               <i className="fa fa-trash"></i>

@@ -11,16 +11,20 @@ import {
 } from "../../actions/usuarioActions";
 import { UPDATE_USUARIO_RESET } from "../../constants/usuarioConstants";
 
+var MySwal;
+
 const UpdateUsuario = ({ history, match, location }) => {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [rol, setRol] = useState("");
 
-  const MySwal = withReactContent(Swal);
+  MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
-  const { error, esActualizado } = useSelector((state) => state.usuario);
-  const { usuario } = useSelector((state) => state.usuarioDetails);
+  const { error, usuario } = useSelector((state) => state.usuarioDetails);
+  const { error: updateError, esActualizado } = useSelector(
+    (state) => state.usuario
+  );
 
   const usuarioId = match.params.id;
 
@@ -54,6 +58,26 @@ const UpdateUsuario = ({ history, match, location }) => {
       dispatch(clearErrors());
     }
 
+    if (updateError) {
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "error",
+        iconColor: "red",
+        title: updateError,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+      dispatch(clearErrors());
+    }
+
     if (esActualizado) {
       localStorage.setItem("actualizado", "1");
       history.push("/admin-usuarios");
@@ -62,7 +86,16 @@ const UpdateUsuario = ({ history, match, location }) => {
         type: UPDATE_USUARIO_RESET,
       });
     }
-  }, [dispatch, error, location, history, esActualizado, usuarioId, usuario]);
+  }, [
+    dispatch,
+    error,
+    location,
+    history,
+    esActualizado,
+    updateError,
+    usuarioId,
+    usuario,
+  ]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -72,26 +105,7 @@ const UpdateUsuario = ({ history, match, location }) => {
     formData.set("email", email);
     formData.set("rol", rol);
 
-    MySwal.fire({
-      background: "#f5ede4",
-      title: "¿Está seguro de actualizar los datos del usuario?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        MySwal.fire({
-          background: "#f5ede4",
-          title: "Los datos del usuario han sido actualizados con éxito",
-          showConfirmButton: false,
-          showCloseButton: false,
-        });
-        dispatch(updateUsuario(usuario._id, formData));
-      }
-    });
+    dispatch(updateUsuario(usuario._id, formData));
   };
   return (
     <>

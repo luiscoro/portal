@@ -18,12 +18,14 @@ app.use(cookieParser());
 app.use(fileUpload());
 
 // Importación de las rutas para los servicios
+const informacion = require("./routes/informacion");
 const productos = require("./routes/producto");
 const usuario = require("./routes/usuario");
 const pago = require("./routes/pago");
 const pedido = require("./routes/pedido");
 const noticia = require("./routes/noticia");
 
+app.use("/api", informacion);
 app.use("/api", productos);
 app.use("/api", usuario);
 app.use("/api", pago);

@@ -6,12 +6,14 @@ import MetaData from "../section/MetaData";
 import { useDispatch, useSelector } from "react-redux";
 import { registro, clearErrors } from "../../actions/usuarioActions";
 
+var MySwal;
+
 const Registro = ({ history }) => {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const MySwal = withReactContent(Swal);
+  MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { authenticatedUsuario, error, loading } = useSelector(
@@ -27,7 +29,7 @@ const Registro = ({ history }) => {
         showCloseButton: true,
         icon: "success",
         iconColor: "green",
-        title: "La cuenta ha sido creada con éxito",
+        title: "Su cuenta ha sido creada con éxito",
         position: "bottom",
         showConfirmButton: false,
         timer: 5000,
@@ -40,7 +42,7 @@ const Registro = ({ history }) => {
     }
 
     if (error) {
-      if (error != "Usuario sin token") {
+      if (error !== "Usuario sin token") {
         MySwal.fire({
           background: "#f5ede4",
           toast: true,

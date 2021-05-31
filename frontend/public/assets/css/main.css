@@ -1613,6 +1613,7 @@ span.is-active:after {
 
 .banner-section.banner-stye-three {
   padding-bottom: 140px;
+  z-index: 1;
 }
 
 @media (max-width: 767px) {
@@ -3359,7 +3360,7 @@ span.is-active:after {
   flex: 0 0 65px;
   -ms-flex: 0 0 65px;
   max-width: 65px;
-  height: 80px;
+  height: 70px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -6620,25 +6621,8 @@ span.is-active:after {
 
 /* color-variation-one css end */
 .color-variation-four .base-overlay::before {
-  background-image: -moz-linear-gradient(
-    43deg,
-    #1a53fb 16%,
-    #2966fb 41%,
-    #3879fb 88%
-  );
-  background-image: -webkit-linear-gradient(
-    43deg,
-    #1a53fb 16%,
-    #2966fb 41%,
-    #3879fb 88%
-  );
-  background-image: -ms-linear-gradient(
-    43deg,
-    #1a53fb 16%,
-    #2966fb 41%,
-    #3879fb 88%
-  );
-  opacity: 0.94;
+  background-color: #255ba3;
+  opacity: 0.8;
 }
 
 .color-variation-four .header-section.menu-fixed .header-bottom {
