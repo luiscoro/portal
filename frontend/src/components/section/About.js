@@ -1,7 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
+import Loader from "../section/Loader";
+import { useDispatch, useSelector } from "react-redux";
 
-const About = ({ informacion }) => {
-  return (
+import {
+  getAdminInformacion,
+  clearErrors,
+} from "../../actions/informacionActions";
+
+const About = () => {
+  const dispatch = useDispatch();
+
+  const { loading, error, informacion } = useSelector(
+    (state) => state.informacion
+  );
+
+  useEffect(() => {
+    dispatch(getAdminInformacion());
+    if (error) {
+      dispatch(clearErrors());
+    }
+  }, [dispatch, error]);
+
+  return loading ? (
+    <Loader />
+  ) : (
     <section className="about-section pt-120 pb-120">
       <div className="container">
         <div className="row justify-content-center">
@@ -13,38 +35,34 @@ const About = ({ informacion }) => {
             </div>
           </div>
         </div>
-        <div className="row justify-content-between">
-          <div className="col-lg-5">
-            <div className="about-image">
-              <img
-                src={informacion.imagenAcerca.url}
-                alt=""
-                data-paroller-factor="0.05"
-                data-paroller-type="foreground"
-                data-paroller-direction="vertical"
-              />
+        {informacion.map((info) => (
+          <div className="row justify-content-between" key={info._id}>
+            <div className="col-lg-5">
+              <div className="product-item">
+                <img src={info.imagenAcerca.url} alt="" />
+              </div>
             </div>
-          </div>
-          <div className="col-lg-6">
-            <div className="about-content">
-              <blockquote>{informacion.emblemaAcerca}</blockquote>
-              <div className="row mb-none-30">
-                <div className="col-sm-6">
-                  <div className="text-item mt-0 mb-30">
-                    <h3 className="title text-uppercase">Nuestra misión</h3>
-                    <p>{informacion.mision}</p>
+            <div className="col-lg-6">
+              <div className="about-content">
+                <blockquote>{info.emblemaAcerca}</blockquote>
+                <div className="row mb-none-30">
+                  <div className="col-sm-6">
+                    <div className="text-item mt-0 mb-30">
+                      <h3 className="title text-uppercase">Nuestra misión</h3>
+                      <p>{info.mision}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="text-item mt-0 mb-30">
-                    <h3 className="title text-uppercase">Nuestra visión</h3>
-                    <p>{informacion.vision}</p>
+                  <div className="col-sm-6">
+                    <div className="text-item mt-0 mb-30">
+                      <h3 className="title text-uppercase">Nuestra visión</h3>
+                      <p>{info.vision}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </section>
   );

@@ -23,7 +23,7 @@ const Header = () => {
       showCloseButton: true,
       icon: "info",
       iconColor: "blue",
-      title: "Sesión cerrada",
+      title: "La sesión se ha cerrado",
       position: "bottom",
       showConfirmButton: false,
       timer: 5000,
@@ -35,7 +35,7 @@ const Header = () => {
     });
     setTimeout(function () {
       window.location.href = "/login";
-    }, 3000);
+    }, 2000);
   };
 
   return (
@@ -242,12 +242,12 @@ const Header = () => {
 
                   <li>
                     <Link to="/" style={{ textDecoration: "none" }}>
-                      Quienes somos
+                      Nuestro equipo
                     </Link>
                   </li>
                   <li>
-                    <Link to="/" style={{ textDecoration: "none" }}>
-                      Nuestro equipo
+                    <Link to="/resultados" style={{ textDecoration: "none" }}>
+                      Resultados
                     </Link>
                   </li>
                   <li>

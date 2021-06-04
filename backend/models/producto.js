@@ -4,8 +4,14 @@ var d = new Date();
 d.setHours(d.getHours() - 5);
 
 const productoSchema = new mongoose.Schema({
+  categoria: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Categoria",
+    required: true,
+  },
   nombre: {
     type: String,
+    unique: true,
     trim: true,
   },
   precio: {
@@ -31,13 +37,7 @@ const productoSchema = new mongoose.Schema({
       },
     },
   ],
-  categoria: {
-    type: String,
-    required: [true, "Seleccione una categoría correcta"],
-    enum: {
-      values: ["Camisetas", "Uniformes", "Calentadores", "Accesorios"],
-    },
-  },
+
   marca: {
     type: String,
     required: false,

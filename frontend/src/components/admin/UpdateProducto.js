@@ -9,6 +9,8 @@ import {
   getProductoDetails,
   clearErrors,
 } from "../../actions/productoActions";
+import Loader from "../section/Loader";
+import { getAdminCategorias } from "../../actions/categoriaActions";
 import { UPDATE_PRODUCTO_RESET } from "../../constants/productoConstants";
 
 var MySwal;
@@ -24,12 +26,12 @@ const UpdateProducto = ({ match, history }) => {
   const [oldImagenes, setOldImagenes] = useState([]);
   const [imagenesPreview, setImagenesPreview] = useState([]);
 
-  const categorias = ["Camisetas", "Uniformes", "Calentadores", "Accesorios"];
-
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
+  const dispatch1 = useDispatch();
 
   const { error, producto } = useSelector((state) => state.productoDetails);
+  const { loading, categorias } = useSelector((state) => state.categorias);
   const { error: updateError, esActualizado } = useSelector(
     (state) => state.producto
   );
@@ -37,6 +39,8 @@ const UpdateProducto = ({ match, history }) => {
   const productoId = match.params.id;
 
   useEffect(() => {
+    dispatch1(getAdminCategorias());
+
     if (producto && producto._id !== productoId) {
       dispatch(getProductoDetails(productoId));
     } else {
@@ -102,6 +106,7 @@ const UpdateProducto = ({ match, history }) => {
     updateError,
     producto,
     productoId,
+    dispatch1,
   ]);
 
   const submitHandler = (e) => {
@@ -170,6 +175,29 @@ const UpdateProducto = ({ match, history }) => {
                             encType="multipart/form-data"
                           >
                             <div className="frm-group">
+                              <label>Categoría</label>
+                              {loading ? (
+                                <Loader />
+                              ) : (
+                                <select
+                                  value={categoria}
+                                  onChange={(e) => setCategoria(e.target.value)}
+                                >
+                                  <option>
+                                    Seleccione la categoría del producto
+                                  </option>
+                                  {categorias.map((categoria) => (
+                                    <option
+                                      key={categoria._id}
+                                      value={categoria._id}
+                                    >
+                                      {categoria.nombre}
+                                    </option>
+                                  ))}
+                                </select>
+                              )}
+                            </div>
+                            <div className="frm-group">
                               <label>Nombre</label>
                               <input
                                 type="text"
@@ -179,7 +207,7 @@ const UpdateProducto = ({ match, history }) => {
                               />
                             </div>
                             <div className="frm-group">
-                              <label>Precio</label>
+                              <label>Precio ($)</label>
                               <input
                                 type="text"
                                 value={precio}
@@ -196,22 +224,6 @@ const UpdateProducto = ({ match, history }) => {
                               ></textarea>
                             </div>
 
-                            <div className="frm-group">
-                              <label>Categoría</label>
-                              <select
-                                value={categoria}
-                                onChange={(e) => setCategoria(e.target.value)}
-                              >
-                                <option value="">
-                                  Seleccione una categoría
-                                </option>
-                                {categorias.map((categoria) => (
-                                  <option key={categoria} value={categoria}>
-                                    {categoria}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
                             <div className="frm-group">
                               <label>Stock</label>
                               <input

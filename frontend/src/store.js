@@ -10,6 +10,13 @@ import {
 } from "./reducers/informacionReducers";
 
 import {
+  createCategoriaReducer,
+  categoriaReducer,
+  categoriasReducer,
+  categoriaDetailsReducer,
+} from "./reducers/categoriaReducers";
+
+import {
   createProductoReducer,
   createRevisionReducer,
   productoDetailsReducer,
@@ -25,6 +32,21 @@ import {
   noticiaReducer,
   noticiaDetailsReducer,
 } from "./reducers/noticiaReducers";
+
+import {
+  createPartidoReducer,
+  partidosReducer,
+  partidoReducer,
+  partidoDetailsReducer,
+} from "./reducers/partidoReducers";
+
+import {
+  createAuspicianteReducer,
+  auspiciantesReducer,
+  auspicianteReducer,
+  auspicianteDetailsReducer,
+} from "./reducers/auspicianteReducers";
+
 import {
   authReducer,
   forgotPasswordReducer,
@@ -46,13 +68,23 @@ const reducer = combineReducers({
   informacionDetails: informacionDetailsReducer,
   createInformacion: createInformacionReducer,
   updateInformacion: updateInformacionReducer,
+  categoriaDetails: categoriaDetailsReducer,
+  categorias: categoriasReducer,
   productos: productosReducer,
   noticias: noticiasReducer,
+  partidos: partidosReducer,
+  auspiciantes: auspiciantesReducer,
   productoDetails: productoDetailsReducer,
   noticiaDetails: noticiaDetailsReducer,
+  partidoDetails: partidoDetailsReducer,
+  auspicianteDetails: auspicianteDetailsReducer,
+  createCategoria: createCategoriaReducer,
   createProducto: createProductoReducer,
+  categoria: categoriaReducer,
   producto: productoReducer,
   noticia: noticiaReducer,
+  partido: partidoReducer,
+  auspiciante: auspicianteReducer,
   productoRevisiones: productoRevisionesReducer,
   revision: revisionReducer,
   auth: authReducer,
@@ -68,6 +100,8 @@ const reducer = combineReducers({
   pedido: pedidoReducer,
   createRevision: createRevisionReducer,
   createNoticia: createNoticiaReducer,
+  createPartido: createPartidoReducer,
+  createAuspiciante: createAuspicianteReducer,
 });
 
 let estadoInicial = {

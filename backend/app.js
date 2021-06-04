@@ -19,18 +19,24 @@ app.use(fileUpload());
 
 // Importación de las rutas para los servicios
 const informacion = require("./routes/informacion");
+const categoria = require("./routes/categoria");
 const productos = require("./routes/producto");
 const usuario = require("./routes/usuario");
 const pago = require("./routes/pago");
 const pedido = require("./routes/pedido");
 const noticia = require("./routes/noticia");
+const auspiciante = require("./routes/auspiciante");
+const partido = require("./routes/partido");
 
 app.use("/api", informacion);
+app.use("/api", categoria);
 app.use("/api", productos);
 app.use("/api", usuario);
 app.use("/api", pago);
 app.use("/api", pedido);
 app.use("/api", noticia);
+app.use("/api", auspiciante);
+app.use("/api", partido);
 
 if (process.env.NODE_ENV === "PRODUCCION") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));

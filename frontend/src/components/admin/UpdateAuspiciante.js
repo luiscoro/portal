@@ -1,32 +1,44 @@
 import React, { useState, useEffect } from "react";
-
 import MetaData from "../section/MetaData";
 import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
-import { createNoticia, clearErrors } from "../../actions/noticiaActions";
-import { CREATE_NOTICIA_RESET } from "../../constants/noticiaConstants";
+import {
+  getAuspicianteDetails,
+  updateAuspiciante,
+  clearErrors,
+} from "../../actions/auspicianteActions";
+import { UPDATE_AUSPICIANTE_RESET } from "../../constants/auspicianteConstants";
 
 var MySwal;
 
-const CreateNoticia = ({ history }) => {
-  const [noticia, setNoticia] = useState({
-    titulo: "",
-    descripcion: "",
-  });
-
-  const { titulo, descripcion } = noticia;
-
-  const [imagen, setImagen] = useState("");
-  const [imagenPreview, setImagenPreview] = useState("");
+const UpdateAuspiciante = ({ match, history }) => {
+  const [nombre, setNombre] = useState("");
+  const [logo, setLogo] = useState("");
+  const [logoPreview, setLogoPreview] = useState("");
 
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
-  const { error, success } = useSelector((state) => state.createNoticia);
+  const { error, auspiciante } = useSelector(
+    (state) => state.auspicianteDetails
+  );
+  const { error: updateError, esActualizado } = useSelector(
+    (state) => state.auspiciante
+  );
+
+  const auspicianteId = match.params.id;
 
   useEffect(() => {
+    console.log(auspiciante && auspiciante._id !== auspicianteId);
+    if (auspiciante && auspiciante._id !== auspicianteId) {
+      dispatch(getAuspicianteDetails(auspicianteId));
+    } else {
+      setNombre(auspiciante.nombre);
+      setLogoPreview(auspiciante.logo.url);
+    }
+
     if (error) {
       MySwal.fire({
         background: "#f5ede4",
@@ -47,62 +59,76 @@ const CreateNoticia = ({ history }) => {
       dispatch(clearErrors());
     }
 
-    if (success) {
-      history.push("/admin-noticias");
+    if (updateError) {
       MySwal.fire({
         background: "#f5ede4",
-        icon: "success",
-        title: "La noticia ha sido creada con éxito",
+        toast: true,
+        showCloseButton: true,
+        icon: "error",
+        iconColor: "red",
+        title: updateError,
+        position: "bottom",
         showConfirmButton: false,
-        showCloseButton: false,
-        timer: 2000,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
       });
-      dispatch({ type: CREATE_NOTICIA_RESET });
+      dispatch(clearErrors());
     }
-  }, [dispatch, error, success, history]);
+
+    if (esActualizado) {
+      localStorage.setItem("actualizado", "1");
+      history.push("/admin-auspiciantes");
+      dispatch({
+        type: UPDATE_AUSPICIANTE_RESET,
+      });
+    }
+  }, [
+    dispatch,
+    error,
+    history,
+    esActualizado,
+    updateError,
+    auspicianteId,
+    auspiciante,
+  ]);
 
   const submitHandler = (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.set("titulo", titulo);
-    formData.set("descripcion", descripcion);
-    formData.set("imagen", imagen);
+    formData.set("nombre", nombre);
+    formData.append("logo", logo);
 
-    dispatch(createNoticia(formData));
+    dispatch(updateAuspiciante(auspiciante._id, formData));
   };
 
   const onChange = (e) => {
-    if (e.target.name === "imagen") {
-      const reader = new FileReader();
+    const reader = new FileReader();
 
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setImagenPreview(reader.result);
-          setImagen(reader.result);
-        }
-      };
-
-      if (e.target.files[0] !== undefined) {
-        reader.readAsDataURL(e.target.files[0]);
-      } else {
-        setImagenPreview("");
-        setImagen("");
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setLogoPreview(reader.result);
+        setLogo(reader.result);
       }
-    } else {
-      setNoticia({ ...noticia, [e.target.name]: e.target.value });
+    };
+
+    if (e.target.files[0] !== undefined) {
+      reader.readAsDataURL(e.target.files[0]);
     }
   };
 
   return (
     <>
       {" "}
-      <MetaData title={"Nueva noticia"} />
+      <MetaData title={"Actualizar auspiciante"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
         </div>
-
         <div className="dashboard">
           <div className="col-12 col-md-10">
             <>
@@ -114,60 +140,49 @@ const CreateNoticia = ({ history }) => {
                     <div className="col-lg-12">
                       <div className="login-block text-center">
                         <div className="login-block-inner">
-                          <h3 className="title">Nueva noticia</h3>
+                          <h3 className="title">Actualizar auspiciante</h3>
+
                           <form
                             className="login-form"
                             onSubmit={submitHandler}
                             encType="multipart/form-data"
                           >
                             <div className="frm-group">
-                              <label>Título</label>
+                              <label>Nombre</label>
                               <input
-                                name="titulo"
                                 type="text"
-                                placeholder="Ingresa el título"
-                                value={titulo}
-                                onChange={onChange}
+                                placeholder="Ingresa el nombre "
+                                value={nombre}
+                                onChange={(e) => setNombre(e.target.value)}
                               />
-                            </div>
-                            <div className="frm-group">
-                              <label>Descripción</label>
-                              <textarea
-                                name="descripcion"
-                                placeholder="Ingresa la descripción..."
-                                value={descripcion}
-                                rows={2}
-                                onChange={onChange}
-                              ></textarea>
                             </div>
 
                             <div className="frm-group">
-                              <label>Imagen</label>
+                              <label>Logo</label>
 
                               <div className="custom-file">
                                 <input
-                                  name="imagen"
                                   type="file"
                                   className="custom-file-input"
                                   accept="image/*"
                                   onChange={onChange}
-                                  required
                                 />
                                 <label className="custom-file-label">
-                                  Agregar imagen
+                                  Cambiar logo
                                 </label>
                               </div>
 
                               <img
-                                src={imagenPreview}
+                                src={logoPreview}
                                 alt=""
                                 className="mt-3 mr-2"
                                 width="55"
                                 height="52"
                               />
                             </div>
+
                             <div className="frm-group">
-                              <input type="submit" value="Crear" />
+                              <input type="submit" value="Actualizar" />
                             </div>
                           </form>
                         </div>
@@ -185,4 +200,4 @@ const CreateNoticia = ({ history }) => {
   );
 };
 
-export default CreateNoticia;
+export default UpdateAuspiciante;

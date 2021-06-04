@@ -5,26 +5,28 @@ import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
-import { createNoticia, clearErrors } from "../../actions/noticiaActions";
-import { CREATE_NOTICIA_RESET } from "../../constants/noticiaConstants";
+import {
+  createAuspiciante,
+  clearErrors,
+} from "../../actions/auspicianteActions";
+import { CREATE_AUSPICIANTE_RESET } from "../../constants/auspicianteConstants";
 
 var MySwal;
 
-const CreateNoticia = ({ history }) => {
-  const [noticia, setNoticia] = useState({
-    titulo: "",
-    descripcion: "",
+const CreateAuspiciante = ({ history }) => {
+  const [auspiciante, setAuspiciante] = useState({
+    nombre: "",
   });
 
-  const { titulo, descripcion } = noticia;
+  const { nombre } = auspiciante;
 
-  const [imagen, setImagen] = useState("");
-  const [imagenPreview, setImagenPreview] = useState("");
+  const [logo, setLogo] = useState("");
+  const [logoPreview, setLogoPreview] = useState("");
 
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
-  const { error, success } = useSelector((state) => state.createNoticia);
+  const { error, success } = useSelector((state) => state.createAuspiciante);
 
   useEffect(() => {
     if (error) {
@@ -48,16 +50,16 @@ const CreateNoticia = ({ history }) => {
     }
 
     if (success) {
-      history.push("/admin-noticias");
+      history.push("/admin-auspiciantes");
       MySwal.fire({
         background: "#f5ede4",
         icon: "success",
-        title: "La noticia ha sido creada con éxito",
+        title: "El auspiciante ha sido creado con éxito",
         showConfirmButton: false,
         showCloseButton: false,
         timer: 2000,
       });
-      dispatch({ type: CREATE_NOTICIA_RESET });
+      dispatch({ type: CREATE_AUSPICIANTE_RESET });
     }
   }, [dispatch, error, success, history]);
 
@@ -65,39 +67,38 @@ const CreateNoticia = ({ history }) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.set("titulo", titulo);
-    formData.set("descripcion", descripcion);
-    formData.set("imagen", imagen);
+    formData.set("nombre", nombre);
+    formData.set("logo", logo);
 
-    dispatch(createNoticia(formData));
+    dispatch(createAuspiciante(formData));
   };
 
   const onChange = (e) => {
-    if (e.target.name === "imagen") {
+    if (e.target.name === "logo") {
       const reader = new FileReader();
 
       reader.onload = () => {
         if (reader.readyState === 2) {
-          setImagenPreview(reader.result);
-          setImagen(reader.result);
+          setLogoPreview(reader.result);
+          setLogo(reader.result);
         }
       };
 
       if (e.target.files[0] !== undefined) {
         reader.readAsDataURL(e.target.files[0]);
       } else {
-        setImagenPreview("");
-        setImagen("");
+        setLogoPreview("");
+        setLogo("");
       }
     } else {
-      setNoticia({ ...noticia, [e.target.name]: e.target.value });
+      setAuspiciante({ ...auspiciante, [e.target.name]: e.target.value });
     }
   };
 
   return (
     <>
       {" "}
-      <MetaData title={"Nueva noticia"} />
+      <MetaData title={"Nuevo auspiciante"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
@@ -114,39 +115,29 @@ const CreateNoticia = ({ history }) => {
                     <div className="col-lg-12">
                       <div className="login-block text-center">
                         <div className="login-block-inner">
-                          <h3 className="title">Nueva noticia</h3>
+                          <h3 className="title">Nuevo auspiciante</h3>
                           <form
                             className="login-form"
                             onSubmit={submitHandler}
                             encType="multipart/form-data"
                           >
                             <div className="frm-group">
-                              <label>Título</label>
+                              <label>Nombre</label>
                               <input
-                                name="titulo"
+                                name="nombre"
                                 type="text"
-                                placeholder="Ingresa el título"
-                                value={titulo}
+                                placeholder="Ingresa el nombre"
+                                value={nombre}
                                 onChange={onChange}
                               />
                             </div>
-                            <div className="frm-group">
-                              <label>Descripción</label>
-                              <textarea
-                                name="descripcion"
-                                placeholder="Ingresa la descripción..."
-                                value={descripcion}
-                                rows={2}
-                                onChange={onChange}
-                              ></textarea>
-                            </div>
 
                             <div className="frm-group">
-                              <label>Imagen</label>
+                              <label>Logo</label>
 
                               <div className="custom-file">
                                 <input
-                                  name="imagen"
+                                  name="logo"
                                   type="file"
                                   className="custom-file-input"
                                   accept="image/*"
@@ -154,12 +145,12 @@ const CreateNoticia = ({ history }) => {
                                   required
                                 />
                                 <label className="custom-file-label">
-                                  Agregar imagen
+                                  Agregar logo
                                 </label>
                               </div>
 
                               <img
-                                src={imagenPreview}
+                                src={logoPreview}
                                 alt=""
                                 className="mt-3 mr-2"
                                 width="55"
@@ -185,4 +176,4 @@ const CreateNoticia = ({ history }) => {
   );
 };
 
-export default CreateNoticia;
+export default CreateAuspiciante;

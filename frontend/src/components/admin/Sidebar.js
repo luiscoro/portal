@@ -19,7 +19,7 @@ const Sidebar = () => {
               aria-expanded="false"
               className="dropdown-toggle"
             >
-              <i className="fa fa-product-hunt"></i> Información
+              <i className="fa fa-info-circle"></i> Información
             </a>
             <ul className="collapse list-unstyled" id="inforSubmenu">
               <li>
@@ -57,6 +57,18 @@ const Sidebar = () => {
                   <i className="fa fa-star"></i> Revisiones
                 </Link>
               </li>
+
+              <li>
+                <Link to="/admin-categorias">
+                  <i className="fa fa-list-alt"></i> Categorías
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/admin-categoria">
+                  <i className="fa fa-plus"></i> Nueva categoría
+                </Link>
+              </li>
             </ul>
           </li>
 
@@ -85,6 +97,54 @@ const Sidebar = () => {
               <li>
                 <Link to="/admin-noticia">
                   <i className="fa fa-plus"></i> Nueva
+                </Link>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <a
+              href="#partidoSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              className="dropdown-toggle"
+            >
+              <i className="fa fa-life-ring"></i> Partidos
+            </a>
+            <ul className="collapse list-unstyled" id="partidoSubmenu">
+              <li>
+                <Link to="/admin-partidos">
+                  <i className="fa fa-clipboard"></i> Listado
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/admin-partido">
+                  <i className="fa fa-plus"></i> Nuevo
+                </Link>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <a
+              href="#auspicianteSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              className="dropdown-toggle"
+            >
+              <i className="fa fa-suitcase"></i> Auspiciantes
+            </a>
+            <ul className="collapse list-unstyled" id="auspicianteSubmenu">
+              <li>
+                <Link to="/admin-auspiciantes">
+                  <i className="fa fa-clipboard"></i> Listado
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/admin-auspiciante">
+                  <i className="fa fa-plus"></i> Nuevo
                 </Link>
               </li>
             </ul>

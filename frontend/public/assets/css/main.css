@@ -3886,7 +3886,7 @@ span.is-active:after {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #f4f4f4;
   box-shadow: 0px 0px 9px 1px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -4083,7 +4083,7 @@ span.is-active:after {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #ff6363;
+  background-color: transparent;
   opacity: 0;
   -webkit-transition: all 0.3s;
   -o-transition: all 0.3s;
@@ -4108,7 +4108,7 @@ span.is-active:after {
   width: 50px;
   height: 50px;
   line-height: 50px;
-  color: #ff6363;
+  color: #0047a5;
   background-color: #ffffff;
   border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -4120,11 +4120,12 @@ span.is-active:after {
 }
 
 .product-item .product-item-cart a:hover {
-  color: #ff6363;
+  color: #ffffff;
+  background-color: #0047a5;
 }
 
 .product-item .product-thumb img {
-  height: 90px;
+  height: 200px;
 }
 
 .product-item .content {
@@ -4138,7 +4139,7 @@ span.is-active:after {
 
 .product-item .content .product-price {
   font-weight: 800;
-  color: #ff6363;
+  color: #0047a5;
   font-size: 20px;
 }
 
@@ -4153,7 +4154,7 @@ span.is-active:after {
 }
 
 .product-item .content .product-ratings i {
-  color: #ff6363;
+  color: #777777;
 }
 
 .product-slider {
@@ -4187,7 +4188,8 @@ span.is-active:after {
 .product-slider .owl-nav button.owl-next {
   width: 40px;
   height: 40px;
-  border: 2px solid #06083b;
+  border: 2px solid #1a53fb;
+  color: #1a53fb;
   line-height: 40px;
   -webkit-transition: all 0.3s;
   -o-transition: all 0.3s;
@@ -4196,12 +4198,39 @@ span.is-active:after {
 
 .product-slider .owl-nav button.owl-prev:hover,
 .product-slider .owl-nav button.owl-next:hover {
-  background-color: #06083b;
+  background-color: #1a53fb;
   color: #ffffff;
 }
 
 .product-slider .owl-nav button.owl-next {
   margin-left: 10px;
+}
+
+/* Ratings */
+
+.rating-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+  color: #777777;
+}
+
+.rating-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+
+.rating-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.rating-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #777777;
 }
 
 /* product-section css end */
