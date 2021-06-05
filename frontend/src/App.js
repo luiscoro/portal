@@ -5,6 +5,7 @@ import Footer from "./components/section/Footer";
 import Header from "./components/section/Header";
 import Home from "./components/Home";
 import Resultados from "./components/Resultados";
+import Noticias from "./components/Noticias";
 
 //ADMIN
 import Dashboard from "./components/admin/Dashboard";
@@ -56,7 +57,8 @@ function App() {
       <div className="main-wrapper color-variation-four">
         <Header />
         <Route path="/" component={Home} exact />
-        <Route path="/resultados" component={Resultados} exact />
+        <Route path="/resultados" component={Resultados} />
+        <Route path="/noticias" component={Noticias} />
         <Route path="/login" component={Login} />
         <Route path="/registro" component={Registro} />
         <Route path="/password/olvido" component={ForgotPassword} exact />

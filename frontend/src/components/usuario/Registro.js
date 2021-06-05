@@ -76,7 +76,7 @@ const Registro = ({ history }) => {
       {/* inner-banner-section start */}
       <section
         className="inner-banner-section bg_img base-overlay"
-        data-background="assets/images/bg/home-eight-banner.jpg"
+        data-background=""
       >
         <div className="container">
           <div className="row justify-content-center">

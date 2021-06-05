@@ -37,6 +37,7 @@ import {
   createPartidoReducer,
   partidosReducer,
   partidoReducer,
+  resultadosReducer,
   partidoDetailsReducer,
 } from "./reducers/partidoReducers";
 
@@ -73,6 +74,7 @@ const reducer = combineReducers({
   productos: productosReducer,
   noticias: noticiasReducer,
   partidos: partidosReducer,
+  resultados: resultadosReducer,
   auspiciantes: auspiciantesReducer,
   productoDetails: productoDetailsReducer,
   noticiaDetails: noticiaDetailsReducer,

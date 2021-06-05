@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getPartidoTop, clearErrors } from "../../actions/partidoActions";
 
-const LastPartido = () => {
+const LastResultado = () => {
   const dispatch = useDispatch();
 
   const { loading, error, partidos } = useSelector((state) => state.partidos);
@@ -63,4 +63,4 @@ const LastPartido = () => {
   );
 };
 
-export default LastPartido;
+export default LastResultado;

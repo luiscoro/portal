@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getNoticiasTop, clearErrors } from "../../actions/noticiaActions";
 
-const NoticiasTop = () => {
+const TopNoticias = () => {
   const dispatch = useDispatch();
 
   const { loading, error, noticias } = useSelector((state) => state.noticias);
@@ -71,4 +71,4 @@ const NoticiasTop = () => {
   );
 };
 
-export default NoticiasTop;
+export default TopNoticias;

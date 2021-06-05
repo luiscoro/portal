@@ -32,7 +32,6 @@ import {
 export const partidosReducer = (state = { partidos: [] }, action) => {
   switch (action.type) {
     case TOP_PARTIDO_REQUEST:
-    case LAST_PARTIDOS_REQUEST:
     case NEXT_PARTIDOS_REQUEST:
     case ADMIN_PARTIDOS_REQUEST:
       return {
@@ -41,7 +40,6 @@ export const partidosReducer = (state = { partidos: [] }, action) => {
       };
 
     case TOP_PARTIDO_SUCCESS:
-    case LAST_PARTIDOS_SUCCESS:
     case NEXT_PARTIDOS_SUCCESS:
     case ADMIN_PARTIDOS_SUCCESS:
       return {
@@ -50,9 +48,39 @@ export const partidosReducer = (state = { partidos: [] }, action) => {
       };
 
     case TOP_PARTIDO_FAIL:
-    case LAST_PARTIDOS_FAIL:
     case NEXT_PARTIDOS_FAIL:
     case ADMIN_PARTIDOS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const resultadosReducer = (state = { resultados: [] }, action) => {
+  switch (action.type) {
+    case LAST_PARTIDOS_REQUEST:
+      return {
+        loading: true,
+        resultados: [],
+      };
+
+    case LAST_PARTIDOS_SUCCESS:
+      return {
+        loading: false,
+        resultados: action.payload,
+      };
+
+    case LAST_PARTIDOS_FAIL:
       return {
         loading: false,
         error: action.payload,

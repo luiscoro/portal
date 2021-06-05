@@ -85,7 +85,7 @@ export const getPartidosNext = () => async (dispatch) => {
   try {
     dispatch({ type: NEXT_PARTIDOS_REQUEST });
 
-    const { data } = await axios.get(`/api/partido/next`);
+    const { data } = await axios.get(`/api/partidos/next`);
 
     dispatch({
       type: NEXT_PARTIDOS_SUCCESS,

@@ -251,7 +251,7 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link to="/" style={{ textDecoration: "none" }}>
+                    <Link to="/noticias" style={{ textDecoration: "none" }}>
                       Noticias
                     </Link>
                   </li>

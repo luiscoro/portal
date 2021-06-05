@@ -2,9 +2,9 @@ import React from "react";
 import MetaData from "./section/MetaData";
 import Banner from "./section/Banner";
 import About from "./section/About";
-import LastPartido from "./section/LastPartido";
-import ProductosTop from "./producto/ProductosTop";
-import NoticiasTop from "./noticia/NoticiasTop";
+import LastResultado from "./section/LastResultado";
+import TopProductos from "./producto/TopProductos";
+import TopNoticias from "./noticia/TopNoticias";
 import Auspiciantes from "./auspiciante/Auspiciantes";
 
 const Home = () => {
@@ -14,11 +14,11 @@ const Home = () => {
 
       <Banner />
 
-      <LastPartido />
+      <LastResultado />
 
       <About />
-      <ProductosTop />
-      <NoticiasTop />
+      <TopProductos />
+      <TopNoticias />
       <Auspiciantes />
     </>
   );

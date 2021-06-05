@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import MetaData from "./section/MetaData";
-import Loader from "./section/Loader";
+import LastResultados from "./partido/LastResultados";
+import NextPartidos from "./partido/NextPartidos";
 
 const Resultados = () => {
   return (
     <>
       <MetaData title={"Resultados"} />
-      {/* inner-banner-section start */}
       <section className="inner-banner-section bg_img base-overlay">
         <div className="container">
           <div className="row justify-content-center">
@@ -27,7 +27,9 @@ const Resultados = () => {
           </div>
         </div>
       </section>
-      {/* inner-banner-section end */}
+
+      <LastResultados />
+      <NextPartidos />
     </>
   );
 };

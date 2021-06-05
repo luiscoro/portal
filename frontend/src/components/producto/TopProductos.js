@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAdminProductos, clearErrors } from "../../actions/productoActions";
 import OwlCarousel from "react-owl-carousel";
 
-const ProductosTop = () => {
+const TopProductos = () => {
   const dispatch = useDispatch();
 
   const { loading, error, productos } = useSelector((state) => state.productos);
@@ -92,4 +92,4 @@ const ProductosTop = () => {
   );
 };
 
-export default ProductosTop;
+export default TopProductos;

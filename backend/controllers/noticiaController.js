@@ -50,12 +50,10 @@ exports.getNoticiasTop = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getNoticias = catchAsyncErrors(async (req, res, next) => {
-  const resPerPage = 4;
+  const resPerPage = 1;
   const noticiasCount = await Noticia.countDocuments();
 
-  const apiFeatures = new APIFeatures(Noticia.find(), req.query)
-    .search()
-    .filter();
+  const apiFeatures = new APIFeatures(Noticia.find(), req.query).search();
 
   let noticias = await apiFeatures.query;
   let filteredNoticiasCount = noticias.length;

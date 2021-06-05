@@ -64,7 +64,7 @@ exports.getPartidoTop = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getPartidosLast = catchAsyncErrors(async (req, res, next) => {
-  const partidos = await Partido.find({ golesLocal: null })
+  const partidos = await Partido.find({ golesLocal: { $ne: null } })
     .sort({ _id: -1 })
     .limit(5);
 
