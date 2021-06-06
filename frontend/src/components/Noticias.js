@@ -1,9 +1,64 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Link } from "react-router-dom";
+import Pagination from "react-js-pagination";
 import MetaData from "./section/MetaData";
+import Loader from "./section/Loader";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import Noticia from "./noticia/Noticia";
 import SearchNoticia from "./section/SearchNoticia";
+import { useDispatch, useSelector } from "react-redux";
+import { getNoticias } from "../actions/noticiaActions";
 
-const Noticias = () => {
+var MySwal;
+
+const Noticias = ({ match }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  MySwal = withReactContent(Swal);
+  const dispatch = useDispatch();
+  const {
+    loading,
+    noticias,
+    error,
+    noticiasCount,
+    resPerPage,
+    filteredNoticiasCount,
+  } = useSelector((state) => state.noticias);
+
+  const keyword = match.params.keyword;
+
+  useEffect(() => {
+    if (error) {
+      return MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "warning",
+        iconColor: "orange",
+        title: error,
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+    }
+    dispatch(getNoticias(keyword, currentPage));
+  }, [dispatch, error, keyword, currentPage]);
+
+  function setCurrentPageNo(pageNumber) {
+    setCurrentPage(pageNumber);
+  }
+
+  let count = noticiasCount;
+  if (keyword) {
+    count = filteredNoticiasCount;
+  }
+
   return (
     <>
       <MetaData title={"Noticias"} />
@@ -30,108 +85,47 @@ const Noticias = () => {
       <div className="d-flex justify-content-end">
         <Route render={({ history }) => <SearchNoticia history={history} />} />
       </div>
-      <section className="blog-section pt-120 pb-120">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-6">
-              <div className="post-item post-list--style">
-                <div className="thumb">
-                  <img src="assets/images/blog/ragbi/b1.jpg" alt="" />
-                </div>
-                <div className="content">
-                  <div className="post-date">
-                    <a href="#0">
-                      <span className="date">20</span>
-                      <span className="month">dec</span>
-                    </a>
-                  </div>
-                  <div className="header-area">
-                    <h4 className="post-title">
-                      <a href="#0">
-                        molestie sedfusce lorem velit praesent dui ornare
-                        quisque urna libero.{" "}
-                      </a>
-                    </h4>
-                    <ul className="post-meta">
-                      <li>
-                        <a href="#0">
-                          <i className="fa fa-user" />
-                          minhazur rahman
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#0">
-                          <i className="fa fa-commenting" />
-                          350 comment
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#0">
-                          <i className="fa fa-share-alt" />
-                          share post
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
 
-                  <a href="#0" className="btn btn-primary btn-radius">
-                    read more
-                  </a>
-                </div>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <section className="blog-section pt-120 pb-120">
+            <div className="container">
+              <div className="row">
+                {keyword ? (
+                  <>
+                    {noticias.map((noticia) => (
+                      <Noticia key={noticia._id} noticia={noticia} col={6} />
+                    ))}
+                  </>
+                ) : (
+                  noticias.map((noticia) => (
+                    <Noticia key={noticia._id} noticia={noticia} col={6} />
+                  ))
+                )}
               </div>
-              {/* post-item end */}
             </div>
-            <div className="col-lg-6">
-              <div className="post-item post-list--style">
-                <div className="thumb">
-                  <img src="assets/images/blog/ragbi/b1.jpg" alt="" />
-                </div>
-                <div className="content">
-                  <div className="post-date">
-                    <a href="#0">
-                      <span className="date">20</span>
-                      <span className="month">dec</span>
-                    </a>
-                  </div>
-                  <div className="header-area">
-                    <h4 className="post-title">
-                      <a href="#0">
-                        molestie sedfusce lorem velit praesent dui ornare
-                        quisque urna libero.{" "}
-                      </a>
-                    </h4>
-                    <ul className="post-meta">
-                      <li>
-                        <a href="#0">
-                          <i className="fa fa-user" />
-                          minhazur rahman
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#0">
-                          <i className="fa fa-commenting" />
-                          350 comment
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#0">
-                          <i className="fa fa-share-alt" />
-                          share post
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+          </section>
 
-                  <a href="#0" className="btn btn-primary btn-radius">
-                    read more
-                  </a>
-                </div>
-              </div>
-              {/* post-item end */}
+          {resPerPage <= count && (
+            <div className="d-flex justify-content-center mt-5">
+              <Pagination
+                activePage={currentPage}
+                itemsCountPerPage={resPerPage}
+                totalItemsCount={noticiasCount}
+                onChange={setCurrentPageNo}
+                nextPageText={"Siguiente"}
+                prevPageText={"Anterior"}
+                firstPageText={"Primera"}
+                lastPageText={"Última"}
+                itemClass="page-item"
+                linkClass="page-link"
+              />
             </div>
-          </div>
-        </div>
-      </section>
+          )}
+        </>
+      )}
     </>
   );
 };

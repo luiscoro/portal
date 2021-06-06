@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 
-const SearchNoticia = ({ history }) => {
+const SearchProducto = ({ history }) => {
   const [keyword, setKeyword] = useState("");
 
   const searchHandler = (e) => {
     e.preventDefault();
 
     if (keyword.trim()) {
-      history.push(`/noticias/buscar/${keyword}`);
+      history.push(`/tienda/buscar/${keyword}`);
     } else {
-      history.push("/noticias");
+      history.push("/tienda");
     }
   };
   return (
     <form className="search-form" onSubmit={searchHandler}>
       <input
         type="search"
-        placeholder="Buscar noticia..."
+        placeholder="Buscar producto..."
         onChange={(e) => setKeyword(e.target.value)}
       />
       <button type="submit">
@@ -26,4 +26,4 @@ const SearchNoticia = ({ history }) => {
   );
 };
 
-export default SearchNoticia;
+export default SearchProducto;

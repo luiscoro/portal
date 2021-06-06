@@ -2,6 +2,9 @@ import {
   ADMIN_NOTICIAS_REQUEST,
   ADMIN_NOTICIAS_SUCCESS,
   ADMIN_NOTICIAS_FAIL,
+  GET_NOTICIAS_REQUEST,
+  GET_NOTICIAS_SUCCESS,
+  GET_NOTICIAS_FAIL,
   TOP_NOTICIAS_REQUEST,
   TOP_NOTICIAS_SUCCESS,
   TOP_NOTICIAS_FAIL,
@@ -25,8 +28,7 @@ import {
 
 export const noticiasReducer = (state = { noticias: [] }, action) => {
   switch (action.type) {
-    // case GET_PRODUCTOS_REQUEST:
-
+    case GET_NOTICIAS_REQUEST:
     case TOP_NOTICIAS_REQUEST:
     case ADMIN_NOTICIAS_REQUEST:
       return {
@@ -34,14 +36,14 @@ export const noticiasReducer = (state = { noticias: [] }, action) => {
         noticias: [],
       };
 
-    // case GET_NOTICIAS_SUCCESS:
-    //   return {
-    //     loading: false,
-    //     productos: action.payload.productos,
-    //     productosCount: action.payload.productosCount,
-    //     resPerPage: action.payload.resPerPage,
-    //     filteredProductosCount: action.payload.filteredProductosCount,
-    //   };
+    case GET_NOTICIAS_SUCCESS:
+      return {
+        loading: false,
+        noticias: action.payload.noticias,
+        noticiasCount: action.payload.noticiasCount,
+        resPerPage: action.payload.resPerPage,
+        filteredNoticiasCount: action.payload.filteredNoticiasCount,
+      };
 
     case TOP_NOTICIAS_SUCCESS:
     case ADMIN_NOTICIAS_SUCCESS:
@@ -50,7 +52,7 @@ export const noticiasReducer = (state = { noticias: [] }, action) => {
         noticias: action.payload,
       };
 
-    // case GET_NOTICIAS_FAIL:
+    case GET_NOTICIAS_FAIL:
     case TOP_NOTICIAS_FAIL:
     case ADMIN_NOTICIAS_FAIL:
       return {

@@ -6,6 +6,7 @@ import Header from "./components/section/Header";
 import Home from "./components/Home";
 import Resultados from "./components/Resultados";
 import Noticias from "./components/Noticias";
+import Tienda from "./components/Tienda";
 
 //ADMIN
 import Dashboard from "./components/admin/Dashboard";
@@ -58,7 +59,10 @@ function App() {
         <Header />
         <Route path="/" component={Home} exact />
         <Route path="/resultados" component={Resultados} />
-        <Route path="/noticias" component={Noticias} />
+        <Route path="/noticias" component={Noticias} exact />
+        <Route path="/noticias/buscar/:keyword" component={Noticias} />
+        <Route path="/tienda" component={Tienda} exact />
+        <Route path="/tienda/buscar/:keyword" component={Tienda} exact />
         <Route path="/login" component={Login} />
         <Route path="/registro" component={Registro} />
         <Route path="/password/olvido" component={ForgotPassword} exact />

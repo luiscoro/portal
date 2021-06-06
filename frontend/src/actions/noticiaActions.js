@@ -3,6 +3,9 @@ import {
   ADMIN_NOTICIAS_FAIL,
   ADMIN_NOTICIAS_REQUEST,
   ADMIN_NOTICIAS_SUCCESS,
+  GET_NOTICIAS_REQUEST,
+  GET_NOTICIAS_SUCCESS,
+  GET_NOTICIAS_FAIL,
   TOP_NOTICIAS_REQUEST,
   TOP_NOTICIAS_SUCCESS,
   TOP_NOTICIAS_FAIL,
@@ -20,6 +23,28 @@ import {
   NOTICIA_DETAILS_FAIL,
   CLEAR_ERRORS,
 } from "../constants/noticiaConstants";
+
+export const getNoticias =
+  (keyword = "", currentPage = 1) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: GET_NOTICIAS_REQUEST });
+
+      let link = `/api/noticias?keyword=${keyword}&page=${currentPage}`;
+
+      const { data } = await axios.get(link);
+
+      dispatch({
+        type: GET_NOTICIAS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_NOTICIAS_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 export const getAdminNoticias = () => async (dispatch) => {
   try {

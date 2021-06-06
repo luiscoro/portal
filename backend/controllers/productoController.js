@@ -2,7 +2,7 @@ const Producto = require("../models/producto");
 
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
-const APIFeatures = require("../utils/apiFeatures");
+const APIFeatures = require("../utils/featuresProducto");
 const cloudinary = require("cloudinary");
 
 exports.createProducto = catchAsyncErrors(async (req, res, next) => {
@@ -60,7 +60,7 @@ exports.getProductos = catchAsyncErrors(async (req, res, next) => {
     .filter();
 
   let productos = await apiFeatures.query;
-  let filteredproductosCount = productos.length;
+  let filteredProductosCount = productos.length;
 
   apiFeatures.pagination(resPerPage);
   productos = await apiFeatures.query;
@@ -69,7 +69,7 @@ exports.getProductos = catchAsyncErrors(async (req, res, next) => {
     success: true,
     productosCount,
     resPerPage,
-    filteredproductosCount,
+    filteredProductosCount,
     productos,
   });
 });

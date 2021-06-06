@@ -1,7 +1,7 @@
 const Noticia = require("../models/noticia");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
-const APIFeatures = require("../utils/apiFeatures");
+const APIFeatures = require("../utils/featuresNoticia");
 const cloudinary = require("cloudinary");
 
 exports.createNoticia = catchAsyncErrors(async (req, res, next) => {
