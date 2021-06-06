@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Loader from "../section/Loader";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { getAdminProductos, clearErrors } from "../../actions/productoActions";
 import OwlCarousel from "react-owl-carousel";
 
@@ -65,7 +66,9 @@ const TopProductos = () => {
               </div>
               <div className="content">
                 <h4 className="product-name">
-                  <a href="#0">{producto.nombre}</a>
+                  <Link to={`/tienda/productos/${producto._id}`}>
+                    {producto.nombre}
+                  </Link>
                 </h4>
                 <span className="product-price">$ {producto.precio}</span>
                 <div className="product-ratings">
@@ -80,9 +83,10 @@ const TopProductos = () => {
                 </div>
               </div>
               <div className="product-item-cart">
-                <a href="#0">
+                <Link to={`/tienda/productos/${producto._id}`}>
+                  {" "}
                   <i className="fa fa-eye" />
-                </a>
+                </Link>
               </div>
             </div>
           ))}

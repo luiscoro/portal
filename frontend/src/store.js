@@ -61,7 +61,7 @@ import {
   getPedidosReducer,
   pedidoDetailsReducer,
   pedidoReducer,
-  PedidosReducer,
+  pedidosReducer,
 } from "./reducers/pedidoReducers";
 
 const reducer = combineReducers({
@@ -96,7 +96,7 @@ const reducer = combineReducers({
   forgotPassword: forgotPasswordReducer,
   cesta: cestaReducer,
   createPedido: createPedidoReducer,
-  pedidos: PedidosReducer,
+  pedidos: pedidosReducer,
   getPedidos: getPedidosReducer,
   pedidoDetails: pedidoDetailsReducer,
   pedido: pedidoReducer,

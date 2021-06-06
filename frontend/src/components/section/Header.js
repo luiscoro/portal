@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { logout } from "../../actions/usuarioActions";
+import { removeItemCesta } from "../../actions/cestaActions";
 
 var MySwal;
 
@@ -13,7 +14,11 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const { usuario, loading } = useSelector((state) => state.auth);
-  /*   const { itemsCesta } = useSelector((state) => state.cesta); */
+  const { itemsCesta } = useSelector((state) => state.cesta);
+
+  const removeCestaItemHandler = (id) => {
+    dispatch(removeItemCesta(id));
+  };
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -23,7 +28,7 @@ const Header = () => {
       showCloseButton: true,
       icon: "info",
       iconColor: "blue",
-      title: "La sesión se ha cerrado",
+      title: "La sesión se está cerrando",
       position: "bottom",
       showConfirmButton: false,
       timer: 5000,
@@ -40,8 +45,6 @@ const Header = () => {
 
   return (
     <>
-      {/* header section  */}
-      {/*  header-section start  */}
       <header className="header-section header-style-three">
         <div className="header-top">
           <div className="container">
@@ -68,69 +71,88 @@ const Header = () => {
               <div className="col-lg-4 col-sm-6">
                 <div className="header-top-right">
                   <div className="header-cart-menu-area">
-                    <div className="header-cart-menu-btn toggle-close">
-                      <i className="fa fa-cart-plus" />
-                      &nbsp;
-                      <sup
-                        className="header-total-cart-number"
-                        style={{ fontSize: "90%", fontWeight: "bold" }}
-                      >
-                        22
-                      </sup>
-                    </div>
-                    <div className="shopping-cart-dropdown">
-                      <h5 className="title">Shopping Cart</h5>
-                      <ul className="dropdown-shopping-cart-list">
-                        <li className="dropdown-shopping-cart-item">
-                          <div className="thumb">
-                            <img
-                              src="assets/images/shopping/1.png"
-                              alt="images"
-                            />
+                    {itemsCesta.length === 0 ? (
+                      <>
+                        <div className="header-cart-menu-btn toggle-close">
+                          <i className="fa fa-cart-plus" />
+                          &nbsp;
+                          <sup
+                            className="header-total-cart-number"
+                            style={{ fontSize: "90%", fontWeight: "bold" }}
+                          >
+                            {itemsCesta.length}
+                          </sup>
+                        </div>
+                        <div className="shopping-cart-dropdown">
+                          <h5 className="title">Tú cesta está vacía</h5>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="header-cart-menu-btn toggle-close">
+                          <i className="fa fa-cart-plus" />
+                          &nbsp;
+                          <sup
+                            className="header-total-cart-number"
+                            style={{ fontSize: "90%", fontWeight: "bold" }}
+                          >
+                            {itemsCesta.length}
+                          </sup>
+                        </div>
+
+                        <div className="shopping-cart-dropdown">
+                          <h5 className="title">Cesta de compras</h5>
+                          <ul className="dropdown-shopping-cart-list">
+                            {itemsCesta.map((item) => (
+                              <li
+                                className="dropdown-shopping-cart-item"
+                                key={item.producto}
+                              >
+                                <div className="thumb">
+                                  <img
+                                    src={item.imagen}
+                                    alt=""
+                                    height="88"
+                                    width="63"
+                                  />
+                                </div>
+                                <div className="details">
+                                  <h6 className="product-name">
+                                    <Link
+                                      to={`/tienda/productos/${item.producto}`}
+                                    >
+                                      {item.nombre}
+                                    </Link>
+                                  </h6>
+                                  <span className="price">{item.precio}</span>
+                                  <span className="quantity">
+                                    {item.cantidad}
+                                  </span>
+                                </div>
+                                <div className="cart-remove-btn">
+                                  <button type="button" className="delete-btn">
+                                    <i
+                                      className="fa fa-trash"
+                                      onClick={() =>
+                                        removeCestaItemHandler(item.producto)
+                                      }
+                                    />
+                                  </button>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                          <div className="header-shopping-cart-footer">
+                            <Link to={`/envio`} className="border-btn">
+                              Pagar
+                            </Link>
+                            <Link to={`/cesta`} className="btn btn-primary">
+                              Ver cesta
+                            </Link>
                           </div>
-                          <div className="details">
-                            <h6 className="product-name">
-                              <a href="#0">Basket ball</a>
-                            </h6>
-                            <span className="price">$55</span>
-                            <span className="quantity">1</span>
-                          </div>
-                          <div className="cart-remove-btn">
-                            <a href="#0">
-                              <i className="fa fa-trash-o" />
-                            </a>
-                          </div>
-                        </li>
-                        <li className="dropdown-shopping-cart-item">
-                          <div className="thumb">
-                            <img
-                              src="assets/images/shopping/3.png"
-                              alt="images"
-                            />
-                          </div>
-                          <div className="details">
-                            <h6 className="product-name">
-                              <a href="#0">Football Shorts</a>
-                            </h6>
-                            <span className="price">$21</span>
-                            <span className="quantity">2</span>
-                          </div>
-                          <div className="cart-remove-btn">
-                            <a href="#0">
-                              <i className="fa fa-trash-o" />
-                            </a>
-                          </div>
-                        </li>
-                      </ul>
-                      <div className="header-shopping-cart-footer">
-                        <a href="#0" className="border-btn">
-                          View Cart
-                        </a>
-                        <a href="#0" className="btn btn-primary">
-                          Checkout
-                        </a>
-                      </div>
-                    </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="login-registration-area">
                     {!usuario ? (
@@ -242,7 +264,7 @@ const Header = () => {
 
                   <li>
                     <Link to="/" style={{ textDecoration: "none" }}>
-                      Nuestro equipo
+                      Nuestro club
                     </Link>
                   </li>
                   <li>
@@ -270,9 +292,7 @@ const Header = () => {
             </nav>
           </div>
         </div>
-        {/* header-bottom end */}
       </header>
-      {/*  header-section end  */}
     </>
   );
 };

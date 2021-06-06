@@ -1,5 +1,5 @@
 import React from "react";
-/* import { Link } from "react-router-dom"; */
+import { Link } from "react-router-dom";
 
 const Producto = ({ producto, col }) => {
   return (
@@ -9,7 +9,9 @@ const Producto = ({ producto, col }) => {
       </div>
       <div className="content">
         <h4 className="product-name">
-          <a href="#0">{producto.nombre}</a>
+          <Link to={`/tienda/productos/${producto._id}`}>
+            {producto.nombre}
+          </Link>
         </h4>
         <span className="product-price">$ {producto.precio}</span>
         <div className="product-ratings">
@@ -24,9 +26,10 @@ const Producto = ({ producto, col }) => {
         </div>
       </div>
       <div className="product-store-cart">
-        <a href="#0">
+        <Link to={`/tienda/productos/${producto._id}`}>
+          {" "}
           <i className="fa fa-eye" />
-        </a>
+        </Link>
       </div>
     </div>
   );

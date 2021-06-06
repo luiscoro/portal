@@ -7,7 +7,7 @@ import TopProductos from "./producto/TopProductos";
 import TopNoticias from "./noticia/TopNoticias";
 import Auspiciantes from "./auspiciante/Auspiciantes";
 
-const Home = () => {
+const Inicio = () => {
   return (
     <>
       <MetaData title={"Inicio"} />
@@ -24,4 +24,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Inicio;

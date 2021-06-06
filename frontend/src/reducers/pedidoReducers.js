@@ -53,7 +53,7 @@ export const createPedidoReducer = (state = {}, action) => {
   }
 };
 
-export const PedidosReducer = (state = { pedidos: [] }, action) => {
+export const pedidosReducer = (state = { pedidos: [] }, action) => {
   switch (action.type) {
     case PEDIDOS_REQUEST:
       return {

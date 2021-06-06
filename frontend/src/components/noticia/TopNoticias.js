@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Loader from "../section/Loader";
-
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getNoticiasTop, clearErrors } from "../../actions/noticiaActions";
@@ -41,7 +41,7 @@ const TopNoticias = () => {
                   </div>
                   <div className="content">
                     <div className="post-date">
-                      <a href="#0">
+                      <Link to={`/noticias/${noticia._id}`}>
                         <span className="month">
                           {String(noticia.fecha).substring(8, 10)}
                           {"-"}
@@ -50,16 +50,21 @@ const TopNoticias = () => {
                         <span className="date">
                           {String(noticia.fecha).substring(0, 4)}
                         </span>
-                      </a>
+                      </Link>
                     </div>
                     <div className="header-area">
                       <h4 className="post-title">
-                        <a href="#0">{noticia.titulo}</a>
+                        <Link to={`/noticias/${noticia._id}`}>
+                          {noticia.titulo}
+                        </Link>
                       </h4>
                     </div>
-                    <a href="#0" className="btn btn-primary btn-radius">
+                    <Link
+                      to={`/noticias/${noticia._id}`}
+                      className="btn btn-primary btn-radius"
+                    >
                       Ver detalles
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>

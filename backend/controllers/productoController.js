@@ -32,6 +32,9 @@ exports.createProducto = catchAsyncErrors(async (req, res, next) => {
   for (let i = 0; i < imagenes.length; i++) {
     const result = await cloudinary.v2.uploader.upload(imagenes[i], {
       folder: "productos",
+      width: 1080,
+      height: 1080,
+      crop: "scale",
     });
 
     imagenesLinks.push({
@@ -122,6 +125,9 @@ exports.updateProducto = catchAsyncErrors(async (req, res, next) => {
     for (let i = 0; i < imagenes.length; i++) {
       const result = await cloudinary.v2.uploader.upload(imagenes[i], {
         folder: "productos",
+        width: 1080,
+        height: 1080,
+        crop: "scale",
       });
 
       imagenesLinks.push({
@@ -191,7 +197,7 @@ exports.createRevisionProducto = catchAsyncErrors(async (req, res, next) => {
     });
   } else {
     producto.revisiones.push(revision);
-    product.numeroRevisiones = producto.revisiones.length;
+    producto.numeroRevisiones = producto.revisiones.length;
   }
 
   producto.calificaciones =

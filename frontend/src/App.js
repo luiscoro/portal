@@ -3,10 +3,15 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Footer from "./components/section/Footer";
 import Header from "./components/section/Header";
-import Home from "./components/Home";
+import Inicio from "./components/Inicio";
 import Resultados from "./components/Resultados";
 import Noticias from "./components/Noticias";
+import DetailsNoticia from "./components/noticia/DetailsNoticia";
 import Tienda from "./components/Tienda";
+import DetailsProducto from "./components/producto/DetailsProducto";
+
+// CESTA
+import Cesta from "./components/cesta/Cesta";
 
 //ADMIN
 import Dashboard from "./components/admin/Dashboard";
@@ -31,7 +36,7 @@ import UpdateNoticia from "./components/admin/UpdateNoticia";
 import UpdatePartido from "./components/admin/UpdatePartido";
 import UpdateAuspiciante from "./components/admin/UpdateAuspiciante";
 
-//USUARIO
+//REGISTRADO
 import Login from "./components/usuario/Login";
 import Registro from "./components/usuario/Registro";
 import ForgotPassword from "./components/usuario/ForgotPassword";
@@ -57,12 +62,16 @@ function App() {
     <Router>
       <div className="main-wrapper color-variation-four">
         <Header />
-        <Route path="/" component={Home} exact />
+        <Route path="/" component={Inicio} exact />
         <Route path="/resultados" component={Resultados} />
         <Route path="/noticias" component={Noticias} exact />
         <Route path="/noticias/buscar/:keyword" component={Noticias} />
+        <Route path="/noticias/:id" component={DetailsNoticia} exact />
         <Route path="/tienda" component={Tienda} exact />
         <Route path="/tienda/buscar/:keyword" component={Tienda} exact />
+        <Route path="/tienda/productos/:id" component={DetailsProducto} exact />
+        <Route path="/cesta" component={Cesta} exact />
+
         <Route path="/login" component={Login} />
         <Route path="/registro" component={Registro} />
         <Route path="/password/olvido" component={ForgotPassword} exact />
