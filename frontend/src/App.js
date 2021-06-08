@@ -21,6 +21,7 @@ import CreateNoticia from "./components/admin/CreateNoticia";
 import CreatePartido from "./components/admin/CreatePartido";
 import CreateAuspiciante from "./components/admin/CreateAuspiciante";
 import CreateInformacion from "./components/admin/CreateInformacion";
+import CreateDirigente from "./components/admin/CreateDirigente";
 import ListCategorias from "./components/admin/ListCategorias";
 import ListProductos from "./components/admin/ListProductos";
 import ListInformacion from "./components/admin/ListInformacion";
@@ -28,6 +29,7 @@ import ListNoticias from "./components/admin/ListNoticias";
 import ListPartidos from "./components/admin/ListPartidos";
 import ListAuspiciantes from "./components/admin/ListAuspiciantes";
 import ListUsuarios from "./components/admin/ListUsuarios";
+import ListDirigentes from "./components/admin/ListDirigentes";
 import UpdateInformacion from "./components/admin/UpdateInformacion";
 import UpdateCategoria from "./components/admin/UpdateCategoria";
 import UpdateProducto from "./components/admin/UpdateProducto";
@@ -35,6 +37,7 @@ import UpdateUsuario from "./components/admin/UpdateUsuario";
 import UpdateNoticia from "./components/admin/UpdateNoticia";
 import UpdatePartido from "./components/admin/UpdatePartido";
 import UpdateAuspiciante from "./components/admin/UpdateAuspiciante";
+import UpdateDirigente from "./components/admin/UpdateDirigente";
 
 //REGISTRADO
 import Login from "./components/usuario/Login";
@@ -201,6 +204,23 @@ function App() {
           path="/admin-auspiciante/:id"
           esAdmin={true}
           component={UpdateAuspiciante}
+        />
+        <PrivateRoute
+          path="/admin-dirigente"
+          esAdmin={true}
+          component={CreateDirigente}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-dirigentes"
+          esAdmin={true}
+          component={ListDirigentes}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-dirigente/:id"
+          esAdmin={true}
+          component={UpdateDirigente}
         />
         {!loading && (!authenticatedUsuario || usuario.rol !== "admin") && (
           <Footer />

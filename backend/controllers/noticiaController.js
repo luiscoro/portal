@@ -112,8 +112,8 @@ exports.updateNoticia = catchAsyncErrors(async (req, res, next) => {
   }
 
   const newNoticiaData = {
-    titulo: req.body.titulo,
-    descripcion: req.body.descripcion,
+    titulo: titulo,
+    descripcion: descripcion,
   };
 
   if (req.body.imagen !== "") {

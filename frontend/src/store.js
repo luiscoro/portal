@@ -63,6 +63,12 @@ import {
   pedidoReducer,
   pedidosReducer,
 } from "./reducers/pedidoReducers";
+import {
+  createDirigenteReducer,
+  dirigenteDetailsReducer,
+  dirigenteReducer,
+  dirigentesReducer,
+} from "./reducers/dirigenteReducers";
 
 const reducer = combineReducers({
   informacion: informacionReducer,
@@ -76,10 +82,12 @@ const reducer = combineReducers({
   partidos: partidosReducer,
   resultados: resultadosReducer,
   auspiciantes: auspiciantesReducer,
+  dirigentes: dirigentesReducer,
   productoDetails: productoDetailsReducer,
   noticiaDetails: noticiaDetailsReducer,
   partidoDetails: partidoDetailsReducer,
   auspicianteDetails: auspicianteDetailsReducer,
+  dirigenteDetails: dirigenteDetailsReducer,
   createCategoria: createCategoriaReducer,
   createProducto: createProductoReducer,
   categoria: categoriaReducer,
@@ -87,6 +95,7 @@ const reducer = combineReducers({
   noticia: noticiaReducer,
   partido: partidoReducer,
   auspiciante: auspicianteReducer,
+  dirigente: dirigenteReducer,
   productoRevisiones: productoRevisionesReducer,
   revision: revisionReducer,
   auth: authReducer,
@@ -104,6 +113,7 @@ const reducer = combineReducers({
   createNoticia: createNoticiaReducer,
   createPartido: createPartidoReducer,
   createAuspiciante: createAuspicianteReducer,
+  createDirigente: createDirigenteReducer,
 });
 
 let estadoInicial = {

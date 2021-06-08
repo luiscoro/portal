@@ -24,8 +24,31 @@ const Sidebar = () => {
             <ul className="collapse list-unstyled" id="inforSubmenu">
               <li>
                 <Link to="/informacion">
-                  <i className="fa fa-clipboard"></i> Mostrar
+                  <i className="fa fa-clipboard"></i> El club
                 </Link>
+              </li>
+              <li>
+                <a
+                  href="#dirigenteSubmenu"
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  className="dropdown-toggle"
+                >
+                  <i className="fa fa-address-card"></i> Dirigentes
+                </a>
+                <ul className="collapse list-unstyled" id="dirigenteSubmenu">
+                  <li>
+                    <Link to="/admin-dirigentes">
+                      <i className="fa fa-clipboard"></i> Listado
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link to="/admin-dirigente">
+                      <i className="fa fa-plus"></i> Nuevo
+                    </Link>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>

@@ -27,6 +27,7 @@ const pedido = require("./routes/pedido");
 const noticia = require("./routes/noticia");
 const auspiciante = require("./routes/auspiciante");
 const partido = require("./routes/partido");
+const dirigente = require("./routes/dirigente");
 
 app.use("/api", informacion);
 app.use("/api", categoria);
@@ -37,6 +38,7 @@ app.use("/api", pedido);
 app.use("/api", noticia);
 app.use("/api", auspiciante);
 app.use("/api", partido);
+app.use("/api", dirigente);
 
 if (process.env.NODE_ENV === "PRODUCCION") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
