@@ -5,18 +5,23 @@ import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
-import { createCategoria, clearErrors } from "../../actions/categoriaActions";
-import { CREATE_CATEGORIA_RESET } from "../../constants/categoriaConstants";
+import {
+  createClasificacion,
+  clearErrors,
+} from "../../actions/clasificacionActions";
+import { CREATE_CLASIFICACION_RESET } from "../../constants/clasificacionConstants";
 
 var MySwal;
 
-const CreateCategoria = ({ history }) => {
-  const [nombre, setNombre] = useState("");
+const CreateClasificacion = ({ history }) => {
+  const [equipo, setEquipo] = useState("");
+  const [puntos, setPuntos] = useState("");
+  const [golDiferencia, setGolDiferencia] = useState("");
 
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
-  const { error, success } = useSelector((state) => state.createCategoria);
+  const { error, success } = useSelector((state) => state.createClasificacion);
 
   useEffect(() => {
     if (error) {
@@ -40,29 +45,29 @@ const CreateCategoria = ({ history }) => {
     }
 
     if (success) {
-      history.push("/admin-categorias");
+      history.push("/admin-clasificaciones");
       MySwal.fire({
         background: "#f5ede4",
         icon: "success",
-        title: "La categoría ha sido creada con éxito",
+        title: "La clasificación ha sido creada con éxito",
         showConfirmButton: false,
         showCloseButton: false,
         timer: 2000,
       });
-      dispatch({ type: CREATE_CATEGORIA_RESET });
+      dispatch({ type: CREATE_CLASIFICACION_RESET });
     }
   }, [dispatch, error, success, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    dispatch(createCategoria(nombre));
+    dispatch(createClasificacion(equipo, puntos, golDiferencia));
   };
 
   return (
     <>
       {" "}
-      <MetaData title={"Nueva noticia"} />
+      <MetaData title={"Nueva clasificación"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
@@ -79,18 +84,39 @@ const CreateCategoria = ({ history }) => {
                     <div className="col-lg-12">
                       <div className="login-block text-center">
                         <div className="login-block-inner">
-                          <h3 className="title">
-                            Nueva categoría de productos
-                          </h3>
+                          <h3 className="title">Nueva clasificación</h3>
                           <form className="login-form" onSubmit={submitHandler}>
                             <div className="frm-group">
-                              <label>Nombre</label>
+                              <label>Equipo</label>
                               <input
-                                name="nombre"
+                                name="equipo"
                                 type="text"
-                                placeholder="Ingresa el nombre"
-                                value={nombre}
-                                onChange={(e) => setNombre(e.target.value)}
+                                placeholder="Ingresa el nombre del equipo"
+                                value={equipo}
+                                onChange={(e) => setEquipo(e.target.value)}
+                              />
+                            </div>
+                            <div className="frm-group">
+                              <label>Puntos</label>
+                              <input
+                                name="puntos"
+                                type="number"
+                                placeholder="Ingresa los puntos del equipo"
+                                min="0"
+                                value={puntos}
+                                onChange={(e) => setPuntos(e.target.value)}
+                              />
+                            </div>
+                            <div className="frm-group">
+                              <label>Gol de diferencia</label>
+                              <input
+                                name="golDiferencia"
+                                type="number"
+                                placeholder="Ingresa el gol de diferencia del equipo"
+                                value={golDiferencia}
+                                onChange={(e) =>
+                                  setGolDiferencia(e.target.value)
+                                }
                               />
                             </div>
                             <div className="frm-group">
@@ -112,4 +138,4 @@ const CreateCategoria = ({ history }) => {
   );
 };
 
-export default CreateCategoria;
+export default CreateClasificacion;

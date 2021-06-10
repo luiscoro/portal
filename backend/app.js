@@ -28,6 +28,9 @@ const noticia = require("./routes/noticia");
 const auspiciante = require("./routes/auspiciante");
 const partido = require("./routes/partido");
 const dirigente = require("./routes/dirigente");
+const clasificacion = require("./routes/clasificacion");
+const posicion = require("./routes/posicion");
+const miembro = require("./routes/miembro");
 
 app.use("/api", informacion);
 app.use("/api", categoria);
@@ -39,6 +42,9 @@ app.use("/api", noticia);
 app.use("/api", auspiciante);
 app.use("/api", partido);
 app.use("/api", dirigente);
+app.use("/api", clasificacion);
+app.use("/api", posicion);
+app.use("/api", miembro);
 
 if (process.env.NODE_ENV === "PRODUCCION") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));

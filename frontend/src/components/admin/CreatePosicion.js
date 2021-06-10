@@ -5,18 +5,18 @@ import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
-import { createCategoria, clearErrors } from "../../actions/categoriaActions";
-import { CREATE_CATEGORIA_RESET } from "../../constants/categoriaConstants";
+import { createPosicion, clearErrors } from "../../actions/posicionActions";
+import { CREATE_POSICION_RESET } from "../../constants/posicionConstants";
 
 var MySwal;
 
-const CreateCategoria = ({ history }) => {
+const CreatePosicion = ({ history }) => {
   const [nombre, setNombre] = useState("");
 
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
-  const { error, success } = useSelector((state) => state.createCategoria);
+  const { error, success } = useSelector((state) => state.createPosicion);
 
   useEffect(() => {
     if (error) {
@@ -40,29 +40,29 @@ const CreateCategoria = ({ history }) => {
     }
 
     if (success) {
-      history.push("/admin-categorias");
+      history.push("/admin-posiciones");
       MySwal.fire({
         background: "#f5ede4",
         icon: "success",
-        title: "La categoría ha sido creada con éxito",
+        title: "La posición ha sido creada con éxito",
         showConfirmButton: false,
         showCloseButton: false,
         timer: 2000,
       });
-      dispatch({ type: CREATE_CATEGORIA_RESET });
+      dispatch({ type: CREATE_POSICION_RESET });
     }
   }, [dispatch, error, success, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    dispatch(createCategoria(nombre));
+    dispatch(createPosicion(nombre));
   };
 
   return (
     <>
       {" "}
-      <MetaData title={"Nueva noticia"} />
+      <MetaData title={"Nueva posición"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
@@ -79,9 +79,7 @@ const CreateCategoria = ({ history }) => {
                     <div className="col-lg-12">
                       <div className="login-block text-center">
                         <div className="login-block-inner">
-                          <h3 className="title">
-                            Nueva categoría de productos
-                          </h3>
+                          <h3 className="title">Nueva posición</h3>
                           <form className="login-form" onSubmit={submitHandler}>
                             <div className="frm-group">
                               <label>Nombre</label>
@@ -112,4 +110,4 @@ const CreateCategoria = ({ history }) => {
   );
 };
 
-export default CreateCategoria;
+export default CreatePosicion;

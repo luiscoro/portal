@@ -22,6 +22,9 @@ import CreatePartido from "./components/admin/CreatePartido";
 import CreateAuspiciante from "./components/admin/CreateAuspiciante";
 import CreateInformacion from "./components/admin/CreateInformacion";
 import CreateDirigente from "./components/admin/CreateDirigente";
+import CreateClasificacion from "./components/admin/CreateClasificacion";
+import CreatePosicion from "./components/admin/CreatePosicion";
+import CreateMiembro from "./components/admin/CreateMiembro";
 import ListCategorias from "./components/admin/ListCategorias";
 import ListProductos from "./components/admin/ListProductos";
 import ListInformacion from "./components/admin/ListInformacion";
@@ -30,6 +33,8 @@ import ListPartidos from "./components/admin/ListPartidos";
 import ListAuspiciantes from "./components/admin/ListAuspiciantes";
 import ListUsuarios from "./components/admin/ListUsuarios";
 import ListDirigentes from "./components/admin/ListDirigentes";
+import ListClasificaciones from "./components/admin/ListClasificaciones";
+import ListPosiciones from "./components/admin/ListPosiciones";
 import UpdateInformacion from "./components/admin/UpdateInformacion";
 import UpdateCategoria from "./components/admin/UpdateCategoria";
 import UpdateProducto from "./components/admin/UpdateProducto";
@@ -38,6 +43,8 @@ import UpdateNoticia from "./components/admin/UpdateNoticia";
 import UpdatePartido from "./components/admin/UpdatePartido";
 import UpdateAuspiciante from "./components/admin/UpdateAuspiciante";
 import UpdateDirigente from "./components/admin/UpdateDirigente";
+import UpdateClasificacion from "./components/admin/UpdateClasificacion";
+import UpdatePosicion from "./components/admin/UpdatePosicion";
 
 //REGISTRADO
 import Login from "./components/usuario/Login";
@@ -74,7 +81,6 @@ function App() {
         <Route path="/tienda/buscar/:keyword" component={Tienda} exact />
         <Route path="/tienda/productos/:id" component={DetailsProducto} exact />
         <Route path="/cesta" component={Cesta} exact />
-
         <Route path="/login" component={Login} />
         <Route path="/registro" component={Registro} />
         <Route path="/password/olvido" component={ForgotPassword} exact />
@@ -221,6 +227,46 @@ function App() {
           path="/admin-dirigente/:id"
           esAdmin={true}
           component={UpdateDirigente}
+        />
+        <PrivateRoute
+          path="/admin-clasificacion"
+          esAdmin={true}
+          component={CreateClasificacion}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-clasificaciones"
+          esAdmin={true}
+          component={ListClasificaciones}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-clasificacion/:id"
+          esAdmin={true}
+          component={UpdateClasificacion}
+        />
+        <PrivateRoute
+          path="/admin-posicion"
+          esAdmin={true}
+          component={CreatePosicion}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-posiciones"
+          esAdmin={true}
+          component={ListPosiciones}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-posicion/:id"
+          esAdmin={true}
+          component={UpdatePosicion}
+        />
+        <PrivateRoute
+          path="/admin-miembro"
+          esAdmin={true}
+          component={CreateMiembro}
+          exact
         />
         {!loading && (!authenticatedUsuario || usuario.rol !== "admin") && (
           <Footer />

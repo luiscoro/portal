@@ -50,6 +50,40 @@ const Sidebar = () => {
                   </li>
                 </ul>
               </li>
+              <li>
+                <a
+                  href="#miembroSubmenu"
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  className="dropdown-toggle"
+                >
+                  <i className="fa fa-address-book-o"></i> Miembros
+                </a>
+                <ul className="collapse list-unstyled" id="miembroSubmenu">
+                  <li>
+                    <Link to="/admin-miembros">
+                      <i className="fa fa-clipboard"></i> Listado
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link to="/admin-miembro">
+                      <i className="fa fa-plus"></i> Nuevo
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/admin-posiciones">
+                      <i className="fa fa-universal-access"></i> Posiciones
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link to="/admin-posicion">
+                      <i className="fa fa-plus"></i> Nueva posición
+                    </Link>
+                  </li>
+                </ul>
+              </li>
             </ul>
           </li>
 
@@ -144,6 +178,30 @@ const Sidebar = () => {
               <li>
                 <Link to="/admin-partido">
                   <i className="fa fa-plus"></i> Nuevo
+                </Link>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <a
+              href="#clasificacionSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              className="dropdown-toggle"
+            >
+              <i className="fa fa-table"></i> Clasificaciones
+            </a>
+            <ul className="collapse list-unstyled" id="clasificacionSubmenu">
+              <li>
+                <Link to="/admin-clasificaciones">
+                  <i className="fa fa-clipboard"></i> Listado
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/admin-clasificacion">
+                  <i className="fa fa-plus"></i> Nueva
                 </Link>
               </li>
             </ul>

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Loader from "../section/Loader";
 
 import { useDispatch, useSelector } from "react-redux";
-
+import Clasificacion from "../clasificacion/Clasificacion";
 import { getPartidosNext, clearErrors } from "../../actions/partidoActions";
 
 const NextPartidos = () => {
@@ -23,68 +23,7 @@ const NextPartidos = () => {
     <div className="team-chart-section pt-120 pb-120">
       <div className="container">
         <div className="row mb-none-30">
-          <div className="col-lg-4">
-            <h4 className="title">Tabla de posiciones</h4>
-            <br></br>
-            <div className="team-cart-table-area mb-30">
-              <table
-                className="team-cart-table bg_img base-overlay"
-                data-background
-              >
-                <thead>
-                  <tr>
-                    <th>equipo</th>
-                    <th>puntos</th>
-                    <th>gd</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <span>01</span>Liver Pool
-                    </td>
-                    <td>03</td>
-                    <td>01</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span>01</span>Dhaka Pro
-                    </td>
-                    <td>02</td>
-                    <td>00</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span>01</span>Finica LC
-                    </td>
-                    <td>03</td>
-                    <td>01</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span>01</span>Ace Milan
-                    </td>
-                    <td>03</td>
-                    <td>01</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span>01</span>Wokapiya
-                    </td>
-                    <td>03</td>
-                    <td>01</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span>01</span>Anchya
-                    </td>
-                    <td>01</td>
-                    <td>01</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <Clasificacion />
           <div className="col-lg-8">
             <h4 className="title">Próximos partidos</h4>
             <br></br>

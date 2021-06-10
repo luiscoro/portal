@@ -70,6 +70,30 @@ import {
   dirigentesReducer,
 } from "./reducers/dirigenteReducers";
 
+import {
+  createClasificacionReducer,
+  clasificacionDetailsReducer,
+  clasificacionReducer,
+  clasificacionesReducer,
+} from "./reducers/clasificacionReducers";
+
+import {
+  createPosicionReducer,
+  posicionDetailsReducer,
+  posicionReducer,
+  posicionesReducer,
+} from "./reducers/posicionReducers";
+
+import {
+  createMiembroReducer,
+  miembroDetailsReducer,
+  miembroReducer,
+  miembrosReducer,
+  jugadoresReducer,
+  cuerpoTecnicoReducer,
+  cuerpoMedicoReducer,
+} from "./reducers/miembroReducers";
+
 const reducer = combineReducers({
   informacion: informacionReducer,
   informacionDetails: informacionDetailsReducer,
@@ -83,11 +107,20 @@ const reducer = combineReducers({
   resultados: resultadosReducer,
   auspiciantes: auspiciantesReducer,
   dirigentes: dirigentesReducer,
+  clasificaciones: clasificacionesReducer,
+  posiciones: posicionesReducer,
+  miembros: miembrosReducer,
+  jugadores: jugadoresReducer,
+  cuerpoTecnico: cuerpoTecnicoReducer,
+  cuerpoMedico: cuerpoMedicoReducer,
   productoDetails: productoDetailsReducer,
   noticiaDetails: noticiaDetailsReducer,
   partidoDetails: partidoDetailsReducer,
   auspicianteDetails: auspicianteDetailsReducer,
   dirigenteDetails: dirigenteDetailsReducer,
+  posicionDetails: posicionDetailsReducer,
+  clasificacionDetails: clasificacionDetailsReducer,
+  miembroDetails: miembroDetailsReducer,
   createCategoria: createCategoriaReducer,
   createProducto: createProductoReducer,
   categoria: categoriaReducer,
@@ -96,6 +129,9 @@ const reducer = combineReducers({
   partido: partidoReducer,
   auspiciante: auspicianteReducer,
   dirigente: dirigenteReducer,
+  clasificacion: clasificacionReducer,
+  posicion: posicionReducer,
+  miembro: miembroReducer,
   productoRevisiones: productoRevisionesReducer,
   revision: revisionReducer,
   auth: authReducer,
@@ -114,6 +150,9 @@ const reducer = combineReducers({
   createPartido: createPartidoReducer,
   createAuspiciante: createAuspicianteReducer,
   createDirigente: createDirigenteReducer,
+  createClasificacion: createClasificacionReducer,
+  createPosicion: createPosicionReducer,
+  createMiembro: createMiembroReducer,
 });
 
 let estadoInicial = {
