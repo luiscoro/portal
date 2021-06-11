@@ -1,4 +1,5 @@
 const Miembro = require("../models/miembro");
+const Posicion = require("../models/posicion");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const cloudinary = require("cloudinary");
@@ -42,74 +43,34 @@ exports.createMiembro = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getJugadores = catchAsyncErrors(async (req, res, next) => {
-  function getEdad(dob) {
-    var diff_ms = Date.now() - dob.getTime();
-    var age_dt = new Date(diff_ms);
-
-    return Math.abs(age_dt.getUTCFullYear() - 1970);
-  }
-
-  const miembros = await Jugador.find({ tipo: "Jugador" });
-  const anio = miembros.fechaNacimiento.substring(0, 4);
-  const mes = miembros.fechaNacimiento.substring(5, 7);
-  const dia = miembros.fechaNacimiento.substring(8, 10);
-
-  const edad = getEdad(new Date(anio, mes, dia));
+  const miembros = await Miembro.find({ tipo: "Jugador" });
 
   res.status(200).json({
     success: true,
     miembros,
-    edad,
   });
 });
 
 exports.getCuerpoTecnico = catchAsyncErrors(async (req, res, next) => {
-  function getEdad(dob) {
-    var diff_ms = Date.now() - dob.getTime();
-    var age_dt = new Date(diff_ms);
-
-    return Math.abs(age_dt.getUTCFullYear() - 1970);
-  }
-
-  const miembros = await Jugador.find({ tipo: "Cuerpo técnico" });
-  const anio = miembros.fechaNacimiento.substring(0, 4);
-  const mes = miembros.fechaNacimiento.substring(5, 7);
-  const dia = miembros.fechaNacimiento.substring(8, 10);
-
-  const edad = getEdad(new Date(anio, mes, dia));
+  const miembros = await Miembro.find({ tipo: "Cuerpo técnico" });
 
   res.status(200).json({
     success: true,
     miembros,
-    edad,
   });
 });
 
 exports.getCuerpoMedico = catchAsyncErrors(async (req, res, next) => {
-  function getEdad(dob) {
-    var diff_ms = Date.now() - dob.getTime();
-    var age_dt = new Date(diff_ms);
-
-    return Math.abs(age_dt.getUTCFullYear() - 1970);
-  }
-
-  const miembros = await Jugador.find({ tipo: "Cuerpo médico" });
-  const anio = miembros.fechaNacimiento.substring(0, 4);
-  const mes = miembros.fechaNacimiento.substring(5, 7);
-  const dia = miembros.fechaNacimiento.substring(8, 10);
-
-  const edad = getEdad(new Date(anio, mes, dia));
+  const miembros = await Miembro.find({ tipo: "Cuerpo médico" });
 
   res.status(200).json({
     success: true,
     miembros,
-    edad,
   });
 });
 
 exports.getAdminMiembros = catchAsyncErrors(async (req, res, next) => {
   const miembros = await Miembro.find();
-
   res.status(200).json({
     success: true,
     miembros,
@@ -136,17 +97,20 @@ exports.updateMiembro = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Miembro no encontrado", 404));
   }
 
-  const { nombre, fechaNacimiento } = req.body;
+  const { nombre } = req.body;
 
   if (!nombre) {
     return next(new ErrorHandler("Ingresa el nombre del miembro", 401));
   }
 
-  if (!fechaNacimiento) {
-    return next(
-      new ErrorHandler("Ingresa la fecha de nacimiento del miembro ", 401)
-    );
-  }
+  const newMiembroData = {
+    posicion: req.body.posicion,
+    tipo: req.body.tipo,
+    nombre: nombre,
+    numeroCamiseta: req.body.numeroCamiseta,
+    fechaNacimiento: req.body.fechaNacimiento,
+    nacionalidad: req.body.nacionalidad,
+  };
 
   if (req.body.foto !== "") {
     const foto_id = miembro.foto.public_id;
@@ -159,13 +123,13 @@ exports.updateMiembro = catchAsyncErrors(async (req, res, next) => {
       crop: "scale",
     });
 
-    req.body.foto = {
+    newMiembroData.foto = {
       public_id: result.public_id,
       url: result.secure_url,
     };
   }
 
-  miembro = await Miembro.findByIdAndUpdate(req.params.id, req.body, {
+  miembro = await Miembro.findByIdAndUpdate(req.params.id, newMiembroData, {
     new: true,
     runValidators: true,
     useFindAndModify: false,

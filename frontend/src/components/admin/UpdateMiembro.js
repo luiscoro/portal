@@ -1,36 +1,30 @@
 import React, { useState, useEffect } from "react";
-
 import MetaData from "../section/MetaData";
 import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Loader from "../section/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import { createMiembro, clearErrors } from "../../actions/miembroActions";
+import {
+  getMiembroDetails,
+  updateMiembro,
+  clearErrors,
+} from "../../actions/miembroActions";
 import { getAdminPosiciones } from "../../actions/posicionActions";
-import { CREATE_MIEMBRO_RESET } from "../../constants/miembroConstants";
+import { UPDATE_MIEMBRO_RESET } from "../../constants/miembroConstants";
 
 var MySwal;
+var ageCalculator = require("age-calculator");
+let { AgeFromDateString } = ageCalculator;
 
-const CreateMiembro = ({ history }) => {
-  const [miembro, setMiembro] = useState({
-    posicion: "",
-    tipo: "",
-    nombre: "",
-    numeroCamiseta: "",
-    fechaNacimiento: "",
-    nacionalidad: "",
-  });
+const UpdateMiembro = ({ match, history }) => {
+  const [posicion, setPosicion] = useState("");
+  const [tipo, setTipo] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [numeroCamiseta, setNumeroCamiseta] = useState("");
+  const [fechaNacimiento, setFechaNacimiento] = useState("");
 
-  const {
-    posicion,
-    tipo,
-    nombre,
-    numeroCamiseta,
-    fechaNacimiento,
-    nacionalidad,
-  } = miembro;
-
+  const [nacionalidad, setNacionalidad] = useState("");
   const [foto, setFoto] = useState("");
   const [fotoPreview, setFotoPreview] = useState("");
 
@@ -38,11 +32,29 @@ const CreateMiembro = ({ history }) => {
   const dispatch = useDispatch();
   const dispatch1 = useDispatch();
 
-  const { error, success } = useSelector((state) => state.createMiembro);
+  const { error, miembro } = useSelector((state) => state.miembroDetails);
+  const { error: updateError, esActualizado } = useSelector(
+    (state) => state.miembro
+  );
   const { loading, posiciones } = useSelector((state) => state.posiciones);
+
+  const miembroId = match.params.id;
 
   useEffect(() => {
     dispatch1(getAdminPosiciones());
+    console.log(miembro && miembro._id !== miembroId);
+    if (miembro && miembro._id !== miembroId) {
+      dispatch(getMiembroDetails(miembroId));
+    } else {
+      setPosicion(miembro.posicion);
+      setTipo(miembro.tipo);
+      setNombre(miembro.nombre);
+      setNumeroCamiseta(miembro.numeroCamiseta);
+      setFechaNacimiento(miembro.fechaNacimiento);
+      setNacionalidad(miembro.nacionalidad);
+      setFotoPreview(miembro.foto.url);
+    }
+
     if (error) {
       MySwal.fire({
         background: "#f5ede4",
@@ -63,19 +75,43 @@ const CreateMiembro = ({ history }) => {
       dispatch(clearErrors());
     }
 
-    if (success) {
-      history.push("/admin-miembros");
+    if (updateError) {
       MySwal.fire({
         background: "#f5ede4",
-        icon: "success",
-        title: "El miembro ha sido creado con éxito",
+        toast: true,
+        showCloseButton: true,
+        icon: "error",
+        iconColor: "red",
+        title: updateError,
+        position: "bottom",
         showConfirmButton: false,
-        showCloseButton: false,
-        timer: 2000,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
       });
-      dispatch({ type: CREATE_MIEMBRO_RESET });
+      dispatch(clearErrors());
     }
-  }, [dispatch, error, success, history, dispatch1]);
+
+    if (esActualizado) {
+      localStorage.setItem("actualizado", "1");
+      history.push("/admin-miembros");
+      dispatch({
+        type: UPDATE_MIEMBRO_RESET,
+      });
+    }
+  }, [
+    dispatch,
+    error,
+    history,
+    esActualizado,
+    updateError,
+    miembroId,
+    miembro,
+    dispatch1,
+  ]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -89,40 +125,32 @@ const CreateMiembro = ({ history }) => {
     formData.set("nacionalidad", nacionalidad);
     formData.append("foto", foto);
 
-    dispatch(createMiembro(formData));
+    dispatch(updateMiembro(miembro._id, formData));
   };
 
   const onChange = (e) => {
-    if (e.target.name === "foto") {
-      const reader = new FileReader();
+    const reader = new FileReader();
 
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setFotoPreview(reader.result);
-          setFoto(reader.result);
-        }
-      };
-
-      if (e.target.files[0] !== undefined) {
-        reader.readAsDataURL(e.target.files[0]);
-      } else {
-        setFotoPreview("");
-        setFoto("");
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setFotoPreview(reader.result);
+        setFoto(reader.result);
       }
-    } else {
-      setMiembro({ ...miembro, [e.target.name]: e.target.value });
+    };
+
+    if (e.target.files[0] !== undefined) {
+      reader.readAsDataURL(e.target.files[0]);
     }
   };
 
   return (
     <>
       {" "}
-      <MetaData title={"Nuevo miembro"} />
+      <MetaData title={"Actualizar miembro"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
         </div>
-
         <div className="dashboard">
           <div className="col-12 col-md-10">
             <>
@@ -134,7 +162,8 @@ const CreateMiembro = ({ history }) => {
                     <div className="col-lg-12">
                       <div className="login-block text-center">
                         <div className="login-block-inner">
-                          <h3 className="title">Nuevo miembro</h3>
+                          <h3 className="title">Actualizar miembro</h3>
+
                           <form
                             className="login-form"
                             onSubmit={submitHandler}
@@ -143,9 +172,8 @@ const CreateMiembro = ({ history }) => {
                             <div className="frm-group">
                               <label>Tipo</label>
                               <select
-                                name="tipo"
                                 value={tipo}
-                                onChange={onChange}
+                                onChange={(e) => setTipo(e.target.value)}
                               >
                                 <option>Seleccione el tipo de miembro</option>
                                 <option>Jugador</option>
@@ -159,9 +187,8 @@ const CreateMiembro = ({ history }) => {
                                 <Loader />
                               ) : (
                                 <select
-                                  name="posicion"
                                   value={posicion}
-                                  onChange={onChange}
+                                  onChange={(e) => setPosicion(e.target.value)}
                                 >
                                   <option>
                                     Seleccione la posición del miembro
@@ -177,45 +204,51 @@ const CreateMiembro = ({ history }) => {
                                 </select>
                               )}
                             </div>
-
                             <div className="frm-group">
                               <label>Nombre</label>
                               <input
-                                name="nombre"
                                 type="text"
                                 placeholder="Ingresa el nombre"
                                 value={nombre}
-                                onChange={onChange}
+                                onChange={(e) => setNombre(e.target.value)}
                               />
                             </div>
                             <div className="frm-group">
                               <label>Número de camiseta</label>
                               <input
-                                name="numeroCamiseta"
                                 type="number"
                                 placeholder="Ingresa el número de camiseta"
                                 value={numeroCamiseta}
                                 min="1"
-                                onChange={onChange}
+                                onChange={(e) =>
+                                  setNumeroCamiseta(e.target.value)
+                                }
                               />
                             </div>
                             <div className="frm-group">
-                              <label>Fecha de nacimiento</label>
+                              <label>Edad</label>
                               <input
-                                name="fechaNacimiento"
-                                type="date"
-                                value={fechaNacimiento}
-                                onChange={onChange}
+                                disabled={true}
+                                type="text"
+                                value={
+                                  new AgeFromDateString(
+                                    fechaNacimiento.substring(0, 10)
+                                  ).age
+                                }
+                                onChange={(e) =>
+                                  setFechaNacimiento(e.target.value)
+                                }
                               />
                             </div>
                             <div className="frm-group">
                               <label>Nacionalidad</label>
                               <input
-                                name="nacionalidad"
                                 type="text"
                                 placeholder="Ingresa la nacionalidad"
                                 value={nacionalidad}
-                                onChange={onChange}
+                                onChange={(e) =>
+                                  setNacionalidad(e.target.value)
+                                }
                               />
                             </div>
                             <div className="frm-group">
@@ -223,15 +256,13 @@ const CreateMiembro = ({ history }) => {
 
                               <div className="custom-file">
                                 <input
-                                  name="foto"
                                   type="file"
                                   className="custom-file-input"
                                   accept="image/*"
                                   onChange={onChange}
-                                  required
                                 />
                                 <label className="custom-file-label">
-                                  Agregar foto
+                                  Cambiar foto
                                 </label>
                               </div>
 
@@ -243,8 +274,9 @@ const CreateMiembro = ({ history }) => {
                                 height="52"
                               />
                             </div>
+
                             <div className="frm-group">
-                              <input type="submit" value="Crear" />
+                              <input type="submit" value="Actualizar" />
                             </div>
                           </form>
                         </div>
@@ -262,4 +294,4 @@ const CreateMiembro = ({ history }) => {
   );
 };
 
-export default CreateMiembro;
+export default UpdateMiembro;

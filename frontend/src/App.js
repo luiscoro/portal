@@ -9,6 +9,7 @@ import Noticias from "./components/Noticias";
 import DetailsNoticia from "./components/noticia/DetailsNoticia";
 import Tienda from "./components/Tienda";
 import DetailsProducto from "./components/producto/DetailsProducto";
+import Club from "./components/Club";
 
 // CESTA
 import Cesta from "./components/cesta/Cesta";
@@ -35,6 +36,7 @@ import ListUsuarios from "./components/admin/ListUsuarios";
 import ListDirigentes from "./components/admin/ListDirigentes";
 import ListClasificaciones from "./components/admin/ListClasificaciones";
 import ListPosiciones from "./components/admin/ListPosiciones";
+import ListMiembros from "./components/admin/ListMiembros";
 import UpdateInformacion from "./components/admin/UpdateInformacion";
 import UpdateCategoria from "./components/admin/UpdateCategoria";
 import UpdateProducto from "./components/admin/UpdateProducto";
@@ -45,6 +47,7 @@ import UpdateAuspiciante from "./components/admin/UpdateAuspiciante";
 import UpdateDirigente from "./components/admin/UpdateDirigente";
 import UpdateClasificacion from "./components/admin/UpdateClasificacion";
 import UpdatePosicion from "./components/admin/UpdatePosicion";
+import UpdateMiembro from "./components/admin/UpdateMiembro";
 
 //REGISTRADO
 import Login from "./components/usuario/Login";
@@ -80,6 +83,7 @@ function App() {
         <Route path="/tienda" component={Tienda} exact />
         <Route path="/tienda/buscar/:keyword" component={Tienda} exact />
         <Route path="/tienda/productos/:id" component={DetailsProducto} exact />
+        <Route path="/club" component={Club} />
         <Route path="/cesta" component={Cesta} exact />
         <Route path="/login" component={Login} />
         <Route path="/registro" component={Registro} />
@@ -267,6 +271,17 @@ function App() {
           esAdmin={true}
           component={CreateMiembro}
           exact
+        />
+        <PrivateRoute
+          path="/admin-miembros"
+          esAdmin={true}
+          component={ListMiembros}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-miembro/:id"
+          esAdmin={true}
+          component={UpdateMiembro}
         />
         {!loading && (!authenticatedUsuario || usuario.rol !== "admin") && (
           <Footer />

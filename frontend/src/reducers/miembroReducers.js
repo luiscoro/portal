@@ -40,7 +40,7 @@ export const miembrosReducer = (state = { miembros: [] }, action) => {
     case ADMIN_MIEMBROS_SUCCESS:
       return {
         loading: false,
-        noticias: action.payload,
+        miembros: action.payload,
       };
 
     case ADMIN_MIEMBROS_FAIL:
@@ -71,8 +71,7 @@ export const jugadoresReducer = (state = { jugadores: [] }, action) => {
     case GET_JUGADORES_SUCCESS:
       return {
         loading: false,
-        jugadores: action.payload.jugadores,
-        edad: action.payload.edad,
+        jugadores: action.payload,
       };
 
     case GET_JUGADORES_FAIL:
@@ -103,8 +102,7 @@ export const cuerpoTecnicoReducer = (state = { cuerpoTecnico: [] }, action) => {
     case GET_CUERPO_TECNICO_SUCCESS:
       return {
         loading: false,
-        cuerpoTecnico: action.payload.cuerpoTecnico,
-        edad: action.payload.edad,
+        cuerpoTecnico: action.payload,
       };
 
     case GET_CUERPO_TECNICO_FAIL:
@@ -135,8 +133,7 @@ export const cuerpoMedicoReducer = (state = { cuerpoMedico: [] }, action) => {
     case GET_CUERPO_MEDICO_SUCCESS:
       return {
         loading: false,
-        cuerpoMedico: action.payload.cuerpoMedico,
-        edad: action.payload.edad,
+        cuerpoMedico: action.payload,
       };
 
     case GET_CUERPO_MEDICO_FAIL:

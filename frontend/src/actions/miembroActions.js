@@ -53,7 +53,7 @@ export const getJugadores = () => async (dispatch) => {
 
     dispatch({
       type: GET_JUGADORES_SUCCESS,
-      payload: data,
+      payload: data.miembros,
     });
   } catch (error) {
     dispatch({
@@ -71,7 +71,7 @@ export const getCuerpoTecnico = () => async (dispatch) => {
 
     dispatch({
       type: GET_CUERPO_TECNICO_SUCCESS,
-      payload: data,
+      payload: data.miembros,
     });
   } catch (error) {
     dispatch({
@@ -89,7 +89,7 @@ export const getCuerpoMedico = () => async (dispatch) => {
 
     dispatch({
       type: GET_CUERPO_MEDICO_SUCCESS,
-      payload: data,
+      payload: data.miembros,
     });
   } catch (error) {
     dispatch({

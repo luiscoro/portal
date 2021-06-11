@@ -263,7 +263,7 @@ const Header = () => {
                   </li>
 
                   <li>
-                    <Link to="/" style={{ textDecoration: "none" }}>
+                    <Link to="/club" style={{ textDecoration: "none" }}>
                       Nuestro club
                     </Link>
                   </li>
