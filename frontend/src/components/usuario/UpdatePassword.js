@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
 import MetaData from "../section/MetaData";
+import Banner from "../section/Banner";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
@@ -72,57 +71,32 @@ const UpdatePassword = ({ history }) => {
   return (
     <>
       <MetaData title={"Actualizar contraseña"} />
-
-      {/* inner-banner-section start */}
-      <section
-        className="inner-banner-section bg_img base-overlay"
-        data-background="assets/images/bg/home-eight-banner.jpg"
-      >
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8">
-              <div className="inner-banner-content text-center">
-                <h2 className="page-title">Actualizar contraseña</h2>
-                <ol className="breadcum d-flex justify-content-center">
-                  <li>
-                    <Link to="/" style={{ textDecoration: "none" }}>
-                      Inicio
-                    </Link>
-                  </li>
-                  <li>actualizar contraseña</li>
-                </ol>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* inner-banner-section end */}
-      {/* login-section start */}
+      <Banner title={"Cambiar contraseña"} />
       <section className="login-section pt-120 pb-120">
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
               <div className="login-block text-center">
                 <div className="login-block-inner">
-                  <h3 className="title">Cambia tu contraseña</h3>
+                  <h3 className="title">Actualiza tu contraseña</h3>
                   <form className="login-form" onSubmit={submitHandler}>
                     <div className="frm-group">
+                      <label>Contraseña actual:</label>
                       <input
                         type="password"
-                        name="pass"
-                        id="pass"
+                        name="password"
                         value={oldPassword}
-                        placeholder="Ingresa tu contraseña actual"
+                        placeholder="Contraseña actual"
                         onChange={(e) => setOldPassword(e.target.value)}
                       />
                     </div>
                     <div className="frm-group">
+                      <label>Contraseña nueva:</label>
                       <input
                         type="password"
-                        name="pass"
-                        id="pass"
+                        name="password"
                         value={password}
-                        placeholder="Ingresa tu nueva contraseña"
+                        placeholder="Contraseña nueva"
                         onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>
@@ -140,7 +114,6 @@ const UpdatePassword = ({ history }) => {
           </div>
         </div>
       </section>
-      {/* login-section end */}
     </>
   );
 };

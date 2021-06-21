@@ -30,6 +30,9 @@ import {
   UPDATE_PERFIL_FAIL,
   UPDATE_PERFIL_REQUEST,
   UPDATE_PERFIL_SUCCESS,
+  UPDATE_INFO_ENVIO_FAIL,
+  UPDATE_INFO_ENVIO_REQUEST,
+  UPDATE_INFO_ENVIO_SUCCESS,
   UPDATE_USUARIO_FAIL,
   UPDATE_USUARIO_REQUEST,
   UPDATE_USUARIO_SUCCESS,
@@ -144,6 +147,34 @@ export const updatePerfil = (usuarioData) => async (dispatch) => {
   }
 };
 
+export const updateInfoEnvio = (usuarioData) => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_INFO_ENVIO_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.put(
+      "/api/infoenvio/actualizar",
+      usuarioData,
+      config
+    );
+
+    dispatch({
+      type: UPDATE_INFO_ENVIO_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_INFO_ENVIO_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
 // Actualizar contraseña
 export const updatePassword = (passwords) => async (dispatch) => {
   try {
@@ -243,6 +274,34 @@ export const logout = () => async (dispatch) => {
   }
 };
 
+export const deleteUsuario = (usuarioData) => async (dispatch) => {
+  try {
+    dispatch({ type: DELETE_USUARIO_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.put(
+      "/api/perfil/eliminar",
+      usuarioData,
+      config
+    );
+
+    dispatch({
+      type: DELETE_USUARIO_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_USUARIO_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
 // Listar usuarios
 export const getUsuarios = () => async (dispatch) => {
   try {
@@ -305,25 +364,6 @@ export const getUsuarioDetails = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USUARIO_DETAILS_FAIL,
-      payload: error.response.data.message,
-    });
-  }
-};
-
-// Eliminar usuario - ADMIN
-export const deleteUsuario = (id) => async (dispatch) => {
-  try {
-    dispatch({ type: DELETE_USUARIO_REQUEST });
-
-    const { data } = await axios.delete(`/api/admin/usuario/${id}`);
-
-    dispatch({
-      type: DELETE_USUARIO_SUCCESS,
-      payload: data.success,
-    });
-  } catch (error) {
-    dispatch({
-      type: DELETE_USUARIO_FAIL,
       payload: error.response.data.message,
     });
   }

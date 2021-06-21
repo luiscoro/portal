@@ -93,6 +93,8 @@ const UpdatePartido = ({ match, history }) => {
     }
 
     if (esActualizado) {
+      localStorage.setItem("actualizado", "1");
+      window.location = "/admin-partidos";
       dispatch({
         type: UPDATE_PARTIDO_RESET,
       });
@@ -314,28 +316,7 @@ const UpdatePartido = ({ match, history }) => {
                               />
                             </div>
                             <div className="frm-group">
-                              <input
-                                type="submit"
-                                value="Actualizar"
-                                onClick={() => {
-                                  MySwal.fire({
-                                    background: "#f5ede4",
-                                    title:
-                                      "¿Está seguro de actualizar el partido?",
-                                    icon: "warning",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "#3085d6",
-                                    cancelButtonColor: "#d33",
-                                    confirmButtonText: "Si",
-                                    cancelButtonText: "Cancelar",
-                                  }).then((result) => {
-                                    if (result.isConfirmed) {
-                                      localStorage.setItem("actualizado", "1");
-                                      window.location = "/admin-partidos";
-                                    }
-                                  });
-                                }}
-                              />
+                              <input type="submit" value="Actualizar" />
                             </div>
                           </form>
                         </div>

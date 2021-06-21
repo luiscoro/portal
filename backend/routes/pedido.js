@@ -19,10 +19,10 @@ router.route("/pedidos").get(authenticatedUsuario, Pedidos);
 
 router
   .route("/admin/pedidos/")
-  .get(authenticatedUsuario, authorizeRoles("admin"), getPedidos);
+  .get(authenticatedUsuario, authorizeRoles("administrador"), getPedidos);
 router
   .route("/admin/pedido/:id")
-  .put(authenticatedUsuario, authorizeRoles("admin"), updatePedido)
-  .delete(authenticatedUsuario, authorizeRoles("admin"), deletePedido);
+  .put(authenticatedUsuario, authorizeRoles("administrador"), updatePedido)
+  .delete(authenticatedUsuario, authorizeRoles("administrador"), deletePedido);
 
 module.exports = router;

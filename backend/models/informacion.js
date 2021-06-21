@@ -45,17 +45,10 @@ const informacionSchema = new mongoose.Schema({
   mision: {
     type: String,
     trim: true,
-    required: true,
   },
   vision: {
     type: String,
     trim: true,
-    required: true,
-  },
-  usuario: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Usuario",
-    required: true,
   },
 });
 

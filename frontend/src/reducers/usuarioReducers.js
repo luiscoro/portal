@@ -10,6 +10,10 @@ import {
   UPDATE_PERFIL_SUCCESS,
   UPDATE_PERFIL_RESET,
   UPDATE_PERFIL_FAIL,
+  UPDATE_INFO_ENVIO_REQUEST,
+  UPDATE_INFO_ENVIO_SUCCESS,
+  UPDATE_INFO_ENVIO_RESET,
+  UPDATE_INFO_ENVIO_FAIL,
   FORGOT_PASSWORD_REQUEST,
   FORGOT_PASSWORD_SUCCESS,
   FORGOT_PASSWORD_FAIL,
@@ -105,6 +109,7 @@ export const authReducer = (state = { usuario: {} }, action) => {
 
 export const usuarioReducer = (state = {}, action) => {
   switch (action.type) {
+    case UPDATE_INFO_ENVIO_REQUEST:
     case UPDATE_PERFIL_REQUEST:
     case UPDATE_PASSWORD_REQUEST:
     case UPDATE_USUARIO_REQUEST:
@@ -114,36 +119,28 @@ export const usuarioReducer = (state = {}, action) => {
         loading: true,
       };
 
+    case UPDATE_INFO_ENVIO_SUCCESS:
     case UPDATE_PERFIL_SUCCESS:
     case UPDATE_PASSWORD_SUCCESS:
     case UPDATE_USUARIO_SUCCESS:
+    case DELETE_USUARIO_SUCCESS:
       return {
         ...state,
         loading: false,
         esActualizado: action.payload,
       };
 
-    case DELETE_USUARIO_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        esEliminado: action.payload,
-      };
-
+    case UPDATE_INFO_ENVIO_RESET:
     case UPDATE_PERFIL_RESET:
     case UPDATE_PASSWORD_RESET:
     case UPDATE_USUARIO_RESET:
+    case DELETE_USUARIO_RESET:
       return {
         ...state,
         esActualizado: false,
       };
 
-    case DELETE_USUARIO_RESET:
-      return {
-        ...state,
-        esEliminado: false,
-      };
-
+    case UPDATE_INFO_ENVIO_FAIL:
     case UPDATE_PERFIL_FAIL:
     case UPDATE_PASSWORD_FAIL:
     case UPDATE_USUARIO_FAIL:

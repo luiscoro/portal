@@ -45,11 +45,6 @@ const partidoSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  usuario: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Usuario",
-    required: true,
-  },
 });
 
 module.exports = mongoose.model("Partido", partidoSchema);

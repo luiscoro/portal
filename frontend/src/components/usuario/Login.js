@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Loader from "../section/Loader";
 import MetaData from "../section/MetaData";
+import Banner from "../section/Banner";
 import { useDispatch, useSelector } from "react-redux";
 import { login, clearErrors } from "../../actions/usuarioActions";
 
@@ -62,28 +63,7 @@ const Login = ({ history, location }) => {
       ) : (
         <>
           <MetaData title={"Login"} />
-          {/* inner-banner-section start */}
-          <section className="inner-banner-section bg_img base-overlay">
-            <div className="container">
-              <div className="row justify-content-center">
-                <div className="col-lg-8">
-                  <div className="inner-banner-content text-center">
-                    <h2 className="page-title">iniciar sesión</h2>
-                    <ol className="breadcum d-flex justify-content-center">
-                      <li>
-                        <Link to="/" style={{ textDecoration: "none" }}>
-                          Inicio
-                        </Link>
-                      </li>
-                      <li>iniciar sesión</li>
-                    </ol>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-          {/* inner-banner-section end */}
-          {/* login-section start */}
+          <Banner title={"Iniciar sesión"} />
           <section className="login-section pt-120 pb-120">
             <div className="container">
               <div className="row">
@@ -91,7 +71,11 @@ const Login = ({ history, location }) => {
                   <div className="login-block text-center">
                     <div className="login-block-inner">
                       <h3 className="title">Accede a tu cuenta</h3>
-                      <form className="login-form" onSubmit={submitHandler}>
+                      <form
+                        className="login-form"
+                        onSubmit={submitHandler}
+                        autocomplete="off"
+                      >
                         <div className="frm-group">
                           <input
                             type="text"
@@ -133,7 +117,6 @@ const Login = ({ history, location }) => {
               </div>
             </div>
           </section>
-          {/* login-section end */}
         </>
       )}
     </>

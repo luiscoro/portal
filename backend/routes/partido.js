@@ -22,11 +22,11 @@ router.route("/partidos/next").get(getPartidosNext);
 
 router
   .route("/admin/partido/nuevo")
-  .post(authenticatedUsuario, authorizeRoles("admin"), createPartido);
+  .post(authenticatedUsuario, authorizeRoles("administrador"), createPartido);
 
 router
   .route("/admin/partido/:id")
-  .put(authenticatedUsuario, authorizeRoles("admin"), updatePartido)
-  .delete(authenticatedUsuario, authorizeRoles("admin"), deletePartido);
+  .put(authenticatedUsuario, authorizeRoles("administrador"), updatePartido)
+  .delete(authenticatedUsuario, authorizeRoles("administrador"), deletePartido);
 
 module.exports = router;

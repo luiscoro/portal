@@ -1,16 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 import { logout } from "../../actions/usuarioActions";
 import { removeItemCesta } from "../../actions/cestaActions";
 
-var MySwal;
-
 const Header = () => {
-  MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { usuario, loading } = useSelector((state) => state.auth);
@@ -22,25 +16,7 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(logout());
-    MySwal.fire({
-      background: "#f5ede4",
-      toast: true,
-      showCloseButton: true,
-      icon: "info",
-      iconColor: "blue",
-      title: "La sesión se está cerrando",
-      position: "bottom",
-      showConfirmButton: false,
-      timer: 5000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener("mouseover", Swal.stopTimer);
-        toast.addEventListener("mouseleave", Swal.resumeTimer);
-      },
-    });
-    setTimeout(function () {
-      window.location.href = "/login";
-    }, 2000);
+    window.location.href = "./login";
   };
 
   return (
@@ -85,6 +61,11 @@ const Header = () => {
                         </div>
                         <div className="shopping-cart-dropdown">
                           <h5 className="title">Tú cesta está vacía</h5>
+                          <div className="header-shopping-cart-footer">
+                            <Link to={`/tienda`} className="btn btn-primary">
+                              Comprar productos
+                            </Link>
+                          </div>
                         </div>
                       </>
                     ) : (
@@ -202,7 +183,7 @@ const Header = () => {
                           className="dropdown-menu"
                           aria-labelledby="dropDownMenuButton"
                         >
-                          {usuario && usuario.rol === "admin" && (
+                          {usuario && usuario.rol === "administrador" && (
                             <Link className="dropdown-item" to="/dashboard">
                               Dashboard
                             </Link>

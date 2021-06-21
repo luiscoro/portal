@@ -9,8 +9,6 @@ exports.createPosicion = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Ingresa el nombre de la posición", 401));
   }
 
-  req.body.usuario = req.usuario.id;
-
   const posicion = await Posicion.create(req.body);
 
   res.status(201).json({

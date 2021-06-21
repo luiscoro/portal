@@ -25,7 +25,6 @@ exports.createAuspiciante = catchAsyncErrors(async (req, res, next) => {
   };
 
   req.body.logo = logoLink;
-  req.body.usuario = req.usuario.id;
 
   const auspiciante = await Auspiciante.create(req.body);
 

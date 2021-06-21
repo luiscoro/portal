@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
 import MetaData from "../section/MetaData";
+import Banner from "../section/Banner";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   updatePerfil,
   loadUsuario,
@@ -86,31 +84,7 @@ const UpdatePerfil = ({ history }) => {
   return (
     <>
       <MetaData title={"Actualizar Perfil"} />
-      {/* inner-banner-section start */}
-      <section
-        className="inner-banner-section bg_img base-overlay"
-        data-background="assets/images/bg/home-eight-banner.jpg"
-      >
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8">
-              <div className="inner-banner-content text-center">
-                <h2 className="page-title">Actualizar perfil</h2>
-                <ol className="breadcum d-flex justify-content-center">
-                  <li>
-                    <Link to="/" style={{ textDecoration: "none" }}>
-                      Inicio
-                    </Link>
-                  </li>
-                  <li>actualizar perfil</li>
-                </ol>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* inner-banner-section end */}
-      {/* login-section start */}
+      <Banner title={"Actualizar Perfil"} />
       <section className="login-section pt-120 pb-120">
         <div className="container">
           <div className="row">
@@ -120,20 +94,22 @@ const UpdatePerfil = ({ history }) => {
                   <h3 className="title">Actualiza los datos de tu cuenta</h3>
                   <form className="login-form" onSubmit={submitHandler}>
                     <div className="frm-group">
+                      <label>Nombre:</label>
                       <input
                         type="text"
                         name="nombre"
-                        id="nombre"
                         value={nombre}
+                        placeholder="Nombre"
                         onChange={(e) => setNombre(e.target.value)}
                       />
                     </div>
                     <div className="frm-group">
+                      <label>Correo electrónico:</label>
                       <input
                         type="text"
                         name="email"
-                        id="email"
                         value={email}
+                        placeholder="Correo electrónico"
                         onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
@@ -151,7 +127,6 @@ const UpdatePerfil = ({ history }) => {
           </div>
         </div>
       </section>
-      {/* login-section end */}
     </>
   );
 };

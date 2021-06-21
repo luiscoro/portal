@@ -71,11 +71,6 @@ const productoSchema = new mongoose.Schema({
       },
     },
   ],
-  usuario: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Usuario",
-    required: true,
-  },
   fechaCreacion: {
     type: Date,
     default: d,

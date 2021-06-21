@@ -14,11 +14,6 @@ const clasificacionSchema = new mongoose.Schema({
     type: Number,
     trim: true,
   },
-  usuario: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Usuario",
-    required: true,
-  },
 });
 
 module.exports = mongoose.model("Clasificacion", clasificacionSchema);

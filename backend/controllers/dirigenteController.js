@@ -29,7 +29,6 @@ exports.createDirigente = catchAsyncErrors(async (req, res, next) => {
   };
 
   req.body.foto = fotoLink;
-  req.body.usuario = req.usuario.id;
 
   const dirigente = await Dirigente.create(req.body);
 

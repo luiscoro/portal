@@ -16,11 +16,19 @@ router.route("/auspiciante/:id").get(getSingleAuspiciante);
 
 router
   .route("/admin/auspiciante/nuevo")
-  .post(authenticatedUsuario, authorizeRoles("admin"), createAuspiciante);
+  .post(
+    authenticatedUsuario,
+    authorizeRoles("administrador"),
+    createAuspiciante
+  );
 
 router
   .route("/admin/auspiciante/:id")
-  .put(authenticatedUsuario, authorizeRoles("admin"), updateAuspiciante)
-  .delete(authenticatedUsuario, authorizeRoles("admin"), deleteAuspiciante);
+  .put(authenticatedUsuario, authorizeRoles("administrador"), updateAuspiciante)
+  .delete(
+    authenticatedUsuario,
+    authorizeRoles("administrador"),
+    deleteAuspiciante
+  );
 
 module.exports = router;

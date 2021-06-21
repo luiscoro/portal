@@ -16,11 +16,15 @@ router.route("/posicion/:id").get(getSinglePosicion);
 
 router
   .route("/admin/posicion/nueva")
-  .post(authenticatedUsuario, authorizeRoles("admin"), createPosicion);
+  .post(authenticatedUsuario, authorizeRoles("administrador"), createPosicion);
 
 router
   .route("/admin/posicion/:id")
-  .put(authenticatedUsuario, authorizeRoles("admin"), updatePosicion)
-  .delete(authenticatedUsuario, authorizeRoles("admin"), deletePosicion);
+  .put(authenticatedUsuario, authorizeRoles("administrador"), updatePosicion)
+  .delete(
+    authenticatedUsuario,
+    authorizeRoles("administrador"),
+    deletePosicion
+  );
 
 module.exports = router;

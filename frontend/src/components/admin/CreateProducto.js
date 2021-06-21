@@ -14,7 +14,7 @@ var MySwal;
 
 const CreateProducto = ({ history }) => {
   const [nombre, setNombre] = useState("");
-  const [precio, setPrecio] = useState(0);
+  const [precio, setPrecio] = useState(1);
   const [descripcion, setDescripcion] = useState("");
   const [categoria, setCategoria] = useState("");
   const [stock, setStock] = useState(0);
@@ -117,8 +117,6 @@ const CreateProducto = ({ history }) => {
         <div className="dashboard">
           <div className="col-12 col-md-10">
             <>
-              {" "}
-              {/* login-section start */}
               <section className="login-section pt-120 pb-120">
                 <div className="container">
                   <div className="row">
@@ -132,7 +130,7 @@ const CreateProducto = ({ history }) => {
                             encType="multipart/form-data"
                           >
                             <div className="frm-group">
-                              <label>Categoría</label>
+                              <label>Categoría:</label>
                               {loading ? (
                                 <Loader />
                               ) : (
@@ -140,7 +138,7 @@ const CreateProducto = ({ history }) => {
                                   value={categoria}
                                   onChange={(e) => setCategoria(e.target.value)}
                                 >
-                                  <option>
+                                  <option value={""}>
                                     Seleccione la categoría del producto
                                   </option>
                                   {categorias.map((categoria) => (
@@ -158,23 +156,25 @@ const CreateProducto = ({ history }) => {
                               <label>Nombre</label>
                               <input
                                 type="text"
-                                placeholder="Ingresa el nombre"
+                                placeholder="Nombre del producto"
                                 value={nombre}
                                 onChange={(e) => setNombre(e.target.value)}
                               />
                             </div>
                             <div className="frm-group">
-                              <label>Precio $</label>
+                              <label>Precio ($):</label>
                               <input
-                                type="text"
+                                type="number"
                                 value={precio}
+                                step="0.1"
+                                min="0"
                                 onChange={(e) => setPrecio(e.target.value)}
                               />
                             </div>
                             <div className="frm-group">
-                              <label>Descripción</label>
+                              <label>Descripción:</label>
                               <textarea
-                                placeholder="Ingresa la descripción..."
+                                placeholder="Descripción del producto..."
                                 value={descripcion}
                                 rows={2}
                                 onChange={(e) => setDescripcion(e.target.value)}
@@ -182,7 +182,7 @@ const CreateProducto = ({ history }) => {
                             </div>
 
                             <div className="frm-group">
-                              <label>Stock</label>
+                              <label>Cantidad existente:</label>
                               <input
                                 type="number"
                                 min="0"
@@ -192,16 +192,16 @@ const CreateProducto = ({ history }) => {
                             </div>
 
                             <div className="frm-group">
-                              <label>Marca</label>
+                              <label>Marca:</label>
                               <input
                                 type="text"
-                                placeholder="Ingresa la marca"
+                                placeholder="Marca del producto"
                                 value={marca}
                                 onChange={(e) => setMarca(e.target.value)}
                               />
                             </div>
                             <div className="frm-group">
-                              <label>Imágenes</label>
+                              <label>Imágenes:</label>
 
                               <div className="custom-file">
                                 <input
@@ -237,7 +237,6 @@ const CreateProducto = ({ history }) => {
                   </div>
                 </div>
               </section>
-              {/* login-section end */}
             </>
           </div>
         </div>

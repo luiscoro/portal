@@ -2,14 +2,22 @@ const Categoria = require("../models/categoria");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 
+function validNombre(n) {
+  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ]+$/.test(n);
+}
+
 exports.createCategoria = catchAsyncErrors(async (req, res, next) => {
   const { nombre } = req.body;
 
   if (!nombre) {
-    return next(new ErrorHandler("Ingresa el nombre de la categoría", 401));
+    return next(new ErrorHandler("El nombre es obligatorio", 400));
   }
 
-  req.body.usuario = req.usuario.id;
+  if (!validNombre(nombre)) {
+    return next(
+      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+    );
+  }
 
   const categoria = await Categoria.create(req.body);
 
@@ -45,7 +53,13 @@ exports.updateCategoria = catchAsyncErrors(async (req, res, next) => {
   const { nombre } = req.body;
 
   if (!nombre) {
-    return next(new ErrorHandler("Ingresa el nombre de la categoría", 401));
+    return next(new ErrorHandler("El nombre es obligatorio", 400));
+  }
+
+  if (!validNombre(nombre)) {
+    return next(
+      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+    );
   }
 
   const newCategoriaData = {

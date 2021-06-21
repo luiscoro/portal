@@ -52,7 +52,17 @@ const LastResultado = () => {
                   </div>
                 </div>
                 <div className="description text-center">
-                  <span className="text-capitalize">Último resultado</span>
+                  <span className="text-capitalize">{partido.estadio}</span>{" "}
+                  <p />
+                  <span className="text-capitalize">
+                    {String(partido.fecha).substring(8, 10)}
+                    {"-"}
+                    {String(partido.fecha).substring(5, 7)}
+                    {"-"}
+                    {String(partido.fecha).substring(0, 4)}
+                    <p />
+                    {partido.hora}
+                  </span>
                 </div>
               </div>
             ))}

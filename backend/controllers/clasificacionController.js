@@ -17,8 +17,6 @@ exports.createClasificacion = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  req.body.usuario = req.usuario.id;
-
   const clasificacion = await Clasificacion.create(req.body);
 
   res.status(201).json({

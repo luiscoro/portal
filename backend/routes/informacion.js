@@ -15,10 +15,18 @@ router.route("/informacion/:id").get(getSingleInformacion);
 
 router
   .route("/admin/informacion/nueva")
-  .post(authenticatedUsuario, authorizeRoles("admin"), createInformacion);
+  .post(
+    authenticatedUsuario,
+    authorizeRoles("administrador"),
+    createInformacion
+  );
 
 router
   .route("/admin/informacion/:id")
-  .put(authenticatedUsuario, authorizeRoles("admin"), updateInformacion);
+  .put(
+    authenticatedUsuario,
+    authorizeRoles("administrador"),
+    updateInformacion
+  );
 
 module.exports = router;

@@ -16,11 +16,6 @@ const auspicianteSchema = new mongoose.Schema({
       required: true,
     },
   },
-  usuario: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Usuario",
-    required: true,
-  },
 });
 
 module.exports = mongoose.model("Auspiciante", auspicianteSchema);

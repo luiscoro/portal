@@ -67,7 +67,7 @@ const CreateInformacion = ({ history }) => {
     }
 
     if (success) {
-      history.push("/admin-noticias");
+      history.push("/informacion");
       MySwal.fire({
         background: "#f5ede4",
         icon: "success",

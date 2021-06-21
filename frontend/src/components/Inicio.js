@@ -1,6 +1,6 @@
 import React from "react";
 import MetaData from "./section/MetaData";
-import Banner from "./section/Banner";
+import Portada from "./section/Portada";
 import About from "./section/About";
 import LastResultado from "./section/LastResultado";
 import TopProductos from "./producto/TopProductos";
@@ -11,11 +11,8 @@ const Inicio = () => {
   return (
     <>
       <MetaData title={"Inicio"} />
-
-      <Banner />
-
+      <Portada />
       <LastResultado />
-
       <About />
       <TopProductos />
       <TopNoticias />

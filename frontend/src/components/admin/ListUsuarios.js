@@ -7,12 +7,7 @@ import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getUsuarios,
-  deleteUsuario,
-  clearErrors,
-} from "../../actions/usuarioActions";
-import { DELETE_USUARIO_RESET } from "../../constants/usuarioConstants";
+import { getUsuarios, clearErrors } from "../../actions/usuarioActions";
 
 var MySwal;
 var bandera;
@@ -23,9 +18,6 @@ const ListUsuarios = ({ history }) => {
   const dispatch = useDispatch();
   const { loading, error, usuarios } = useSelector(
     (state) => state.getUsuarios
-  );
-  const { error: deleteError, esEliminado } = useSelector(
-    (state) => state.usuario
   );
 
   useEffect(() => {
@@ -69,41 +61,11 @@ const ListUsuarios = ({ history }) => {
       });
       dispatch(clearErrors());
     }
-
-    if (deleteError) {
-      MySwal.fire({
-        background: "#f5ede4",
-        toast: true,
-        showCloseButton: true,
-        icon: "error",
-        iconColor: "red",
-        title: deleteError,
-        position: "bottom",
-        showConfirmButton: false,
-        timer: 5000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseover", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-      dispatch(clearErrors());
-    }
-
-    if (esEliminado) {
-      history.push("/admin-usuarios");
-      dispatch({ type: DELETE_USUARIO_RESET });
-    }
-  }, [dispatch, error, deleteError, esEliminado, history]);
+  }, [dispatch, error, history]);
 
   const setUsuarios = () => {
     const data = {
       columns: [
-        {
-          label: "ID",
-          field: "id",
-          sort: "asc",
-        },
         {
           label: "Nombre",
           field: "nombre",
@@ -120,6 +82,11 @@ const ListUsuarios = ({ history }) => {
           sort: "asc",
         },
         {
+          label: "Estado",
+          field: "estado",
+          sort: "asc",
+        },
+        {
           label: "Acciones",
           field: "acciones",
         },
@@ -129,10 +96,10 @@ const ListUsuarios = ({ history }) => {
 
     usuarios.forEach((usuario) => {
       data.rows.push({
-        id: usuario._id,
         nombre: usuario.nombre,
         email: usuario.email,
         rol: usuario.rol,
+        estado: usuario.estado,
         acciones: (
           <>
             <Link
@@ -141,35 +108,6 @@ const ListUsuarios = ({ history }) => {
             >
               <i className="fa fa-pencil"></i>
             </Link>
-            <button
-              className="btn btn-danger py-1 px-2 ml-2"
-              onClick={() => {
-                MySwal.fire({
-                  background: "#f5ede4",
-                  title: "¿Está seguro de eliminar al usuario?",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Si",
-                  cancelButtonText: "Cancelar",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    deleteUsuarioHandler(usuario._id);
-                    MySwal.fire({
-                      background: "#f5ede4",
-                      icon: "success",
-                      title: "El usuario ha sido eliminado con éxito",
-                      showConfirmButton: false,
-                      showCloseButton: false,
-                      timer: 3000,
-                    });
-                  }
-                });
-              }}
-            >
-              <i className="fa fa-trash"></i>
-            </button>
           </>
         ),
       });
@@ -178,9 +116,6 @@ const ListUsuarios = ({ history }) => {
     return data;
   };
 
-  const deleteUsuarioHandler = (id) => {
-    dispatch(deleteUsuario(id));
-  };
   return (
     <>
       <MetaData title={"Listar usuarios"} />

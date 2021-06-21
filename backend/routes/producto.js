@@ -21,12 +21,16 @@ router.route("/producto/:id").get(getSingleProducto);
 
 router
   .route("/admin/producto/nuevo")
-  .post(authenticatedUsuario, authorizeRoles("admin"), createProducto);
+  .post(authenticatedUsuario, authorizeRoles("administrador"), createProducto);
 
 router
   .route("/admin/producto/:id")
-  .put(authenticatedUsuario, authorizeRoles("admin"), updateProducto)
-  .delete(authenticatedUsuario, authorizeRoles("admin"), deleteProducto);
+  .put(authenticatedUsuario, authorizeRoles("administrador"), updateProducto)
+  .delete(
+    authenticatedUsuario,
+    authorizeRoles("administrador"),
+    deleteProducto
+  );
 
 router.route("/revision").put(authenticatedUsuario, createRevisionProducto);
 router.route("/revisiones").get(authenticatedUsuario, getRevisionesProducto);

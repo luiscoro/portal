@@ -17,11 +17,15 @@ router.route("/dirigente/:id").get(getSingleDirigente);
 
 router
   .route("/admin/dirigente/nuevo")
-  .post(authenticatedUsuario, authorizeRoles("admin"), createDirigente);
+  .post(authenticatedUsuario, authorizeRoles("administrador"), createDirigente);
 
 router
   .route("/admin/dirigente/:id")
-  .put(authenticatedUsuario, authorizeRoles("admin"), updateDirigente)
-  .delete(authenticatedUsuario, authorizeRoles("admin"), deleteDirigente);
+  .put(authenticatedUsuario, authorizeRoles("administrador"), updateDirigente)
+  .delete(
+    authenticatedUsuario,
+    authorizeRoles("administrador"),
+    deleteDirigente
+  );
 
 module.exports = router;

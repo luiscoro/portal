@@ -22,11 +22,11 @@ router.route("/miembro/:id").get(getSingleMiembro);
 
 router
   .route("/admin/miembro/nuevo")
-  .post(authenticatedUsuario, authorizeRoles("admin"), createMiembro);
+  .post(authenticatedUsuario, authorizeRoles("administrador"), createMiembro);
 
 router
   .route("/admin/miembro/:id")
-  .put(authenticatedUsuario, authorizeRoles("admin"), updateMiembro)
-  .delete(authenticatedUsuario, authorizeRoles("admin"), deleteMiembro);
+  .put(authenticatedUsuario, authorizeRoles("administrador"), updateMiembro)
+  .delete(authenticatedUsuario, authorizeRoles("administrador"), deleteMiembro);
 
 module.exports = router;

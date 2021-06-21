@@ -10,21 +10,47 @@ const crypto = require("crypto");
 var d = new Date();
 d.setHours(d.getHours() - 5);
 
+function validNombre(n) {
+  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ]+$/.test(n);
+}
+
+function validEmail(m) {
+  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(m);
+}
+
+function validPassword(p) {
+  return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(p);
+}
+
 exports.createUsuario = catchAsyncErrors(async (req, res, next) => {
   const { nombre, email, password } = req.body;
 
-  function validEmail(m) {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(m);
+  if (!nombre) {
+    return next(new ErrorHandler("El nombre es obligatorio", 400));
   }
 
-  if (!validEmail(email)) {
-    return next(new ErrorHandler("Ingrese un correo electrónico válido", 400));
+  if (!email) {
+    return next(new ErrorHandler("El correo electrónico es obligatorio", 400));
   }
 
   if (!password) {
+    return next(new ErrorHandler("La contraseña es obligatoria", 400));
+  }
+
+  if (!validNombre(nombre)) {
+    return next(
+      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+    );
+  }
+
+  if (!validEmail(email)) {
+    return next(new ErrorHandler("El correo electrónico no es válido", 400));
+  }
+
+  if (!validPassword(password)) {
     return next(
       new ErrorHandler(
-        "Ingrese una contraseña con una combinación de al menos seis caracteres, entre mayúsculas, minúsculas y números",
+        "La contraseña debe tener al menos 8 caracteres, una letra y un número",
         400
       )
     );
@@ -42,7 +68,9 @@ exports.createUsuario = catchAsyncErrors(async (req, res, next) => {
 exports.loginUsuario = catchAsyncErrors(async (req, res, next) => {
   const { email, password } = req.body;
 
-  const usuario = await Usuario.findOne({ email }).select("+password");
+  const usuario = await Usuario.findOne({ email, estado: "activo" }).select(
+    "+password"
+  );
 
   if (!usuario) {
     return next(
@@ -148,19 +176,100 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
 
   const esIgual = await usuario.comparePassword(req.body.oldPassword);
   if (!esIgual) {
-    return next(new ErrorHandler("La contraseña anterior es incorrecta"));
+    return next(new ErrorHandler("La contraseña actual es incorrecta"));
   }
 
-  usuario.password = req.body.password;
+  const { password } = req.body;
+
+  if (!password) {
+    return next(new ErrorHandler("La contraseña es obligatoria", 400));
+  }
+
+  if (!validPassword(password)) {
+    return next(
+      new ErrorHandler(
+        "La contraseña debe tener al menos 8 caracteres, una letra y un número",
+        400
+      )
+    );
+  }
+
+  usuario.password = password;
   await usuario.save();
 
   sendToken(usuario, 200, res);
 });
 
-exports.updatePerfil = catchAsyncErrors(async (req, res, next) => {
+exports.updateInfoEnvio = catchAsyncErrors(async (req, res, next) => {
+  const { cedula, direccion, telefono, ciudad, codigoPostal } = req.body;
+
+  if (!cedula) {
+    return next(new ErrorHandler("El número de cédula es obligatorio", 400));
+  }
+
+  if (!direccion) {
+    return next(new ErrorHandler("La dirección es obligatorio", 400));
+  }
+
+  if (!telefono) {
+    return next(new ErrorHandler("El teléfono es obligatorio", 400));
+  }
+
+  if (!ciudad) {
+    return next(new ErrorHandler("La ciudad es obligatorio", 400));
+  }
+
+  if (!codigoPostal) {
+    return next(new ErrorHandler("El código postal es obligatorio", 400));
+  }
+
   const newUsuarioData = {
-    nombre: req.body.nombre,
-    email: req.body.email,
+    cedula: cedula,
+    direccion: direccion,
+    telefono: telefono,
+    ciudad: ciudad,
+    codigoPostal: codigoPostal,
+  };
+
+  const usuario = await Usuario.findByIdAndUpdate(
+    req.usuario.id,
+    newUsuarioData,
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
+
+  res.status(200).json({
+    success: true,
+  });
+});
+
+exports.updatePerfil = catchAsyncErrors(async (req, res, next) => {
+  const { nombre, email } = req.body;
+
+  if (!nombre) {
+    return next(new ErrorHandler("El nombre es obligatorio", 400));
+  }
+
+  if (!email) {
+    return next(new ErrorHandler("El correo electrónico es obligatorio", 400));
+  }
+
+  if (!validNombre(nombre)) {
+    return next(
+      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+    );
+  }
+
+  if (!validEmail(email)) {
+    return next(new ErrorHandler("El correo electrónico no es válido", 400));
+  }
+
+  const newUsuarioData = {
+    nombre: nombre,
+    email: email,
   };
 
   const usuario = await Usuario.findByIdAndUpdate(
@@ -187,6 +296,26 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "La sesión ha sido cerrada",
+  });
+});
+
+exports.deleteUsuario = catchAsyncErrors(async (req, res, next) => {
+  const newUsuarioData = {
+    estado: req.body.estado,
+  };
+
+  const usuario = await Usuario.findByIdAndUpdate(
+    req.usuario.id,
+    newUsuarioData,
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
+
+  res.status(200).json({
+    success: true,
   });
 });
 
@@ -221,6 +350,7 @@ exports.updateUsuario = catchAsyncErrors(async (req, res, next) => {
     nombre: req.body.nombre,
     email: req.body.email,
     rol: req.body.rol,
+    estado: req.body.estado,
   };
 
   const usuario = await Usuario.findByIdAndUpdate(
@@ -232,22 +362,6 @@ exports.updateUsuario = catchAsyncErrors(async (req, res, next) => {
       useFindAndModify: false,
     }
   );
-
-  res.status(200).json({
-    success: true,
-  });
-});
-
-exports.deleteUsuario = catchAsyncErrors(async (req, res, next) => {
-  const usuario = await Usuario.findById(req.params.id);
-
-  if (!usuario) {
-    return next(
-      new ErrorHandler(`Usuario no encontrado con id: ${req.params.id}`)
-    );
-  }
-
-  await usuario.remove();
 
   res.status(200).json({
     success: true,

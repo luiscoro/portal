@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Route, Link } from "react-router-dom";
+import { Route } from "react-router-dom";
 import Pagination from "react-js-pagination";
 import MetaData from "./section/MetaData";
 import Loader from "./section/Loader";
+import Banner from "./section/Banner";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Noticia from "./noticia/Noticia";
@@ -62,25 +63,7 @@ const Noticias = ({ match }) => {
   return (
     <>
       <MetaData title={"Noticias"} />
-      <section className="inner-banner-section bg_img base-overlay">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8">
-              <div className="inner-banner-content text-center">
-                <h2 className="page-title">noticias</h2>
-                <ol className="breadcum d-flex justify-content-center">
-                  <li>
-                    <Link to="/" style={{ textDecoration: "none" }}>
-                      Inicio
-                    </Link>
-                  </li>
-                  <li>noticias</li>
-                </ol>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Banner title={"Noticias"} />
 
       <div className="d-flex justify-content-end">
         <Route render={({ history }) => <SearchNoticia history={history} />} />

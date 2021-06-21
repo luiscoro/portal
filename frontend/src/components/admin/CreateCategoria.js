@@ -45,7 +45,8 @@ const CreateCategoria = ({ history }) => {
         background: "#f5ede4",
         icon: "success",
         title: "La categoría ha sido creada con éxito",
-        showConfirmButton: false,
+        showConfirmButton: true,
+        confirmButtonColor: "#3085d6",
         showCloseButton: false,
         timer: 2000,
       });
@@ -71,8 +72,6 @@ const CreateCategoria = ({ history }) => {
         <div className="dashboard">
           <div className="col-12 col-md-10">
             <>
-              {" "}
-              {/* login-section start */}
               <section className="login-section pt-120 pb-120">
                 <div className="container">
                   <div className="row">
@@ -84,11 +83,11 @@ const CreateCategoria = ({ history }) => {
                           </h3>
                           <form className="login-form" onSubmit={submitHandler}>
                             <div className="frm-group">
-                              <label>Nombre</label>
+                              <label>Nombre:</label>
                               <input
                                 name="nombre"
                                 type="text"
-                                placeholder="Ingresa el nombre"
+                                placeholder="Nombre de la categoría"
                                 value={nombre}
                                 onChange={(e) => setNombre(e.target.value)}
                               />
@@ -103,7 +102,6 @@ const CreateCategoria = ({ history }) => {
                   </div>
                 </div>
               </section>
-              {/* login-section end */}
             </>
           </div>
         </div>

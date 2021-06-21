@@ -13,6 +13,7 @@ import Club from "./components/Club";
 
 // CESTA
 import Cesta from "./components/cesta/Cesta";
+import Envio from "./components/cesta/Envio";
 
 //ADMIN
 import Dashboard from "./components/admin/Dashboard";
@@ -85,6 +86,7 @@ function App() {
         <Route path="/tienda/productos/:id" component={DetailsProducto} exact />
         <Route path="/club" component={Club} />
         <Route path="/cesta" component={Cesta} exact />
+        <PrivateRoute path="/envio" component={Envio} />
         <Route path="/login" component={Login} />
         <Route path="/registro" component={Registro} />
         <Route path="/password/olvido" component={ForgotPassword} exact />
@@ -283,9 +285,10 @@ function App() {
           esAdmin={true}
           component={UpdateMiembro}
         />
-        {!loading && (!authenticatedUsuario || usuario.rol !== "admin") && (
-          <Footer />
-        )}
+        {!loading &&
+          (!authenticatedUsuario || usuario.rol !== "administrador") && (
+            <Footer />
+          )}
       </div>
     </Router>
   );

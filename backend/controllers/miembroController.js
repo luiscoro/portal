@@ -32,7 +32,6 @@ exports.createMiembro = catchAsyncErrors(async (req, res, next) => {
   };
 
   req.body.foto = fotoLink;
-  req.body.usuario = req.usuario.id;
 
   const miembro = await Miembro.create(req.body);
 

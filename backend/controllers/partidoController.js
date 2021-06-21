@@ -33,7 +33,6 @@ exports.createPartido = catchAsyncErrors(async (req, res, next) => {
 
   req.body.logoLocal = logoLocalLink;
   req.body.logoVisitante = logoVisitanteLink;
-  req.body.usuario = req.usuario.id;
 
   const partido = await Partido.create(req.body);
 
@@ -53,9 +52,7 @@ exports.getAdminPartidos = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getPartidoTop = catchAsyncErrors(async (req, res, next) => {
-  const partidos = await Partido.find({ golesLocal: { $ne: null } })
-    .sort({ _id: -1 })
-    .limit(1);
+  const partidos = await Partido.find().sort({ _id: -1 }).limit(1);
 
   res.status(200).json({
     success: true,

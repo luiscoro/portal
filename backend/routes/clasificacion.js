@@ -16,11 +16,23 @@ router.route("/clasificacion/:id").get(getSingleClasificacion);
 
 router
   .route("/admin/clasificacion/nueva")
-  .post(authenticatedUsuario, authorizeRoles("admin"), createClasificacion);
+  .post(
+    authenticatedUsuario,
+    authorizeRoles("administrador"),
+    createClasificacion
+  );
 
 router
   .route("/admin/clasificacion/:id")
-  .put(authenticatedUsuario, authorizeRoles("admin"), updateClasificacion)
-  .delete(authenticatedUsuario, authorizeRoles("admin"), deleteClasificacion);
+  .put(
+    authenticatedUsuario,
+    authorizeRoles("administrador"),
+    updateClasificacion
+  )
+  .delete(
+    authenticatedUsuario,
+    authorizeRoles("administrador"),
+    deleteClasificacion
+  );
 
 module.exports = router;

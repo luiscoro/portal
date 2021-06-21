@@ -148,7 +148,8 @@ const ListCategorias = ({ history }) => {
                       background: "#f5ede4",
                       icon: "success",
                       title: "La categoría ha sido eliminada con éxito",
-                      showConfirmButton: false,
+                      showConfirmButton: true,
+                      confirmButtonColor: "#3085d6",
                       showCloseButton: false,
                       timer: 3000,
                     });

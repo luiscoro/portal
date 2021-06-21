@@ -20,11 +20,11 @@ router.route("/noticia/:id").get(getSingleNoticia);
 
 router
   .route("/admin/noticia/nueva")
-  .post(authenticatedUsuario, authorizeRoles("admin"), createNoticia);
+  .post(authenticatedUsuario, authorizeRoles("administrador"), createNoticia);
 
 router
   .route("/admin/noticia/:id")
-  .put(authenticatedUsuario, authorizeRoles("admin"), updateNoticia)
-  .delete(authenticatedUsuario, authorizeRoles("admin"), deleteNoticia);
+  .put(authenticatedUsuario, authorizeRoles("administrador"), updateNoticia)
+  .delete(authenticatedUsuario, authorizeRoles("administrador"), deleteNoticia);
 
 module.exports = router;

@@ -33,7 +33,6 @@ exports.createInformacion = catchAsyncErrors(async (req, res, next) => {
 
   req.body.imagenPrincipal = imagenPrincipalLink;
   req.body.imagenAcerca = imagenAcercaLink;
-  req.body.usuario = req.usuario.id;
 
   const informacion = await Informacion.create(req.body);
 

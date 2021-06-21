@@ -6,11 +6,6 @@ const posicionSchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
-  usuario: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Usuario",
-    required: true,
-  },
 });
 
 module.exports = mongoose.model("Posicion", posicionSchema);

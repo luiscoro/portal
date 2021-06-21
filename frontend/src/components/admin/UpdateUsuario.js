@@ -17,6 +17,7 @@ const UpdateUsuario = ({ history, match, location }) => {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [rol, setRol] = useState("");
+  const [estado, setEstado] = useState("");
 
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const UpdateUsuario = ({ history, match, location }) => {
       setNombre(usuario.nombre);
       setEmail(usuario.email);
       setRol(usuario.rol);
+      setEstado(usuario.estado);
     }
 
     if (error) {
@@ -104,7 +106,7 @@ const UpdateUsuario = ({ history, match, location }) => {
     formData.set("nombre", nombre);
     formData.set("email", email);
     formData.set("rol", rol);
-
+    formData.set("estado", estado);
     dispatch(updateUsuario(usuario._id, formData));
   };
   return (
@@ -118,8 +120,6 @@ const UpdateUsuario = ({ history, match, location }) => {
         <div className="dashboard">
           <div className="col-12 col-md-10">
             <>
-              {" "}
-              {/* login-section start */}
               <section className="login-section pt-120 pb-120">
                 <div className="container">
                   <div className="row">
@@ -130,35 +130,49 @@ const UpdateUsuario = ({ history, match, location }) => {
 
                           <form className="login-form" onSubmit={submitHandler}>
                             <div className="frm-group">
-                              <label>Nombre</label>
+                              <label>Nombre:</label>
                               <input
                                 type="text"
-                                placeholder="Ingresa el nombre"
+                                placeholder="Nombre"
                                 value={nombre}
+                                disabled="true"
                                 onChange={(e) => setNombre(e.target.value)}
                               />
                             </div>
                             <div className="frm-group">
-                              <label>Email</label>
+                              <label>Correo electrónico:</label>
                               <input
                                 type="text"
-                                placeholder="Ingresa el correo electrónico"
+                                placeholder="Correo electrónico"
                                 value={email}
+                                disabled="true"
                                 onChange={(e) => setEmail(e.target.value)}
                               />
                             </div>
 
                             <div className="frm-group">
-                              <label>Rol</label>
+                              <label>Rol:</label>
                               <select
                                 value={rol}
                                 onChange={(e) => setRol(e.target.value)}
                               >
-                                <option value="registrado">registrado</option>
-                                <option value="admin">admin</option>
+                                <option value="aficionado">aficionado</option>
+                                <option value="administrador">
+                                  administrador
+                                </option>
                               </select>
                             </div>
 
+                            <div className="frm-group">
+                              <label>Estado:</label>
+                              <select
+                                value={estado}
+                                onChange={(e) => setEstado(e.target.value)}
+                              >
+                                <option value="activo">activo</option>
+                                <option value="inactivo">inactivo</option>
+                              </select>
+                            </div>
                             <div className="frm-group">
                               <input type="submit" value="Actualizar" />
                             </div>
@@ -169,7 +183,6 @@ const UpdateUsuario = ({ history, match, location }) => {
                   </div>
                 </div>
               </section>
-              {/* login-section end */}
             </>
           </div>
         </div>

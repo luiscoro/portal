@@ -30,7 +30,6 @@ exports.createNoticia = catchAsyncErrors(async (req, res, next) => {
   };
 
   req.body.imagen = imagenLink;
-  req.body.usuario = req.usuario.id;
 
   const noticia = await Noticia.create(req.body);
 

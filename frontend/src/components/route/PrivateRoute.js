@@ -17,7 +17,7 @@ const PrivateRoute = ({ esAdmin, component: Component, ...rest }) => {
               return <Redirect to="/login" />;
             }
 
-            if (esAdmin === true && usuario.rol !== "admin") {
+            if (esAdmin === true && usuario.rol !== "administrador") {
               return <Redirect to="/" />;
             }
 

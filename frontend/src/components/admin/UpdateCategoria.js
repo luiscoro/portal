@@ -112,8 +112,6 @@ const UpdateCategoria = ({ history, match, location }) => {
         <div className="dashboard">
           <div className="col-12 col-md-10">
             <>
-              {" "}
-              {/* login-section start */}
               <section className="login-section pt-120 pb-120">
                 <div className="container">
                   <div className="row">
@@ -126,10 +124,10 @@ const UpdateCategoria = ({ history, match, location }) => {
 
                           <form className="login-form" onSubmit={submitHandler}>
                             <div className="frm-group">
-                              <label>Nombre</label>
+                              <label>Nombre:</label>
                               <input
                                 type="text"
-                                placeholder="Ingresa el nombre"
+                                placeholder="Nombre de la categoría"
                                 value={nombre}
                                 onChange={(e) => setNombre(e.target.value)}
                               />
@@ -144,7 +142,6 @@ const UpdateCategoria = ({ history, match, location }) => {
                   </div>
                 </div>
               </section>
-              {/* login-section end */}
             </>
           </div>
         </div>

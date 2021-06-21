@@ -16,11 +16,15 @@ router.route("/categoria/:id").get(getSingleCategoria);
 
 router
   .route("/admin/categoria/nueva")
-  .post(authenticatedUsuario, authorizeRoles("admin"), createCategoria);
+  .post(authenticatedUsuario, authorizeRoles("administrador"), createCategoria);
 
 router
   .route("/admin/categoria/:id")
-  .put(authenticatedUsuario, authorizeRoles("admin"), updateCategoria)
-  .delete(authenticatedUsuario, authorizeRoles("admin"), deleteCategoria);
+  .put(authenticatedUsuario, authorizeRoles("administrador"), updateCategoria)
+  .delete(
+    authenticatedUsuario,
+    authorizeRoles("administrador"),
+    deleteCategoria
+  );
 
 module.exports = router;

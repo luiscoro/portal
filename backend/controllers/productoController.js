@@ -5,8 +5,18 @@ const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const APIFeatures = require("../utils/featuresProducto");
 const cloudinary = require("cloudinary");
 
+function validNombre(n) {
+  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ]+$/.test(n);
+}
+
 exports.createProducto = catchAsyncErrors(async (req, res, next) => {
-  const { nombre, precio, descripcion } = req.body;
+  const { categoria, nombre, precio, stock, descripcion } = req.body;
+
+  if (!categoria) {
+    return next(
+      new ErrorHandler("La categoría seleccionada no es válida", 400)
+    );
+  }
 
   if (!nombre) {
     return next(new ErrorHandler("El nombre es obligatorio", 400));
@@ -16,8 +26,26 @@ exports.createProducto = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("La descripción es obligatoria", 400));
   }
 
-  if (precio <= 0) {
-    return next(new ErrorHandler("Ingrese un precio válido ", 400));
+  if (precio < 0) {
+    return next(new ErrorHandler("El precio no debe ser menor a cero", 400));
+  }
+
+  if (stock < 0) {
+    return next(
+      new ErrorHandler("El stock del producto no debe ser menor a cero", 400)
+    );
+  }
+
+  if (!validNombre(nombre)) {
+    return next(
+      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+    );
+  }
+
+  if (!validNombre(descripcion)) {
+    return next(
+      new ErrorHandler("La descripción debe tener letras y espacios", 400)
+    );
   }
 
   let imagenes = [];
@@ -44,7 +72,6 @@ exports.createProducto = catchAsyncErrors(async (req, res, next) => {
   }
 
   req.body.imagenes = imagenesLinks;
-  req.body.usuario = req.usuario.id;
 
   const producto = await Producto.create(req.body);
 

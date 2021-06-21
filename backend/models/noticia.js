@@ -23,11 +23,6 @@ const noticiaSchema = new mongoose.Schema({
       required: true,
     },
   },
-  usuario: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Usuario",
-    required: true,
-  },
   fecha: {
     type: Date,
     default: d,

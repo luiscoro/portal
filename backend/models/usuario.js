@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
@@ -20,9 +19,33 @@ const usuarioSchema = new mongoose.Schema({
     type: String,
     select: false,
   },
+  cedula: {
+    type: String,
+    default: "",
+  },
+  direccion: {
+    type: String,
+    default: "",
+  },
+  telefono: {
+    type: String,
+    default: "",
+  },
+  ciudad: {
+    type: String,
+    default: "",
+  },
+  codigoPostal: {
+    type: String,
+    default: "",
+  },
   rol: {
     type: String,
-    default: "registrado",
+    default: "aficionado",
+  },
+  estado: {
+    type: String,
+    default: "activo",
   },
   fechaCreacion: {
     type: Date,
