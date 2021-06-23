@@ -82,7 +82,7 @@ const Header = () => {
                         </div>
 
                         <div className="shopping-cart-dropdown">
-                          <h5 className="title">Cesta de compras</h5>
+                          <h5 className="title">Tú cesta de pedidos</h5>
                           <ul className="dropdown-shopping-cart-list">
                             {itemsCesta.map((item) => (
                               <li
@@ -156,10 +156,12 @@ const Header = () => {
                             aria-labelledby="dropDownMenuButton"
                           >
                             <Link className="dropdown-item" to="/login">
+                              <i class="fa fa-sign-in"></i>
                               Iniciar sesión
                             </Link>
                             <hr className="dropdown-divider" />
                             <Link className="dropdown-item" to="/registro">
+                              <i class="fa fa-pencil"></i>
                               Registrarse
                             </Link>
                           </div>
@@ -185,13 +187,16 @@ const Header = () => {
                         >
                           {usuario && usuario.rol === "administrador" && (
                             <Link className="dropdown-item" to="/dashboard">
+                              <i className="fa fa-tachometer" />
                               Dashboard
                             </Link>
                           )}
-                          <Link className="dropdown-item" to="/orders/me">
-                            Pedidos
+                          <Link className="dropdown-item" to="/pedidos">
+                            <i class="fa fa-shopping-basket"></i>
+                            Mis pedidos
                           </Link>
                           <Link className="dropdown-item" to="/perfil">
+                            <i class="fa fa-id-card-o"></i>
                             Perfil
                           </Link>
                           <Link
@@ -199,6 +204,7 @@ const Header = () => {
                             to="/"
                             onClick={logoutHandler}
                           >
+                            <i className="fa fa-sign-out" />
                             Cerrar sesión
                           </Link>
                         </div>

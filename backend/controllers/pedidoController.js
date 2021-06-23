@@ -16,6 +16,7 @@ exports.createPedido = catchAsyncErrors(async (req, res, next) => {
     precioEnvio,
     precioTotal,
     infoPago,
+    usuario,
   } = req.body;
 
   const pedido = await Pedido.create({
@@ -26,8 +27,8 @@ exports.createPedido = catchAsyncErrors(async (req, res, next) => {
     precioEnvio,
     precioTotal,
     infoPago,
+    usuario,
     fechaPago: d,
-    usuario: req.usuario._id,
   });
 
   res.status(200).json({

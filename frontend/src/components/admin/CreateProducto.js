@@ -58,7 +58,7 @@ const CreateProducto = ({ history }) => {
         background: "#f5ede4",
         icon: "success",
         title: "El producto ha sido creado con éxito",
-        timer: 5000,
+        timer: 3000,
         showConfirmButton: true,
         confirmButtonColor: "#3085d6",
         showCloseButton: false,
@@ -167,7 +167,6 @@ const CreateProducto = ({ history }) => {
                                 type="number"
                                 value={precio}
                                 step="0.1"
-                                min="0"
                                 onChange={(e) => setPrecio(e.target.value)}
                               />
                             </div>
@@ -185,7 +184,6 @@ const CreateProducto = ({ history }) => {
                               <label>Cantidad existente:</label>
                               <input
                                 type="number"
-                                min="0"
                                 value={stock}
                                 onChange={(e) => setStock(e.target.value)}
                               />

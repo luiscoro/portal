@@ -1,43 +1,39 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MDBDataTable } from "mdbreact";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import MetaData from "../section/MetaData";
 import Loader from "../section/Loader";
 import Sidebar from "./Sidebar";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAdminCategorias,
-  deleteCategoria,
+  getAdminPedidos,
+  deletePedido,
   clearErrors,
-} from "../../actions/categoriaActions";
-import { DELETE_CATEGORIA_RESET } from "../../constants/categoriaConstants";
+} from "../../actions/pedidoActions";
+import { DELETE_PEDIDO_RESET } from "../../constants/pedidoConstants";
 
 var MySwal;
 var bandera;
 
-const ListCategorias = ({ history }) => {
+const ListPedidos = ({ history }) => {
   MySwal = withReactContent(Swal);
   bandera = parseInt(localStorage.getItem("actualizado"));
   const dispatch = useDispatch();
-  const { loading, error, categorias } = useSelector(
-    (state) => state.categorias
-  );
-  const { error: deleteError, esEliminado } = useSelector(
-    (state) => state.categoria
-  );
+  const { loading, error, pedidos } = useSelector((state) => state.getPedidos);
+  const { esEliminado } = useSelector((state) => state.pedido);
 
   useEffect(() => {
-    dispatch(getAdminCategorias());
+    dispatch(getAdminPedidos());
 
     if (bandera === 1) {
       localStorage.setItem("actualizado", 0);
       MySwal.fire({
         background: "#f5ede4",
         icon: "success",
-        title: "La categoría ha sido actualizada con éxito",
-        timer: 3000,
+        title: "El pedido ha sido actualizado con éxito",
+        timer: 5000,
         showConfirmButton: true,
         confirmButtonColor: "#3085d6",
         showCloseButton: false,
@@ -70,61 +66,76 @@ const ListCategorias = ({ history }) => {
       dispatch(clearErrors());
     }
 
-    if (deleteError) {
-      MySwal.fire({
-        background: "#f5ede4",
-        toast: true,
-        showCloseButton: true,
-        icon: "error",
-        iconColor: "red",
-        title: deleteError,
-        position: "bottom",
-        showConfirmButton: false,
-        timer: 5000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseover", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-      dispatch(clearErrors());
-    }
-
     if (esEliminado) {
-      history.push("/admin-categorias");
-      dispatch({ type: DELETE_CATEGORIA_RESET });
+      history.push("/admin-pedidos");
+      dispatch({ type: DELETE_PEDIDO_RESET });
     }
-  }, [dispatch, error, deleteError, esEliminado, history]);
+  }, [dispatch, error, esEliminado, history]);
 
-  const setCategorias = () => {
+  const deletePedidoHandler = (id) => {
+    dispatch(deletePedido(id));
+  };
+
+  const setPedidos = () => {
     const data = {
       columns: [
         {
-          label: "ID",
+          label: "Número de pedido",
           field: "id",
           sort: "asc",
         },
         {
-          label: "Nombre",
-          field: "nombre",
+          label: "Número de productos",
+          field: "numOfItems",
+          sort: "asc",
+        },
+        {
+          label: "Total pagado",
+          field: "precio",
+          sort: "asc",
+        },
+        {
+          label: "Estado del pedido",
+          field: "estado",
+          sort: "asc",
+        },
+        {
+          label: "Estado del pago",
+          field: "estadoPago",
           sort: "asc",
         },
         {
           label: "Acciones",
           field: "acciones",
+          sort: "asc",
         },
       ],
       rows: [],
     };
 
-    categorias.forEach((categoria) => {
+    pedidos.forEach((pedido) => {
       data.rows.push({
-        id: categoria._id,
-        nombre: categoria.nombre,
+        id: pedido._id,
+        numOfItems: pedido.itemsPedido.length,
+        precio: `$${pedido.precioTotal}`,
+        estado:
+          pedido.estadoPedido &&
+          String(pedido.estadoPedido).includes("entregado") ? (
+            <p style={{ color: "green" }}>{pedido.estadoPedido}</p>
+          ) : (
+            <p style={{ color: "red" }}>{pedido.estadoPedido}</p>
+          ),
+        estadoPago:
+          pedido.estadoPedido &&
+          String(pedido.estadoPedido).includes("pendiente de envío") ? (
+            <p style={{ color: "green" }}>{"exitoso"}</p>
+          ) : (
+            <p style={{ color: "red" }}>{""}</p>
+          ),
         acciones: (
           <>
             <Link
-              to={`/admin-categoria/${categoria._id}`}
+              to={`/admin-pedido/${pedido._id}`}
               className="btn btn-primary py-1 px-2"
             >
               <i className="fa fa-pencil"></i>
@@ -134,7 +145,7 @@ const ListCategorias = ({ history }) => {
               onClick={() => {
                 MySwal.fire({
                   background: "#f5ede4",
-                  title: "¿Está seguro de eliminar la categoría?",
+                  title: "¿Está seguro de eliminar el pedido?",
                   icon: "warning",
                   showCancelButton: true,
                   confirmButtonColor: "#3085d6",
@@ -143,13 +154,12 @@ const ListCategorias = ({ history }) => {
                   cancelButtonText: "Cancelar",
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    deleteCategoriaHandler(categoria._id);
+                    deletePedidoHandler(pedido._id);
                     MySwal.fire({
                       background: "#f5ede4",
                       icon: "success",
-                      title: "La categoría ha sido eliminada con éxito",
-                      showConfirmButton: true,
-                      confirmButtonColor: "#3085d6",
+                      title: "El pedido ha sido eliminado con éxito",
+                      showConfirmButton: false,
                       showCloseButton: false,
                       timer: 3000,
                     });
@@ -167,26 +177,22 @@ const ListCategorias = ({ history }) => {
     return data;
   };
 
-  const deleteCategoriaHandler = (id) => {
-    dispatch(deleteCategoria(id));
-  };
   return (
     <>
-      <MetaData title={"Listar categorías"} />
+      <MetaData title={"Listar pedidos"} />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
         </div>
         <div className="dashboard">
-          {loading ? (
-            <Loader />
-          ) : (
-            <div className="col-12 col-md-10">
-              <>
-                <h3 className="my-4">Listado de categorías de productos</h3>
-
+          <div className="col-12 col-md-10">
+            <>
+              <h3 className="my-4">Listado de pedidos</h3>
+              {loading ? (
+                <Loader />
+              ) : (
                 <MDBDataTable
-                  data={setCategorias()}
+                  data={setPedidos()}
                   className="px-3"
                   bordered
                   striped
@@ -196,13 +202,13 @@ const ListCategorias = ({ history }) => {
                   infoLabel={["", "-", "de", "registros"]}
                   noRecordsFoundLabel="No se encontró ningún registro"
                 />
-              </>
-            </div>
-          )}
+              )}
+            </>
+          </div>
         </div>
       </div>
     </>
   );
 };
 
-export default ListCategorias;
+export default ListPedidos;

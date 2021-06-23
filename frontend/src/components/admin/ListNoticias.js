@@ -35,7 +35,7 @@ const ListNoticias = ({ history }) => {
         background: "#f5ede4",
         icon: "success",
         title: "La noticia ha sido actualizada con éxito",
-        timer: 5000,
+        timer: 3000,
         showConfirmButton: true,
         confirmButtonColor: "#3085d6",
         showCloseButton: false,

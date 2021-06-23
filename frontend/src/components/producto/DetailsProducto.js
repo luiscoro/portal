@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import Loader from "../section/Loader";
 import MetaData from "../section/MetaData";
-import { Link } from "react-router-dom";
+import Banner from "../section/Banner";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Carousel } from "react-bootstrap";
@@ -106,10 +105,10 @@ const DetailsProducto = ({ match }) => {
       showCloseButton: true,
       icon: "success",
       iconColor: "green",
-      title: "El item ha sido añadido a su cesta de pedidos.",
+      title: "El producto ha sido añadido a la cesta de pedidos.",
       position: "bottom",
       showConfirmButton: false,
-      timer: 3000,
+      timer: 5000,
       timerProgressBar: true,
       didOpen: (toast) => {
         toast.addEventListener("mouseover", Swal.stopTimer);
@@ -187,31 +186,7 @@ const DetailsProducto = ({ match }) => {
   return (
     <>
       <MetaData title={producto.nombre} />
-      <section className="inner-banner-section bg_img base-overlay">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8">
-              <div className="inner-banner-content text-center">
-                <h2 className="page-title">Detalles</h2>
-                <ol className="breadcum d-flex justify-content-center">
-                  <li>
-                    <Link to="/" style={{ textDecoration: "none" }}>
-                      Inicio
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/tienda" style={{ textDecoration: "none" }}>
-                      Tienda
-                    </Link>
-                  </li>
-                  <li>{producto.nombre}</li>
-                </ol>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      <Banner title={producto.nombre} />
       {loading ? (
         <Loader />
       ) : (

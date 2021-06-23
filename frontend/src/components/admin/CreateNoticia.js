@@ -53,9 +53,10 @@ const CreateNoticia = ({ history }) => {
         background: "#f5ede4",
         icon: "success",
         title: "La noticia ha sido creada con éxito",
-        showConfirmButton: false,
+        timer: 3000,
+        showConfirmButton: true,
+        confirmButtonColor: "#3085d6",
         showCloseButton: false,
-        timer: 2000,
       });
       dispatch({ type: CREATE_NOTICIA_RESET });
     }
@@ -106,8 +107,6 @@ const CreateNoticia = ({ history }) => {
         <div className="dashboard">
           <div className="col-12 col-md-10">
             <>
-              {" "}
-              {/* login-section start */}
               <section className="login-section pt-120 pb-120">
                 <div className="container">
                   <div className="row">
@@ -121,20 +120,20 @@ const CreateNoticia = ({ history }) => {
                             encType="multipart/form-data"
                           >
                             <div className="frm-group">
-                              <label>Título</label>
+                              <label>Título:</label>
                               <input
                                 name="titulo"
                                 type="text"
-                                placeholder="Ingresa el título"
+                                placeholder="Título de la noticia"
                                 value={titulo}
                                 onChange={onChange}
                               />
                             </div>
                             <div className="frm-group">
-                              <label>Descripción</label>
+                              <label>Descripción:</label>
                               <textarea
                                 name="descripcion"
-                                placeholder="Ingresa la descripción..."
+                                placeholder="Descripción de la noticia..."
                                 value={descripcion}
                                 rows={2}
                                 onChange={onChange}
@@ -142,7 +141,7 @@ const CreateNoticia = ({ history }) => {
                             </div>
 
                             <div className="frm-group">
-                              <label>Imagen</label>
+                              <label>Imagen:</label>
 
                               <div className="custom-file">
                                 <input
@@ -176,7 +175,6 @@ const CreateNoticia = ({ history }) => {
                   </div>
                 </div>
               </section>
-              {/* login-section end */}
             </>
           </div>
         </div>

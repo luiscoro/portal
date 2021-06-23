@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import MetaData from "../section/MetaData";
-
+import Banner from "../section/Banner";
 import { useDispatch, useSelector } from "react-redux";
 import { addItemCesta, removeItemCesta } from "../../actions/cestaActions";
 
@@ -35,31 +35,8 @@ const Cesta = ({ history }) => {
   };
   return (
     <>
-      <MetaData title={"Tu cesta"} />
-      <section className="inner-banner-section bg_img base-overlay">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8">
-              <div className="inner-banner-content text-center">
-                <h2 className="page-title">cesta de compras</h2>
-                <ol className="breadcum d-flex justify-content-center">
-                  <li>
-                    <Link to="/" style={{ textDecoration: "none" }}>
-                      Inicio
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/tienda" style={{ textDecoration: "none" }}>
-                      Tienda
-                    </Link>
-                  </li>
-                  <li>cesta de compras</li>
-                </ol>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <MetaData title={"Cesta de pedidos"} />
+      <Banner title={"Cesta de pedidos"} />
       {itemsCesta.length === 0 ? (
         <h4 className="mt-5" style={{ textAlign: "center" }}>
           Tú cesta está vacía
@@ -67,7 +44,7 @@ const Cesta = ({ history }) => {
       ) : (
         <>
           <h4 className="mt-5" style={{ textAlign: "center" }}>
-            Tú cesta: <b>{itemsCesta.length} items</b>
+            Tú cesta: <b>{itemsCesta.length} productos</b>
           </h4>
           <section className="cart-section pt-120 pb-120">
             <div className="container">
@@ -159,7 +136,7 @@ const Cesta = ({ history }) => {
                 </div>
                 <div className="col-lg-2 order-lg-2 order-1">
                   <div className="order-summary-wrapper">
-                    <h4 className="title">Resumen del pedido</h4>
+                    <h4 className="title">Resumen</h4>
                     <ul className="order-summary-list">
                       <li>
                         <span className="caption">subtotal</span>

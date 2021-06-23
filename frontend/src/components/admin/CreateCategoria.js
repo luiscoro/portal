@@ -48,7 +48,7 @@ const CreateCategoria = ({ history }) => {
         showConfirmButton: true,
         confirmButtonColor: "#3085d6",
         showCloseButton: false,
-        timer: 2000,
+        timer: 3000,
       });
       dispatch({ type: CREATE_CATEGORIA_RESET });
     }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Footer from "./components/section/Footer";
@@ -10,10 +10,14 @@ import DetailsNoticia from "./components/noticia/DetailsNoticia";
 import Tienda from "./components/Tienda";
 import DetailsProducto from "./components/producto/DetailsProducto";
 import Club from "./components/Club";
+import Pedidos from "./components/pedido/Pedidos";
+import DetailsPedido from "./components/pedido/DetailsPedido";
 
 // CESTA
 import Cesta from "./components/cesta/Cesta";
 import Envio from "./components/cesta/Envio";
+import ConfirmarPedido from "./components/cesta/ConfirmarPedido";
+import Pago from "./components/cesta/Pago";
 
 //ADMIN
 import Dashboard from "./components/admin/Dashboard";
@@ -49,6 +53,7 @@ import UpdateDirigente from "./components/admin/UpdateDirigente";
 import UpdateClasificacion from "./components/admin/UpdateClasificacion";
 import UpdatePosicion from "./components/admin/UpdatePosicion";
 import UpdateMiembro from "./components/admin/UpdateMiembro";
+import ListPedidos from "./components/admin/ListPedidos";
 
 //REGISTRADO
 import Login from "./components/usuario/Login";
@@ -63,10 +68,23 @@ import PrivateRoute from "./components/route/PrivateRoute";
 import { loadUsuario } from "./actions/usuarioActions";
 import store from "./store";
 import { useSelector } from "react-redux";
+import axios from "axios";
+
+// Pago
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 function App() {
+  const [stripeApiKey, setStripeApiKey] = useState("");
   useEffect(() => {
     store.dispatch(loadUsuario());
+    async function getStripApiKey() {
+      const { data } = await axios.get("/api/stripeapi");
+
+      setStripeApiKey(data.stripeApiKey);
+    }
+
+    getStripApiKey();
   }, []);
 
   const { usuario, authenticatedUsuario, loading } = useSelector(
@@ -81,12 +99,22 @@ function App() {
         <Route path="/noticias" component={Noticias} exact />
         <Route path="/noticias/buscar/:keyword" component={Noticias} />
         <Route path="/noticias/:id" component={DetailsNoticia} exact />
+
         <Route path="/tienda" component={Tienda} exact />
         <Route path="/tienda/buscar/:keyword" component={Tienda} exact />
         <Route path="/tienda/productos/:id" component={DetailsProducto} exact />
         <Route path="/club" component={Club} />
         <Route path="/cesta" component={Cesta} exact />
         <PrivateRoute path="/envio" component={Envio} />
+        <PrivateRoute path="/confirmar" component={ConfirmarPedido} exact />
+        {stripeApiKey && (
+          <Elements stripe={loadStripe(stripeApiKey)}>
+            <PrivateRoute path="/pago" component={Pago} />
+          </Elements>
+        )}
+        <PrivateRoute path="/pedidos" component={Pedidos} exact />
+        <PrivateRoute path="/pedido/:id" component={DetailsPedido} exact />
+
         <Route path="/login" component={Login} />
         <Route path="/registro" component={Registro} />
         <Route path="/password/olvido" component={ForgotPassword} exact />
@@ -284,6 +312,12 @@ function App() {
           path="/admin-miembro/:id"
           esAdmin={true}
           component={UpdateMiembro}
+        />
+        <PrivateRoute
+          path="/admin-pedidos"
+          isAdmin={true}
+          component={ListPedidos}
+          exact
         />
         {!loading &&
           (!authenticatedUsuario || usuario.rol !== "administrador") && (

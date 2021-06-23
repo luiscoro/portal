@@ -46,7 +46,7 @@ export const createPedido = (pedido) => async (dispatch, getState) => {
   }
 };
 
-export const Pedidos = () => async (dispatch) => {
+export const getPedidos = () => async (dispatch) => {
   try {
     dispatch({ type: PEDIDOS_REQUEST });
 
@@ -64,7 +64,7 @@ export const Pedidos = () => async (dispatch) => {
   }
 };
 
-export const getPedidosDetails = (id) => async (dispatch) => {
+export const getPedidoDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: PEDIDO_DETAILS_REQUEST });
 
@@ -82,7 +82,7 @@ export const getPedidosDetails = (id) => async (dispatch) => {
   }
 };
 
-export const getPedidos = () => async (dispatch) => {
+export const getAdminPedidos = () => async (dispatch) => {
   try {
     dispatch({ type: GET_PEDIDOS_REQUEST });
 

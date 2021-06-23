@@ -1,10 +1,8 @@
 const Usuario = require("../models/usuario");
-
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
-
 const crypto = require("crypto");
 
 var d = new Date();
@@ -20,6 +18,34 @@ function validEmail(m) {
 
 function validPassword(p) {
   return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(p);
+}
+
+function validCedula(c) {
+  var res = 0;
+  let [suma, mul, chars] = [0, 1, c.length];
+  for (let index = 0; index < chars; index += 1) {
+    let num = c[index] * mul;
+    suma += num - (num > 9) * 9;
+    mul = 1 << index % 2;
+  }
+
+  if (suma % 10 === 0 && suma > 0) {
+    res = 1;
+  }
+
+  return res;
+}
+
+function validTelefono(t) {
+  return /^([0-9]){9,10}$/.test(t);
+}
+
+function validDireccion(d) {
+  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ 0-9]+$/.test(d);
+}
+
+function validCodigoPostal(c) {
+  return /^([0-9]){6,6}$/.test(c);
 }
 
 exports.createUsuario = catchAsyncErrors(async (req, res, next) => {
@@ -207,20 +233,42 @@ exports.updateInfoEnvio = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("El número de cédula es obligatorio", 400));
   }
 
-  if (!direccion) {
-    return next(new ErrorHandler("La dirección es obligatorio", 400));
+  if (!ciudad) {
+    return next(new ErrorHandler("La ciudad seleccionada no es válida", 400));
   }
 
   if (!telefono) {
     return next(new ErrorHandler("El teléfono es obligatorio", 400));
   }
 
-  if (!ciudad) {
-    return next(new ErrorHandler("La ciudad es obligatorio", 400));
-  }
-
   if (!codigoPostal) {
     return next(new ErrorHandler("El código postal es obligatorio", 400));
+  }
+
+  if (validCedula(cedula) == 0) {
+    return next(new ErrorHandler("El número de cédula no es válido", 400));
+  }
+
+  if (!validTelefono(telefono)) {
+    return next(
+      new ErrorHandler(
+        "El número de teléfono o celular debe tener entre 9 y 10 dígitos",
+        400
+      )
+    );
+  }
+
+  if (!validDireccion(direccion)) {
+    return next(
+      new ErrorHandler(
+        "La dirección debe tener letras, números y espacios",
+        400
+      )
+    );
+  }
+
+  if (!validCodigoPostal(codigoPostal)) {
+    return next(new ErrorHandler("El código postal debe tener 6 dígitos", 400));
   }
 
   const newUsuarioData = {

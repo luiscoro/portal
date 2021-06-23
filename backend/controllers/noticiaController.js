@@ -4,15 +4,31 @@ const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const APIFeatures = require("../utils/featuresNoticia");
 const cloudinary = require("cloudinary");
 
+function validNombre(n) {
+  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ 0-9]+$/.test(n);
+}
+
 exports.createNoticia = catchAsyncErrors(async (req, res, next) => {
   const { titulo, descripcion } = req.body;
 
   if (!titulo) {
-    return next(new ErrorHandler("Ingresa el título de la noticia", 401));
+    return next(new ErrorHandler("El título es obligatorio", 400));
   }
 
   if (!descripcion) {
-    return next(new ErrorHandler("Ingresa la descripción de la noticia ", 401));
+    return next(new ErrorHandler("La descripción es obligatoria", 400));
+  }
+
+  if (!validNombre(titulo)) {
+    return next(
+      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+    );
+  }
+
+  if (!validNombre(descripcion)) {
+    return next(
+      new ErrorHandler("La descripción debe tener letras y espacios", 400)
+    );
   }
 
   let imagenLink = {};
@@ -103,11 +119,23 @@ exports.updateNoticia = catchAsyncErrors(async (req, res, next) => {
   const { titulo, descripcion } = req.body;
 
   if (!titulo) {
-    return next(new ErrorHandler("Ingresa el título de la noticia", 401));
+    return next(new ErrorHandler("El título es obligatorio", 400));
   }
 
   if (!descripcion) {
-    return next(new ErrorHandler("Ingresa la descripción de la noticia ", 401));
+    return next(new ErrorHandler("La descripción es obligatoria", 400));
+  }
+
+  if (!validNombre(titulo)) {
+    return next(
+      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+    );
+  }
+
+  if (!validNombre(descripcion)) {
+    return next(
+      new ErrorHandler("La descripción debe tener letras y espacios", 400)
+    );
   }
 
   const newNoticiaData = {

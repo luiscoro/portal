@@ -6,7 +6,7 @@ const APIFeatures = require("../utils/featuresProducto");
 const cloudinary = require("cloudinary");
 
 function validNombre(n) {
-  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ]+$/.test(n);
+  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ 0-9]+$/.test(n);
 }
 
 exports.createProducto = catchAsyncErrors(async (req, res, next) => {
@@ -26,13 +26,13 @@ exports.createProducto = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("La descripción es obligatoria", 400));
   }
 
-  if (precio < 0) {
-    return next(new ErrorHandler("El precio no debe ser menor a cero", 400));
+  if (precio <= 0) {
+    return next(new ErrorHandler("El precio debe ser mayor a cero", 400));
   }
 
   if (stock < 0) {
     return next(
-      new ErrorHandler("El stock del producto no debe ser menor a cero", 400)
+      new ErrorHandler("La cantidad existente no debe ser menor a cero", 400)
     );
   }
 
@@ -131,6 +131,42 @@ exports.updateProducto = catchAsyncErrors(async (req, res, next) => {
 
   if (!producto) {
     return next(new ErrorHandler("Producto no encontrado", 404));
+  }
+
+  if (!req.body.categoria) {
+    return next(
+      new ErrorHandler("La categoría seleccionada no es válida", 400)
+    );
+  }
+
+  if (!req.body.nombre) {
+    return next(new ErrorHandler("El nombre es obligatorio", 400));
+  }
+
+  if (!req.body.descripcion) {
+    return next(new ErrorHandler("La descripción es obligatoria", 400));
+  }
+
+  if (req.body.precio <= 0) {
+    return next(new ErrorHandler("El precio debe ser mayor a cero", 400));
+  }
+
+  if (req.body.stock < 0) {
+    return next(
+      new ErrorHandler("La cantidad existente no debe ser menor a cero", 400)
+    );
+  }
+
+  if (!validNombre(req.body.nombre)) {
+    return next(
+      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+    );
+  }
+
+  if (!validNombre(req.body.descripcion)) {
+    return next(
+      new ErrorHandler("La descripción debe tener letras y espacios", 400)
+    );
   }
 
   let imagenes = [];

@@ -406,6 +406,9 @@ button {
 
 button:focus,
 input:focus,
+#card_num_field:hover,
+#card_exp_field:hover,
+#card_cvc_field:hover,
 textarea:focus,
 select:focus {
   outline: 1px solid #b1c904;
@@ -416,6 +419,9 @@ button {
 }
 
 input,
+#card_num_field,
+#card_exp_field,
+#card_cvc_field,
 textarea {
   padding: 10px 20px;
   border: 1px solid #e5e5e5;

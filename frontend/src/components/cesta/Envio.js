@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
-
 import MetaData from "../section/MetaData";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Verificacion from "./Verificacion";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   updateInfoEnvio,
   loadUsuario,
   clearErrors,
 } from "../../actions/usuarioActions";
 import { UPDATE_INFO_ENVIO_RESET } from "../../constants/usuarioConstants";
-
+var ciudades = require("country-city").getCities("Ecuador");
 var MySwal;
 
 const Envio = ({ history }) => {
@@ -96,58 +94,57 @@ const Envio = ({ history }) => {
                     Información para el envío del pedido
                   </h3>
                   <form className="login-form" onSubmit={submitHandler}>
-                    <div className="form-group">
-                      <label>Cédula de identidad</label>
+                    <div className="frm-group">
+                      <label>Identificación:</label>
                       <input
                         type="text"
-                        placeholder="Ingresa la cédula de identidad"
+                        placeholder="Cédula de identidad"
                         value={cedula}
                         onChange={(e) => setCedula(e.target.value)}
                       />
                     </div>
-                    <div className="form-group">
-                      <label>Dirección</label>
+                    <div className="frm-group">
+                      <label>Ciudad:</label>
+                      <select
+                        value={ciudad}
+                        onChange={(e) => setCiudad(e.target.value)}
+                      >
+                        <option value={""}>
+                          Seleccione la ciudad de envío
+                        </option>
+                        {ciudades.map((ciudad) => (
+                          <option key={ciudad} value={ciudad}>
+                            {ciudad}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="frm-group">
+                      <label>Dirección:</label>
                       <input
                         type="text"
-                        placeholder="Ingresa la dirección de entrega"
+                        placeholder="Dirección de envío"
                         value={direccion}
                         onChange={(e) => setDireccion(e.target.value)}
                       />
                     </div>
-                    <div className="form-group">
-                      <label>Dirección</label>
+                    <div className="frm-group">
+                      <label>Teléfono:</label>
                       <input
                         type="text"
-                        placeholder="Ingresa la dirección de entrega"
-                        value={direccion}
-                        onChange={(e) => setDireccion(e.target.value)}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Teléfono</label>
-                      <input
-                        type="text"
-                        placeholder="Ingresa el número telefónico"
+                        placeholder="Número de teléfono o celular"
                         value={telefono}
                         onChange={(e) => setTelefono(e.target.value)}
                       />
                     </div>
-                    <div className="form-group">
-                      <label>Ciudad</label>
+
+                    <div className="frm-group">
+                      <label>Código Postal:</label>
                       <input
                         type="text"
-                        placeholder="Ingresa la ciudad"
-                        value={ciudad}
-                        onChange={(e) => setCiudad(e.target.value)}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Código Postal</label>
-                      <input
-                        type="text"
-                        placeholder="Ingresa el código postal de tu localidad"
-                        value={ciudad}
-                        onChange={(e) => setCiudad(e.target.value)}
+                        placeholder="Código postal de tu localidad"
+                        value={codigoPostal}
+                        onChange={(e) => setCodigoPostal(e.target.value)}
                       />
                     </div>
                     <div className="frm-group">

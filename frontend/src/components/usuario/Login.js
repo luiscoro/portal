@@ -74,14 +74,13 @@ const Login = ({ history, location }) => {
                       <form
                         className="login-form"
                         onSubmit={submitHandler}
-                        autocomplete="off"
+                        autoComplete="off"
                       >
                         <div className="frm-group">
                           <input
                             type="text"
                             name="email"
-                            id="email"
-                            placeholder="Ingresa tu correo electrónico"
+                            placeholder="Correo electrónico"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                           />
@@ -89,9 +88,8 @@ const Login = ({ history, location }) => {
                         <div className="frm-group">
                           <input
                             type="password"
-                            name="pass"
-                            id="pass"
-                            placeholder="Ingresa tu contraseña"
+                            name="password"
+                            placeholder="Contraseña"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                           />

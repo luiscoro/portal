@@ -22,6 +22,7 @@ const usuarioSchema = new mongoose.Schema({
   cedula: {
     type: String,
     default: "",
+    unique: true,
   },
   direccion: {
     type: String,

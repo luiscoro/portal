@@ -133,8 +133,6 @@ const UpdateNoticia = ({ match, history }) => {
         <div className="dashboard">
           <div className="col-12 col-md-10">
             <>
-              {" "}
-              {/* login-section start */}
               <section className="login-section pt-120 pb-120">
                 <div className="container">
                   <div className="row">
@@ -149,26 +147,26 @@ const UpdateNoticia = ({ match, history }) => {
                             encType="multipart/form-data"
                           >
                             <div className="frm-group">
-                              <label>Titulo</label>
+                              <label>Titulo:</label>
                               <input
                                 type="text"
-                                placeholder="Ingresa el titulo "
+                                placeholder="Título de la noticia"
                                 value={titulo}
                                 onChange={(e) => setTitulo(e.target.value)}
                               />
                             </div>
                             <div className="frm-group">
-                              <label>Descripción</label>
+                              <label>Descripción:</label>
                               <textarea
                                 name="descripcion"
-                                placeholder="Ingresa la descripción..."
+                                placeholder="Descripción de la noticia..."
                                 value={descripcion}
                                 rows={2}
                                 onChange={(e) => setDescripcion(e.target.value)}
                               ></textarea>
                             </div>
                             <div className="frm-group">
-                              <label>Imagen</label>
+                              <label>Imagen:</label>
 
                               <div className="custom-file">
                                 <input
@@ -201,7 +199,6 @@ const UpdateNoticia = ({ match, history }) => {
                   </div>
                 </div>
               </section>
-              {/* login-section end */}
             </>
           </div>
         </div>

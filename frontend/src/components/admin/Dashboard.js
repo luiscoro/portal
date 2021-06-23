@@ -9,7 +9,7 @@ import Sidebar from "./Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getAdminProductos } from "../../actions/productoActions";
-import { getPedidos } from "../../actions/pedidoActions";
+import { getAdminPedidos } from "../../actions/pedidoActions";
 import { getUsuarios } from "../../actions/usuarioActions";
 
 const Dashboard = () => {
@@ -30,7 +30,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getAdminProductos());
-    dispatch(getPedidos());
+    dispatch(getAdminPedidos());
     dispatch(getUsuarios());
   }, [dispatch]);
 
@@ -98,7 +98,7 @@ const Dashboard = () => {
                       </div>
                       <Link
                         className="card-footer text-white clearfix small z-1"
-                        to="/admin/pedidos"
+                        to="/admin-pedidos"
                       >
                         <span className="float-left" style={{ color: "white" }}>
                           Ver Detalles
@@ -142,7 +142,7 @@ const Dashboard = () => {
                     <div className="card text-white bg-danger o-hidden h-100">
                       <div className="card-body">
                         <div className="text-center card-font-size">
-                          Fuera de stock
+                          Productos fuera de stock
                           <br /> <b>{fueraStock}</b>
                         </div>
                       </div>

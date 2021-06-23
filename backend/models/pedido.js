@@ -5,11 +5,11 @@ d.setHours(d.getHours() - 5);
 
 const pedidoSchema = mongoose.Schema({
   infoEnvio: {
-    direcion: {
+    ciudad: {
       type: String,
       required: true,
     },
-    ciudad: {
+    direccion: {
       type: String,
       required: true,
     },
@@ -18,10 +18,6 @@ const pedidoSchema = mongoose.Schema({
       required: true,
     },
     codigoPostal: {
-      type: String,
-      required: true,
-    },
-    pais: {
       type: String,
       required: true,
     },
@@ -91,7 +87,7 @@ const pedidoSchema = mongoose.Schema({
   estadoPedido: {
     type: String,
     required: true,
-    default: "Procesando",
+    default: "pendiente de envío",
   },
   fechaEntrega: {
     type: Date,
