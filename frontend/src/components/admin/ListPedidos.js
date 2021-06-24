@@ -32,7 +32,7 @@ const ListPedidos = ({ history }) => {
       MySwal.fire({
         background: "#f5ede4",
         icon: "success",
-        title: "El pedido ha sido actualizado con éxito",
+        title: "El estado del pedido ha sido actualizado con éxito",
         timer: 5000,
         showConfirmButton: true,
         confirmButtonColor: "#3085d6",
@@ -125,13 +125,11 @@ const ListPedidos = ({ history }) => {
           ) : (
             <p style={{ color: "red" }}>{pedido.estadoPedido}</p>
           ),
-        estadoPago:
-          pedido.estadoPedido &&
-          String(pedido.estadoPedido).includes("pendiente de envío") ? (
-            <p style={{ color: "green" }}>{"exitoso"}</p>
-          ) : (
-            <p style={{ color: "red" }}>{""}</p>
-          ),
+        estadoPago: (
+          <p style={{ color: "green" }}>
+            {pedido.infoPago && pedido.infoPago.estado}
+          </p>
+        ),
         acciones: (
           <>
             <Link

@@ -200,6 +200,13 @@ const ListMiembros = ({ history }) => {
           ) : (
             <div className="col-12 col-md-10">
               <>
+                <br />
+                <Link
+                  to={`/admin-miembro`}
+                  className="btn btn-primary btn-radius"
+                >
+                  Crear nuevo
+                </Link>
                 <h3 className="my-4">Listado de miembros</h3>
 
                 <MDBDataTable

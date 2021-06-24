@@ -188,6 +188,13 @@ const ListNoticias = ({ history }) => {
           ) : (
             <div className="col-12 col-md-10">
               <>
+                <br />
+                <Link
+                  to={`/admin-noticia`}
+                  className="btn btn-primary btn-radius"
+                >
+                  Crear nueva
+                </Link>
                 <h3 className="my-4">Listado de noticias</h3>
 
                 <MDBDataTable

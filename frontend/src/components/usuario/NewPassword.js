@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MetaData from "../section/MetaData";
+import Banner from "../section/Banner";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,31 +63,10 @@ const NewPassword = ({ history, match }) => {
   };
   return (
     <>
-      <MetaData title={"Nueva contraseña"} />
+      <MetaData title={"Restablecer contraseña"} />
 
-      {/* inner-banner-section start */}
-      <section
-        className="inner-banner-section bg_img base-overlay"
-        data-background="assets/images/bg/home-eight-banner.jpg"
-      >
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8">
-              <div className="inner-banner-content text-center">
-                <h2 className="page-title">Restablecer contraseña</h2>
-                <ol className="breadcum d-flex justify-content-center">
-                  <li>
-                    <a href="home-one.html">inicio</a>
-                  </li>
-                  <li>Restablecer contraseña</li>
-                </ol>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* inner-banner-section end */}
-      {/* login-section start */}
+      <Banner title={"Restablecer contraseña"} />
+
       <section className="login-section pt-120 pb-120">
         <div className="container">
           <div className="row">
@@ -125,7 +105,6 @@ const NewPassword = ({ history, match }) => {
           </div>
         </div>
       </section>
-      {/* login-section end */}
     </>
   );
 };

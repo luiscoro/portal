@@ -123,6 +123,9 @@ export const getPedidosReducer = (state = { pedidos: [] }, action) => {
         loading: false,
         pedidos: action.payload.pedidos,
         montoTotal: action.payload.montoTotal,
+        pedidosPendientes: action.payload.pedidosPendientes,
+        pedidosEnviados: action.payload.pedidosEnviados,
+        pedidosEntregados: action.payload.pedidosEntregados,
       };
 
     case GET_PEDIDOS_FAIL:

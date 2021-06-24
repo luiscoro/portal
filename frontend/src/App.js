@@ -54,6 +54,8 @@ import UpdateClasificacion from "./components/admin/UpdateClasificacion";
 import UpdatePosicion from "./components/admin/UpdatePosicion";
 import UpdateMiembro from "./components/admin/UpdateMiembro";
 import ListPedidos from "./components/admin/ListPedidos";
+import UpdatePedido from "./components/admin/UpdatePedido";
+import ReviewsProducto from "./components/admin/ReviewsProducto";
 
 //REGISTRADO
 import Login from "./components/usuario/Login";
@@ -319,6 +321,18 @@ function App() {
           component={ListPedidos}
           exact
         />
+        <PrivateRoute
+          path="/admin-pedido/:id"
+          isAdmin={true}
+          component={UpdatePedido}
+        />
+        <PrivateRoute
+          path="/admin-revisiones"
+          isAdmin={true}
+          component={ReviewsProducto}
+          exact
+        />
+
         {!loading &&
           (!authenticatedUsuario || usuario.rol !== "administrador") && (
             <Footer />

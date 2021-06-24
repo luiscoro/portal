@@ -31,16 +31,28 @@ exports.createPedido = catchAsyncErrors(async (req, res, next) => {
     fechaPago: d,
   });
 
+  pedido.itemsPedido.forEach(async (item) => {
+    await updateStock(item.producto, item.cantidad);
+  });
+
   res.status(200).json({
     success: true,
     pedido,
   });
 });
 
+async function updateStock(id, cantidad) {
+  const producto = await Producto.findById(id);
+
+  producto.stock = producto.stock - cantidad;
+
+  await producto.save({ validateBeforeSave: false });
+}
+
 exports.getSinglePedido = catchAsyncErrors(async (req, res, next) => {
   const pedido = await Pedido.findById(req.params.id).populate(
     "usuario",
-    "nombre email"
+    "nombre email cedula"
   );
 
   if (!pedido) {
@@ -64,6 +76,15 @@ exports.Pedidos = catchAsyncErrors(async (req, res, next) => {
 
 exports.getPedidos = catchAsyncErrors(async (req, res, next) => {
   const pedidos = await Pedido.find();
+  const pedidosPendientes = await Pedido.find({
+    estadoPedido: "pendiente de envío",
+  }).count();
+  const pedidosEnviados = await Pedido.find({
+    estadoPedido: "enviado",
+  }).count();
+  const pedidosEntregados = await Pedido.find({
+    estadoPedido: "entregado",
+  }).count();
 
   let montoTotal = 0;
 
@@ -75,21 +96,23 @@ exports.getPedidos = catchAsyncErrors(async (req, res, next) => {
     success: true,
     montoTotal,
     pedidos,
+    pedidosPendientes,
+    pedidosEnviados,
+    pedidosEntregados,
   });
 });
 
 exports.updatePedido = catchAsyncErrors(async (req, res, next) => {
   const pedido = await Pedido.findById(req.params.id);
 
-  if (pedido.estadoPedido === "Entregado") {
+  if (pedido.estadoPedido === "entregado") {
     return next(new ErrorHandler("El pedido ya ha sido entregado", 400));
   }
+  if (pedido.estadoPedido === "") {
+    return next(new ErrorHandler("Seleccione un estado válido", 400));
+  }
 
-  pedido.itemsPedido.forEach(async (item) => {
-    await updateStock(item.producto, item.cantidad);
-  });
-
-  (pedido.estadoPedido = req.body.status), (pedido.fechaEntrega = d);
+  (pedido.estadoPedido = req.body.estado), (pedido.fechaEntrega = d);
 
   await pedido.save();
 
@@ -97,14 +120,6 @@ exports.updatePedido = catchAsyncErrors(async (req, res, next) => {
     success: true,
   });
 });
-
-async function updateStock(id, cantidad) {
-  const producto = await Producto.findById(id);
-
-  producto.stock = producto.stock - cantidad;
-
-  await producto.save({ validateBeforeSave: false });
-}
 
 exports.deletePedido = catchAsyncErrors(async (req, res, next) => {
   const pedido = await Pedido.findById(req.params.id);

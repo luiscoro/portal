@@ -220,7 +220,7 @@ const Pago = ({ history }) => {
                       />
                     </div>
                     <div className="frm-group">
-                      <label>Fecha de expiración:</label>
+                      <label>Fecha de caducidad:</label>
                       <br />
                       <CardExpiryElement
                         type="text"

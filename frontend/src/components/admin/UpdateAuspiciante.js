@@ -132,8 +132,6 @@ const UpdateAuspiciante = ({ match, history }) => {
         <div className="dashboard">
           <div className="col-12 col-md-10">
             <>
-              {" "}
-              {/* login-section start */}
               <section className="login-section pt-120 pb-120">
                 <div className="container">
                   <div className="row">
@@ -191,7 +189,6 @@ const UpdateAuspiciante = ({ match, history }) => {
                   </div>
                 </div>
               </section>
-              {/* login-section end */}
             </>
           </div>
         </div>

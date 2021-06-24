@@ -189,6 +189,13 @@ const ListProductos = ({ history }) => {
         <div className="dashboard">
           <div className="col-12 col-md-10">
             <>
+              <br />
+              <Link
+                to={`/admin-producto`}
+                className="btn btn-primary btn-radius"
+              >
+                Crear nuevo
+              </Link>
               <h3 className="my-4">Listado de productos</h3>
               {loading ? (
                 <Loader />

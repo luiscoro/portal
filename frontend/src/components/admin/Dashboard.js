@@ -10,27 +10,28 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getAdminProductos } from "../../actions/productoActions";
 import { getAdminPedidos } from "../../actions/pedidoActions";
+import { getAdminNoticias } from "../../actions/noticiaActions";
 import { getUsuarios } from "../../actions/usuarioActions";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
 
   const { productos } = useSelector((state) => state.productos);
+  const { noticias } = useSelector((state) => state.noticias);
   const { usuarios } = useSelector((state) => state.getUsuarios);
-  const { pedidos, montoTotal, loading } = useSelector(
-    (state) => state.getPedidos
-  );
-
-  let fueraStock = 0;
-  productos.forEach((producto) => {
-    if (producto.stock === 0) {
-      fueraStock += 1;
-    }
-  });
+  const {
+    pedidos,
+    montoTotal,
+    pedidosPendientes,
+    pedidosEnviados,
+    pedidosEntregados,
+    loading,
+  } = useSelector((state) => state.getPedidos);
 
   useEffect(() => {
     dispatch(getAdminProductos());
     dispatch(getAdminPedidos());
+    dispatch(getAdminNoticias());
     dispatch(getUsuarios());
   }, [dispatch]);
 
@@ -64,19 +65,19 @@ const Dashboard = () => {
                 </div>
                 <div className="row pr-4">
                   <div className="col-xl-3 col-sm-6 mb-3">
-                    <div className="card text-white bg-success o-hidden h-100">
+                    <div className="card text-white bg-dark o-hidden h-100">
                       <div className="card-body">
                         <div className="text-center card-font-size">
-                          Productos
-                          <br /> <b>{productos && productos.length}</b>
+                          <i className="fa fa-info-circle"></i> Información del
+                          club
                         </div>
                       </div>
                       <Link
                         className="card-footer text-white clearfix small z-1"
-                        to="/admin-productos"
+                        to="/informacion"
                       >
                         <span className="float-left" style={{ color: "white" }}>
-                          Ver Detalles
+                          Ver detalles
                         </span>
                         <span className="float-right">
                           <i
@@ -89,19 +90,20 @@ const Dashboard = () => {
                   </div>
 
                   <div className="col-xl-3 col-sm-6 mb-3">
-                    <div className="card text-white bg-info o-hidden h-100">
+                    <div className="card text-white bg-primary o-hidden h-100">
                       <div className="card-body">
                         <div className="text-center card-font-size">
-                          Pedidos
-                          <br /> <b>{pedidos && pedidos.length}</b>
+                          <i className="fa fa-product-hunt"></i> Productos
+                          registrados
+                          <br /> <b>{productos && productos.length}</b>
                         </div>
                       </div>
                       <Link
                         className="card-footer text-white clearfix small z-1"
-                        to="/admin-pedidos"
+                        to="/admin-productos"
                       >
                         <span className="float-left" style={{ color: "white" }}>
-                          Ver Detalles
+                          Ver listado
                         </span>
                         <span className="float-right">
                           <i
@@ -117,7 +119,7 @@ const Dashboard = () => {
                     <div className="card text-white bg-dark o-hidden h-100">
                       <div className="card-body">
                         <div className="text-center card-font-size">
-                          Usuarios
+                          <i className="fa fa-users"></i> Usuarios registrados
                           <br /> <b>{usuarios && usuarios.length}</b>
                         </div>
                       </div>
@@ -126,7 +128,61 @@ const Dashboard = () => {
                         to="/admin-usuarios"
                       >
                         <span className="float-left" style={{ color: "white" }}>
-                          Ver Detalles
+                          Ver listado
+                        </span>
+                        <span className="float-right">
+                          <i
+                            className="fa fa-angle-right"
+                            style={{ color: "white" }}
+                          ></i>
+                        </span>
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="col-xl-3 col-sm-6 mb-3">
+                    <div className="card text-white bg-primary o-hidden h-100">
+                      <div className="card-body">
+                        <div className="text-center card-font-size">
+                          <i className="fa fa-newspaper-o"></i> Noticias
+                          registradas
+                          <br /> <b>{noticias && noticias.length}</b>
+                        </div>
+                      </div>
+                      <Link
+                        className="card-footer text-white clearfix small z-1"
+                        to="/admin-noticias"
+                      >
+                        <span className="float-left" style={{ color: "white" }}>
+                          Ver listado
+                        </span>
+                        <span className="float-right">
+                          <i
+                            className="fa fa-angle-right"
+                            style={{ color: "white" }}
+                          ></i>
+                        </span>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row pr-4">
+                  <div className="col-xl-3 col-sm-6 mb-3">
+                    <div className="card text-white bg-info o-hidden h-100">
+                      <div className="card-body">
+                        <div className="text-center card-font-size">
+                          <i className="fa fa-shopping-basket"></i> Pedidos
+                          registrados
+                          <br /> <b>{pedidos && pedidos.length}</b>
+                        </div>
+                      </div>
+                      <Link
+                        className="card-footer text-white clearfix small z-1"
+                        to="/admin-pedidos"
+                      >
+                        <span className="float-left" style={{ color: "white" }}>
+                          Ver listado
                         </span>
                         <span className="float-right">
                           <i
@@ -142,10 +198,76 @@ const Dashboard = () => {
                     <div className="card text-white bg-danger o-hidden h-100">
                       <div className="card-body">
                         <div className="text-center card-font-size">
-                          Productos fuera de stock
-                          <br /> <b>{fueraStock}</b>
+                          <i className="fa fa-exclamation-triangle"></i> Pedidos
+                          no enviados
+                          <br /> <b>{pedidosPendientes}</b>
                         </div>
                       </div>
+                      <Link
+                        className="card-footer text-white clearfix small z-1"
+                        to="/admin-pedidos"
+                      >
+                        <span className="float-left" style={{ color: "white" }}>
+                          Ver listado
+                        </span>
+                        <span className="float-right">
+                          <i
+                            className="fa fa-angle-right"
+                            style={{ color: "white" }}
+                          ></i>
+                        </span>
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="col-xl-3 col-sm-6 mb-3">
+                    <div className="card text-white bg-dark o-hidden h-100">
+                      <div className="card-body">
+                        <div className="text-center card-font-size">
+                          <i className="fa fa-truck"></i> Pedidos enviados
+                          <br /> <b>{pedidosEnviados}</b>
+                        </div>
+                      </div>
+                      <Link
+                        className="card-footer text-white clearfix small z-1"
+                        to="/admin-pedidos"
+                      >
+                        <span className="float-left" style={{ color: "white" }}>
+                          Ver listado
+                        </span>
+                        <span className="float-right">
+                          <i
+                            className="fa fa-angle-right"
+                            style={{ color: "white" }}
+                          ></i>
+                        </span>
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="col-xl-3 col-sm-6 mb-3">
+                    <div className="card text-white bg-success o-hidden h-100">
+                      <div className="card-body">
+                        <div className="text-center card-font-size">
+                          <i className="fa fa-shopping-basket"></i> Pedidos
+                          entregados
+                          <br /> <b>{pedidosEntregados}</b>
+                        </div>
+                      </div>
+                      <Link
+                        className="card-footer text-white clearfix small z-1"
+                        to="/admin-pedidos"
+                      >
+                        <span className="float-left" style={{ color: "white" }}>
+                          Ver listado
+                        </span>
+                        <span className="float-right">
+                          <i
+                            className="fa fa-angle-right"
+                            style={{ color: "white" }}
+                          ></i>
+                        </span>
+                      </Link>
                     </div>
                   </div>
                 </div>

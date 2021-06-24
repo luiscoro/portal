@@ -246,7 +246,7 @@ export const productoRevisionesReducer = (state = { revision: [] }, action) => {
     case GET_REVISIONES_SUCCESS:
       return {
         loading: false,
-        reviews: action.payload,
+        revisiones: action.payload,
       };
 
     case GET_REVISIONES_FAIL:

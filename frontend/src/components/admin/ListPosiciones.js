@@ -182,6 +182,13 @@ const ListPosiciones = ({ history }) => {
           ) : (
             <div className="col-12 col-md-10">
               <>
+                <br />
+                <Link
+                  to={`/admin-posicion`}
+                  className="btn btn-primary btn-radius"
+                >
+                  Crear nueva
+                </Link>
                 <h3 className="my-4">Listado de posiciones</h3>
 
                 <MDBDataTable

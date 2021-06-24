@@ -11,78 +11,61 @@ const Sidebar = () => {
               <i className="fa fa-tachometer"></i> Dashboard
             </Link>
           </li>
-
           <li>
             <a
-              href="#inforSubmenu"
+              href="#miembroSubmenu"
               data-toggle="collapse"
               aria-expanded="false"
               className="dropdown-toggle"
             >
-              <i className="fa fa-info-circle"></i> Información
+              <i className="fa fa-address-book-o"></i> Miembros
             </a>
-            <ul className="collapse list-unstyled" id="inforSubmenu">
+            <ul className="collapse list-unstyled" id="miembroSubmenu">
               <li>
-                <Link to="/informacion">
-                  <i className="fa fa-clipboard"></i> El club
+                <Link to="/admin-miembros">
+                  <i className="fa fa-clipboard"></i> Listado
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/admin-miembro">
+                  <i className="fa fa-plus"></i> Nuevo
                 </Link>
               </li>
               <li>
-                <a
-                  href="#dirigenteSubmenu"
-                  data-toggle="collapse"
-                  aria-expanded="false"
-                  className="dropdown-toggle"
-                >
-                  <i className="fa fa-address-card"></i> Dirigentes
-                </a>
-                <ul className="collapse list-unstyled" id="dirigenteSubmenu">
-                  <li>
-                    <Link to="/admin-dirigentes">
-                      <i className="fa fa-clipboard"></i> Listado
-                    </Link>
-                  </li>
-
-                  <li>
-                    <Link to="/admin-dirigente">
-                      <i className="fa fa-plus"></i> Nuevo
-                    </Link>
-                  </li>
-                </ul>
+                <Link to="/admin-posiciones">
+                  <i className="fa fa-universal-access"></i> Posiciones
+                </Link>
               </li>
+
               <li>
-                <a
-                  href="#miembroSubmenu"
-                  data-toggle="collapse"
-                  aria-expanded="false"
-                  className="dropdown-toggle"
-                >
-                  <i className="fa fa-address-book-o"></i> Miembros
-                </a>
-                <ul className="collapse list-unstyled" id="miembroSubmenu">
-                  <li>
-                    <Link to="/admin-miembros">
-                      <i className="fa fa-clipboard"></i> Listado
-                    </Link>
-                  </li>
+                <Link to="/admin-posicion">
+                  <i className="fa fa-plus"></i> Nueva posición
+                </Link>
+              </li>
+            </ul>
+          </li>
 
-                  <li>
-                    <Link to="/admin-miembro">
-                      <i className="fa fa-plus"></i> Nuevo
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/admin-posiciones">
-                      <i className="fa fa-universal-access"></i> Posiciones
-                    </Link>
-                  </li>
+          <li>
+            <a
+              href="#dirigenteSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              className="dropdown-toggle"
+            >
+              <i className="fa fa-address-card"></i> Dirigentes
+            </a>
+            <ul className="collapse list-unstyled" id="dirigenteSubmenu">
+              <li>
+                <Link to="/admin-dirigentes">
+                  <i className="fa fa-clipboard"></i> Listado
+                </Link>
+              </li>
 
-                  <li>
-                    <Link to="/admin-posicion">
-                      <i className="fa fa-plus"></i> Nueva posición
-                    </Link>
-                  </li>
-                </ul>
+              <li>
+                <Link to="/admin-dirigente">
+                  <i className="fa fa-plus"></i> Nuevo
+                </Link>
               </li>
             </ul>
           </li>
@@ -111,7 +94,7 @@ const Sidebar = () => {
 
               <li>
                 <Link to="/admin-revisiones">
-                  <i className="fa fa-star"></i> Revisiones
+                  <i className="fa fa-star"></i> Valoraciones
                 </Link>
               </li>
 
@@ -132,6 +115,12 @@ const Sidebar = () => {
           <li>
             <Link to="/admin-pedidos">
               <i className="fa fa-shopping-basket"></i> Pedidos
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/admin-usuarios">
+              <i className="fa fa-users"></i> Usuarios
             </Link>
           </li>
 
@@ -229,12 +218,6 @@ const Sidebar = () => {
                 </Link>
               </li>
             </ul>
-          </li>
-
-          <li>
-            <Link to="/admin-usuarios">
-              <i className="fa fa-users"></i> Usuarios
-            </Link>
           </li>
         </ul>
       </nav>

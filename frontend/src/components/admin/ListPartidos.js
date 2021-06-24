@@ -213,6 +213,13 @@ const ListPartidos = ({ history }) => {
           ) : (
             <div className="col-12 col-md-10">
               <>
+                <br />
+                <Link
+                  to={`/admin-partido`}
+                  className="btn btn-primary btn-radius"
+                >
+                  Crear nuevo
+                </Link>
                 <h3 className="my-4">Listado de partidos</h3>
                 <MDBDataTable
                   data={setPartidos()}

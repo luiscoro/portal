@@ -156,12 +156,12 @@ const Header = () => {
                             aria-labelledby="dropDownMenuButton"
                           >
                             <Link className="dropdown-item" to="/login">
-                              <i class="fa fa-sign-in"></i>
+                              <i className="fa fa-sign-in"></i>
                               Iniciar sesión
                             </Link>
                             <hr className="dropdown-divider" />
                             <Link className="dropdown-item" to="/registro">
-                              <i class="fa fa-pencil"></i>
+                              <i className="fa fa-pencil"></i>
                               Registrarse
                             </Link>
                           </div>
@@ -192,11 +192,11 @@ const Header = () => {
                             </Link>
                           )}
                           <Link className="dropdown-item" to="/pedidos">
-                            <i class="fa fa-shopping-basket"></i>
+                            <i className="fa fa-shopping-basket"></i>
                             Mis pedidos
                           </Link>
                           <Link className="dropdown-item" to="/perfil">
-                            <i class="fa fa-id-card-o"></i>
+                            <i className="fa fa-id-card-o"></i>
                             Perfil
                           </Link>
                           <Link
