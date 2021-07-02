@@ -15,7 +15,7 @@ exports.createCategoria = catchAsyncErrors(async (req, res, next) => {
 
   if (!validNombre(nombre)) {
     return next(
-      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+      new ErrorHandler("El nombre solo admite letras y espacios", 400)
     );
   }
 
@@ -58,7 +58,7 @@ exports.updateCategoria = catchAsyncErrors(async (req, res, next) => {
 
   if (!validNombre(nombre)) {
     return next(
-      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+      new ErrorHandler("El nombre solo admite letras y espacios", 400)
     );
   }
 

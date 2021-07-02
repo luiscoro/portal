@@ -200,7 +200,7 @@ const Header = () => {
                             Perfil
                           </Link>
                           <Link
-                            className="dropdown-item text-danger"
+                            className="dropdown-item"
                             to="/"
                             onClick={logoutHandler}
                           >

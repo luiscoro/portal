@@ -22,18 +22,30 @@ function validPassword(p) {
 
 function validCedula(c) {
   var res = 0;
-  let [suma, mul, chars] = [0, 1, c.length];
-  for (let index = 0; index < chars; index += 1) {
-    let num = c[index] * mul;
-    suma += num - (num > 9) * 9;
-    mul = 1 << index % 2;
-  }
+  var cad = c;
+  var total = 0;
+  var longitud = cad.length;
+  var longcheck = longitud - 1;
 
-  if (suma % 10 === 0 && suma > 0) {
-    res = 1;
-  }
+  if (cad !== "" && longitud === 10) {
+    for (i = 0; i < longcheck; i++) {
+      if (i % 2 === 0) {
+        var aux = cad.charAt(i) * 2;
+        if (aux > 9) aux -= 9;
+        total += aux;
+      } else {
+        total += parseInt(cad.charAt(i));
+      }
+    }
 
-  return res;
+    total = total % 10 ? 10 - (total % 10) : 0;
+
+    if (cad.charAt(longitud - 1) == total) {
+      res = 1;
+    }
+
+    return res;
+  }
 }
 
 function validTelefono(t) {
@@ -64,9 +76,7 @@ exports.createUsuario = catchAsyncErrors(async (req, res, next) => {
   }
 
   if (!validNombre(nombre)) {
-    return next(
-      new ErrorHandler("El nombre debe tener letras y espacios", 400)
-    );
+    return next(new ErrorHandler("El nombre solo admite letras y espacios", 400));
   }
 
   if (!validEmail(email)) {
@@ -119,7 +129,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   if (!usuario) {
     return next(
       new ErrorHandler(
-        "El correo que se ha ingresado no pertenece a ninguna cuenta",
+        "El correo electrónico ingresado no pertenece a ninguna cuenta registrada",
         404
       )
     );
@@ -131,7 +141,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
   const resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
 
-  const message = `La dirección para restablecer la contraseña es la siguiente:\n\n${resetUrl}\n\nEn caso de no haber solicitado esto, ignora el correo enviado.`;
+  const message = `La dirección para restablecer la contraseña es la siguiente:\n\n${resetUrl}\n\nEn caso de no haber solicitado esto, ignora este correo.`;
 
   try {
     await sendEmail({
@@ -252,7 +262,7 @@ exports.updateInfoEnvio = catchAsyncErrors(async (req, res, next) => {
   if (!validTelefono(telefono)) {
     return next(
       new ErrorHandler(
-        "El número de teléfono o celular debe tener entre 9 y 10 dígitos",
+        "El número de teléfono o celular solo puede tener 9 o 10 dígitos",
         400
       )
     );
@@ -261,14 +271,16 @@ exports.updateInfoEnvio = catchAsyncErrors(async (req, res, next) => {
   if (!validDireccion(direccion)) {
     return next(
       new ErrorHandler(
-        "La dirección debe tener letras, números y espacios",
+        "La dirección solo admite letras, números y espacios",
         400
       )
     );
   }
 
   if (!validCodigoPostal(codigoPostal)) {
-    return next(new ErrorHandler("El código postal debe tener 6 dígitos", 400));
+    return next(
+      new ErrorHandler("El código postal solo puede tener 6 dígitos", 400)
+    );
   }
 
   const newUsuarioData = {
@@ -307,7 +319,7 @@ exports.updatePerfil = catchAsyncErrors(async (req, res, next) => {
 
   if (!validNombre(nombre)) {
     return next(
-      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+      new ErrorHandler("El nombre solo admite letras y espacios", 400)
     );
   }
 

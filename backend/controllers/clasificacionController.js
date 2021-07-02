@@ -6,14 +6,16 @@ exports.createClasificacion = catchAsyncErrors(async (req, res, next) => {
   const { equipo, puntos, golDiferencia } = req.body;
 
   if (!equipo) {
-    return next(new ErrorHandler("Ingresa el nombre del equipo", 401));
+    return next(new ErrorHandler("El nombre del equipo es obligatorio", 401));
   }
   if (!puntos) {
-    return next(new ErrorHandler("Ingresa los puntos del equipo", 401));
+    return next(
+      new ErrorHandler("Los puntos del equipo son obligatorios", 401)
+    );
   }
   if (!golDiferencia) {
     return next(
-      new ErrorHandler("Ingresa el gol de diferencia del equipo", 401)
+      new ErrorHandler("El gol de diferencia del equipo es obligatorio", 401)
     );
   }
 
@@ -52,6 +54,20 @@ exports.getSingleClasificacion = catchAsyncErrors(async (req, res, next) => {
 
 exports.updateClasificacion = catchAsyncErrors(async (req, res, next) => {
   const { equipo, puntos, golDiferencia } = req.body;
+
+  if (!equipo) {
+    return next(new ErrorHandler("El nombre del equipo es obligatorio", 401));
+  }
+  if (!puntos) {
+    return next(
+      new ErrorHandler("Los puntos del equipo son obligatorios", 401)
+    );
+  }
+  if (!golDiferencia) {
+    return next(
+      new ErrorHandler("El gol de diferencia del equipo es obligatorio", 401)
+    );
+  }
 
   const newClasificacionData = {
     equipo: equipo,

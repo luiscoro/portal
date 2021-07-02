@@ -20,11 +20,11 @@ const Dashboard = () => {
   const { noticias } = useSelector((state) => state.noticias);
   const { usuarios } = useSelector((state) => state.getUsuarios);
   const {
-    pedidos,
     montoTotal,
+    /* pedidos,
     pedidosPendientes,
     pedidosEnviados,
-    pedidosEntregados,
+    pedidosEntregados, */
     loading,
   } = useSelector((state) => state.getPedidos);
 
@@ -53,7 +53,7 @@ const Dashboard = () => {
 
                 <div className="row pr-4">
                   <div className="col-xl-12 col-sm-12 mb-3">
-                    <div className="card text-white bg-secondary o-hidden h-100">
+                    <div className="card text-white bg-success o-hidden h-100">
                       <div className="card-body">
                         <div className="text-center card-font-size">
                           Total Ventas
@@ -65,7 +65,7 @@ const Dashboard = () => {
                 </div>
                 <div className="row pr-4">
                   <div className="col-xl-3 col-sm-6 mb-3">
-                    <div className="card text-white bg-dark o-hidden h-100">
+                    <div className="card text-white bg-info o-hidden h-100">
                       <div className="card-body">
                         <div className="text-center card-font-size">
                           <i className="fa fa-info-circle"></i> Información del
@@ -90,7 +90,7 @@ const Dashboard = () => {
                   </div>
 
                   <div className="col-xl-3 col-sm-6 mb-3">
-                    <div className="card text-white bg-primary o-hidden h-100">
+                    <div className="card text-white bg-warning o-hidden h-100">
                       <div className="card-body">
                         <div className="text-center card-font-size">
                           <i className="fa fa-product-hunt"></i> Productos
@@ -167,7 +167,7 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                <div className="row pr-4">
+                {/* <div className="row pr-4">
                   <div className="col-xl-3 col-sm-6 mb-3">
                     <div className="card text-white bg-info o-hidden h-100">
                       <div className="card-body">
@@ -270,7 +270,7 @@ const Dashboard = () => {
                       </Link>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </>
             )}
           </div>

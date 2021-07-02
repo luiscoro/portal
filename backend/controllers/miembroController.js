@@ -22,7 +22,7 @@ exports.createMiembro = catchAsyncErrors(async (req, res, next) => {
   const result = await cloudinary.v2.uploader.upload(req.body.foto, {
     folder: "miembros",
     width: 255,
-    height: 255,
+    height: 350,
     crop: "scale",
   });
 
@@ -96,10 +96,20 @@ exports.updateMiembro = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Miembro no encontrado", 404));
   }
 
-  const { nombre } = req.body;
+  const { nombre, posicion, tipo } = req.body;
 
   if (!nombre) {
-    return next(new ErrorHandler("Ingresa el nombre del miembro", 401));
+    return next(new ErrorHandler("El nombre es obligatorio", 401));
+  }
+
+  if (!posicion) {
+    return next(new ErrorHandler("La posición seleccionada no es válida", 401));
+  }
+
+  if (!tipo) {
+    return next(
+      new ErrorHandler("El tipo de miembro seleccionado no es válido", 401)
+    );
   }
 
   const newMiembroData = {
@@ -117,8 +127,8 @@ exports.updateMiembro = catchAsyncErrors(async (req, res, next) => {
 
     const result = await cloudinary.v2.uploader.upload(req.body.foto, {
       folder: "miembros",
-      width: 255,
-      height: 255,
+      width: 200,
+      height: 400,
       crop: "scale",
     });
 

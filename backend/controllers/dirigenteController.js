@@ -7,11 +7,11 @@ exports.createDirigente = catchAsyncErrors(async (req, res, next) => {
   const { nombre, cargo } = req.body;
 
   if (!nombre) {
-    return next(new ErrorHandler("Ingresa el nombre del dirigente", 401));
+    return next(new ErrorHandler("El nombre es obligatorio", 401));
   }
 
   if (!cargo) {
-    return next(new ErrorHandler("Ingresa el cargo del dirigente ", 401));
+    return next(new ErrorHandler("El cargo es obligatorio", 401));
   }
 
   let fotoLink = {};
@@ -70,11 +70,11 @@ exports.updateDirigente = catchAsyncErrors(async (req, res, next) => {
   const { nombre, cargo } = req.body;
 
   if (!nombre) {
-    return next(new ErrorHandler("Ingresa el nombre del dirigente", 401));
+    return next(new ErrorHandler("El nombre es obligatorio", 401));
   }
 
   if (!cargo) {
-    return next(new ErrorHandler("Ingresa el cargo del dirigente ", 401));
+    return next(new ErrorHandler("El cargo es obligatorio", 401));
   }
 
   const newDirigenteData = {

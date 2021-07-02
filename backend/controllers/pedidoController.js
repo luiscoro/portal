@@ -76,15 +76,6 @@ exports.Pedidos = catchAsyncErrors(async (req, res, next) => {
 
 exports.getPedidos = catchAsyncErrors(async (req, res, next) => {
   const pedidos = await Pedido.find();
-  const pedidosPendientes = await Pedido.find({
-    estadoPedido: "pendiente de envío",
-  }).count();
-  const pedidosEnviados = await Pedido.find({
-    estadoPedido: "enviado",
-  }).count();
-  const pedidosEntregados = await Pedido.find({
-    estadoPedido: "entregado",
-  }).count();
 
   let montoTotal = 0;
 
@@ -96,9 +87,6 @@ exports.getPedidos = catchAsyncErrors(async (req, res, next) => {
     success: true,
     montoTotal,
     pedidos,
-    pedidosPendientes,
-    pedidosEnviados,
-    pedidosEntregados,
   });
 });
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { countries } from "countries-list";
 import MetaData from "../section/MetaData";
 import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
@@ -13,6 +13,8 @@ import { CREATE_MIEMBRO_RESET } from "../../constants/miembroConstants";
 var MySwal;
 
 const CreateMiembro = ({ history }) => {
+  const countriesList = Object.values(countries);
+
   const [miembro, setMiembro] = useState({
     posicion: "",
     tipo: "",
@@ -145,7 +147,9 @@ const CreateMiembro = ({ history }) => {
                                 value={tipo}
                                 onChange={onChange}
                               >
-                                <option>Seleccione el tipo de miembro</option>
+                                <option value={""}>
+                                  Seleccione el tipo de miembro
+                                </option>
                                 <option>Jugador</option>
                                 <option>Cuerpo técnico</option>
                                 <option>Cuerpo médico</option>
@@ -161,7 +165,7 @@ const CreateMiembro = ({ history }) => {
                                   value={posicion}
                                   onChange={onChange}
                                 >
-                                  <option>
+                                  <option value={""}>
                                     Seleccione la posición del miembro
                                   </option>
                                   {posiciones.map((posicion) => (
@@ -208,13 +212,18 @@ const CreateMiembro = ({ history }) => {
                             </div>
                             <div className="frm-group">
                               <label>Nacionalidad</label>
-                              <input
+
+                              <select
                                 name="nacionalidad"
-                                type="text"
-                                placeholder="Ingresa la nacionalidad"
                                 value={nacionalidad}
                                 onChange={onChange}
-                              />
+                              >
+                                {countriesList.map((pais) => (
+                                  <option key={pais.name} value={pais.name}>
+                                    {pais.name}
+                                  </option>
+                                ))}
+                              </select>
                             </div>
                             <div className="frm-group">
                               <label>Foto</label>
