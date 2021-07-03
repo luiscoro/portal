@@ -2,11 +2,21 @@ const Posicion = require("../models/posicion");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 
+function validNombre(n) {
+  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ]+$/.test(n);
+}
+
 exports.createPosicion = catchAsyncErrors(async (req, res, next) => {
   const { nombre } = req.body;
 
   if (!nombre) {
-    return next(new ErrorHandler("Ingresa el nombre de la posición", 401));
+    return next(new ErrorHandler("El nombre es obligatorio", 400));
+  }
+
+  if (!validNombre(nombre)) {
+    return next(
+      new ErrorHandler("El nombre solo admite letras y espacios", 400)
+    );
   }
 
   const posicion = await Posicion.create(req.body);
@@ -43,7 +53,13 @@ exports.updatePosicion = catchAsyncErrors(async (req, res, next) => {
   const { nombre } = req.body;
 
   if (!nombre) {
-    return next(new ErrorHandler("Ingresa el nombre de la posición", 401));
+    return next(new ErrorHandler("El nombre es obligatorio", 400));
+  }
+
+  if (!validNombre(nombre)) {
+    return next(
+      new ErrorHandler("El nombre solo admite letras y espacios", 400)
+    );
   }
 
   const newPosicionData = {

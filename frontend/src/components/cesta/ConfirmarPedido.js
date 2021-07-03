@@ -12,8 +12,8 @@ const ConfirmarPedido = ({ history }) => {
     (acc, item) => acc + item.precio * item.cantidad,
     0
   );
-  const precioEnvio = precioItems > 200 ? 0 : 25;
-  const precioImpuesto = Number((0.05 * precioItems).toFixed(2));
+  const precioEnvio = precioItems > 50 ? 0 : 5;
+  const precioImpuesto = Number((0.12 * precioItems).toFixed(2));
   const precioTotal = (precioItems + precioEnvio + precioImpuesto).toFixed(2);
 
   const confirmarPedido = () => {

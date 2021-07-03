@@ -100,14 +100,14 @@ const ListAuspiciantes = ({ history }) => {
     const data = {
       columns: [
         {
-          label: "ID",
-          field: "id",
-          sort: "asc",
-        },
-        {
           label: "Nombre",
           field: "nombre",
           sort: "asc",
+        },
+
+        {
+          label: "Logo",
+          field: "logo",
         },
 
         {
@@ -120,9 +120,15 @@ const ListAuspiciantes = ({ history }) => {
 
     auspiciantes.forEach((auspiciante) => {
       data.rows.push({
-        id: auspiciante._id,
         nombre: auspiciante.nombre,
-
+        logo: (
+          <img
+            alt=""
+            src={auspiciante.logo && auspiciante.logo.url}
+            width="55"
+            height="52"
+          />
+        ),
         acciones: (
           <>
             <Link
@@ -150,7 +156,8 @@ const ListAuspiciantes = ({ history }) => {
                       background: "#f5ede4",
                       icon: "success",
                       title: "El auspiciante ha sido eliminado con éxito",
-                      showConfirmButton: false,
+                      showConfirmButton: true,
+                      confirmButtonColor: "#3085d6",
                       showCloseButton: false,
                       timer: 3000,
                     });

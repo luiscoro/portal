@@ -178,7 +178,8 @@ const ListPartidos = ({ history }) => {
                       background: "#f5ede4",
                       icon: "success",
                       title: "El partido ha sido eliminado con éxito",
-                      showConfirmButton: false,
+                      showConfirmButton: true,
+                      confirmButtonColor: "#3085d6",
                       showCloseButton: false,
                       timer: 3000,
                     });

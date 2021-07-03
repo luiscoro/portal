@@ -9,7 +9,7 @@ exports.authenticatedUsuario = catchAsyncErrors(async (req, res, next) => {
   const { token } = req.cookies;
 
   if (!token) {
-    return next(new ErrorHandler("Usuario sin token", 401));
+    return next(new ErrorHandler("La sesión ha expirado", 401));
   }
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);

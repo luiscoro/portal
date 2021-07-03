@@ -3,20 +3,44 @@ const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const cloudinary = require("cloudinary");
 
+function validNombre(n) {
+  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ]+$/.test(n);
+}
+
+function validCargo(c) {
+  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ 0-9]+$/.test(c);
+}
+
 exports.createDirigente = catchAsyncErrors(async (req, res, next) => {
-  const { nombre, cargo } = req.body;
+  const { nombre, cargo, foto } = req.body;
 
   if (!nombre) {
-    return next(new ErrorHandler("El nombre es obligatorio", 401));
+    return next(new ErrorHandler("El nombre es obligatorio", 400));
   }
 
   if (!cargo) {
-    return next(new ErrorHandler("El cargo es obligatorio", 401));
+    return next(new ErrorHandler("El cargo es obligatorio", 400));
+  }
+
+  if (foto === "") {
+    return next(new ErrorHandler("La foto es obligatoria", 400));
+  }
+
+  if (!validNombre(nombre)) {
+    return next(
+      new ErrorHandler("El nombre solo admite letras y espacios", 400)
+    );
+  }
+
+  if (!validCargo(cargo)) {
+    return next(
+      new ErrorHandler("El nombre solo admite letras, números y espacios", 400)
+    );
   }
 
   let fotoLink = {};
 
-  const result = await cloudinary.v2.uploader.upload(req.body.foto, {
+  const result = await cloudinary.v2.uploader.upload(foto, {
     folder: "dirigentes",
     width: 255,
     height: 255,
@@ -70,11 +94,23 @@ exports.updateDirigente = catchAsyncErrors(async (req, res, next) => {
   const { nombre, cargo } = req.body;
 
   if (!nombre) {
-    return next(new ErrorHandler("El nombre es obligatorio", 401));
+    return next(new ErrorHandler("El nombre es obligatorio", 400));
   }
 
   if (!cargo) {
-    return next(new ErrorHandler("El cargo es obligatorio", 401));
+    return next(new ErrorHandler("El cargo es obligatorio", 400));
+  }
+
+  if (!validNombre(nombre)) {
+    return next(
+      new ErrorHandler("El nombre solo admite letras y espacios", 400)
+    );
+  }
+
+  if (!validCargo(cargo)) {
+    return next(
+      new ErrorHandler("El nombre solo admite letras, números y espacios", 400)
+    );
   }
 
   const newDirigenteData = {

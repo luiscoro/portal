@@ -2,21 +2,38 @@ const Clasificacion = require("../models/clasificacion");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 
+function validNombre(n) {
+  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ 0-9]+$/.test(n);
+}
+
 exports.createClasificacion = catchAsyncErrors(async (req, res, next) => {
   const { equipo, puntos, golDiferencia } = req.body;
 
   if (!equipo) {
-    return next(new ErrorHandler("El nombre del equipo es obligatorio", 401));
+    return next(new ErrorHandler("El nombre del equipo es obligatorio", 400));
   }
   if (!puntos) {
     return next(
-      new ErrorHandler("Los puntos del equipo son obligatorios", 401)
+      new ErrorHandler("Los puntos del equipo son obligatorios", 400)
     );
   }
   if (!golDiferencia) {
     return next(
-      new ErrorHandler("El gol de diferencia del equipo es obligatorio", 401)
+      new ErrorHandler("El gol de diferencia del equipo es obligatorio", 400)
     );
+  }
+
+  if (!validNombre(equipo)) {
+    return next(
+      new ErrorHandler(
+        "El nombre del equipo solo admite letras, números y espacios",
+        400
+      )
+    );
+  }
+
+  if (puntos < 0) {
+    new ErrorHandler("Los puntos no admiten valores menores a cero", 400);
   }
 
   const clasificacion = await Clasificacion.create(req.body);
@@ -56,17 +73,30 @@ exports.updateClasificacion = catchAsyncErrors(async (req, res, next) => {
   const { equipo, puntos, golDiferencia } = req.body;
 
   if (!equipo) {
-    return next(new ErrorHandler("El nombre del equipo es obligatorio", 401));
+    return next(new ErrorHandler("El nombre del equipo es obligatorio", 400));
   }
   if (!puntos) {
     return next(
-      new ErrorHandler("Los puntos del equipo son obligatorios", 401)
+      new ErrorHandler("Los puntos del equipo son obligatorios", 400)
     );
   }
   if (!golDiferencia) {
     return next(
-      new ErrorHandler("El gol de diferencia del equipo es obligatorio", 401)
+      new ErrorHandler("El gol de diferencia del equipo es obligatorio", 400)
     );
+  }
+
+  if (!validNombre(equipo)) {
+    return next(
+      new ErrorHandler(
+        "El nombre del equipo solo admite letras, números y espacios",
+        400
+      )
+    );
+  }
+
+  if (puntos < 0) {
+    new ErrorHandler("Los puntos no admiten valores menores a cero", 400);
   }
 
   const newClasificacionData = {

@@ -100,11 +100,6 @@ const ListDirigentes = ({ history }) => {
     const data = {
       columns: [
         {
-          label: "ID",
-          field: "id",
-          sort: "asc",
-        },
-        {
           label: "Nombre",
           field: "nombre",
           sort: "asc",
@@ -113,6 +108,11 @@ const ListDirigentes = ({ history }) => {
           label: "Cargo",
           field: "cargo",
           sort: "asc",
+        },
+
+        {
+          label: "Foto",
+          field: "foto",
         },
 
         {
@@ -125,10 +125,16 @@ const ListDirigentes = ({ history }) => {
 
     dirigentes.forEach((dirigente) => {
       data.rows.push({
-        id: dirigente._id,
         nombre: dirigente.nombre,
         cargo: dirigente.cargo,
-
+        foto: (
+          <img
+            alt=""
+            src={dirigente.foto && dirigente.foto.url}
+            width="55"
+            height="52"
+          />
+        ),
         acciones: (
           <>
             <Link
@@ -156,7 +162,8 @@ const ListDirigentes = ({ history }) => {
                       background: "#f5ede4",
                       icon: "success",
                       title: "El dirigente ha sido eliminado con éxito",
-                      showConfirmButton: false,
+                      showConfirmButton: true,
+                      confirmButtonColor: "#3085d6",
                       showCloseButton: false,
                       timer: 3000,
                     });

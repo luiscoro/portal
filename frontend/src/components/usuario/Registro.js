@@ -36,7 +36,7 @@ const Registro = ({ history }) => {
     }
 
     if (error) {
-      if (error !== "Usuario sin token") {
+      if (error !== "La sesión ha expirado") {
         MySwal.fire({
           background: "#f5ede4",
           toast: true,

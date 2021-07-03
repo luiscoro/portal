@@ -98,11 +98,6 @@ const ListProductos = ({ history }) => {
     const data = {
       columns: [
         {
-          label: "ID",
-          field: "id",
-          sort: "asc",
-        },
-        {
           label: "Nombre",
           field: "nombre",
           sort: "asc",
@@ -113,9 +108,19 @@ const ListProductos = ({ history }) => {
           sort: "asc",
         },
         {
+          label: "Descripción",
+          field: "descripcion",
+          sort: "asc",
+        },
+        {
           label: "Stock",
           field: "stock",
           sort: "asc",
+        },
+
+        {
+          label: "Foto",
+          field: "foto",
         },
         {
           label: "Acciones",
@@ -127,10 +132,18 @@ const ListProductos = ({ history }) => {
 
     productos.forEach((producto) => {
       data.rows.push({
-        id: producto._id,
         nombre: producto.nombre,
         precio: `$${producto.precio}`,
+        descripcion: producto.descripcion,
         stock: producto.stock,
+        foto: (
+          <img
+            alt=""
+            src={producto.imagenes && producto.imagenes[0].url}
+            width="55"
+            height="52"
+          />
+        ),
         acciones: (
           <>
             <Link
@@ -158,7 +171,8 @@ const ListProductos = ({ history }) => {
                       background: "#f5ede4",
                       icon: "success",
                       title: "El producto ha sido eliminado con éxito",
-                      showConfirmButton: false,
+                      showConfirmButton: true,
+                      confirmButtonColor: "#3085d6",
                       showCloseButton: false,
                       timer: 3000,
                     });

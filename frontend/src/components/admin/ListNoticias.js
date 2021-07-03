@@ -98,11 +98,6 @@ const ListNoticias = ({ history }) => {
     const data = {
       columns: [
         {
-          label: "ID",
-          field: "id",
-          sort: "asc",
-        },
-        {
           label: "Título",
           field: "titulo",
           sort: "asc",
@@ -111,6 +106,11 @@ const ListNoticias = ({ history }) => {
           label: "Descripción",
           field: "descripcion",
           sort: "asc",
+        },
+
+        {
+          label: "Imagen",
+          field: "imagen",
         },
 
         {
@@ -123,20 +123,26 @@ const ListNoticias = ({ history }) => {
 
     noticias.forEach((noticia) => {
       data.rows.push({
-        id: noticia._id,
         titulo: noticia.titulo,
         descripcion: noticia.descripcion,
-
+        imagen: (
+          <img
+            alt=""
+            src={noticia.imagen && noticia.imagen.url}
+            width="55"
+            height="52"
+          />
+        ),
         acciones: (
           <>
             <Link
               to={`/admin-noticia/${noticia._id}`}
-              className="btn btn-primary py-1 px-2"
+              className="btn btn-primary py-1 px-1"
             >
               <i className="fa fa-pencil"></i>
             </Link>
             <button
-              className="btn btn-danger py-1 px-2 ml-2"
+              className="btn btn-danger py-1 px-1 ml-2"
               onClick={() => {
                 MySwal.fire({
                   background: "#f5ede4",
@@ -154,7 +160,8 @@ const ListNoticias = ({ history }) => {
                       background: "#f5ede4",
                       icon: "success",
                       title: "La noticia ha sido eliminada con éxito",
-                      showConfirmButton: false,
+                      showConfirmButton: true,
+                      confirmButtonColor: "#3085d6",
                       showCloseButton: false,
                       timer: 3000,
                     });

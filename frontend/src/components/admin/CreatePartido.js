@@ -165,7 +165,7 @@ const CreatePartido = ({ history }) => {
                               <input
                                 name="nombreLocal"
                                 type="text"
-                                placeholder="Ingrese el nombre del equipo local"
+                                placeholder="Nombre del equipo local"
                                 value={nombreLocal}
                                 onChange={onChange}
                               />
@@ -180,7 +180,6 @@ const CreatePartido = ({ history }) => {
                                   className="custom-file-input"
                                   accept="image/*"
                                   onChange={onChange}
-                                  required
                                 />
                                 <label className="custom-file-label">
                                   Agregar logo del equipo local
@@ -202,7 +201,7 @@ const CreatePartido = ({ history }) => {
                                 name="golesLocal"
                                 type="number"
                                 min="0"
-                                placeholder="Ingresa la cantidad de goles del equipo local"
+                                placeholder="Cantidad de goles del equipo local"
                                 value={golesLocal}
                                 onChange={onChange}
                               />
@@ -213,7 +212,7 @@ const CreatePartido = ({ history }) => {
                               <input
                                 name="nombreVisitante"
                                 type="text"
-                                placeholder="Ingresa el nombre del equipo visitante"
+                                placeholder="Nombre del equipo visitante"
                                 value={nombreVisitante}
                                 onChange={onChange}
                               />
@@ -229,7 +228,6 @@ const CreatePartido = ({ history }) => {
                                   className="custom-file-input"
                                   accept="image/*"
                                   onChange={onChange}
-                                  required
                                 />
                                 <label className="custom-file-label">
                                   Agregar logo del equipo visitante
@@ -251,7 +249,7 @@ const CreatePartido = ({ history }) => {
                                 name="golesVisitante"
                                 type="number"
                                 min="0"
-                                placeholder="Ingresa la cantidad de goles del equipo visitante"
+                                placeholder="Cantidad de goles del equipo visitante"
                                 value={golesVisitante}
                                 onChange={onChange}
                               />
@@ -262,7 +260,6 @@ const CreatePartido = ({ history }) => {
                               <input
                                 name="fecha"
                                 type="date"
-                                placeholder="Ingresa la fecha del partido"
                                 value={fecha}
                                 onChange={onChange}
                               />
@@ -273,7 +270,6 @@ const CreatePartido = ({ history }) => {
                               <input
                                 name="hora"
                                 type="time"
-                                placeholder="Ingresa la hora del partido"
                                 value={hora}
                                 onChange={onChange}
                               />
@@ -283,7 +279,7 @@ const CreatePartido = ({ history }) => {
                               <input
                                 name="estadio"
                                 type="text"
-                                placeholder="Ingresa el nombre del estadio"
+                                placeholder="Nombre del estadio"
                                 value={estadio}
                                 onChange={onChange}
                               />

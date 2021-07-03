@@ -9,25 +9,30 @@ function validNombre(n) {
 }
 
 exports.createNoticia = catchAsyncErrors(async (req, res, next) => {
-  const { titulo, descripcion } = req.body;
-
-  if (!titulo) {
+  if (!req.body.titulo) {
     return next(new ErrorHandler("El título es obligatorio", 400));
   }
 
-  if (!descripcion) {
+  if (!req.body.descripcion) {
     return next(new ErrorHandler("La descripción es obligatoria", 400));
   }
 
-  if (!validNombre(titulo)) {
+  if (req.body.imagen === "") {
+    return next(new ErrorHandler("La imagen es obligatoria", 400));
+  }
+
+  if (!validNombre(req.body.titulo)) {
     return next(
-      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+      new ErrorHandler("El título solo admite letras, números y espacios", 400)
     );
   }
 
-  if (!validNombre(descripcion)) {
+  if (!validNombre(req.body.descripcion)) {
     return next(
-      new ErrorHandler("La descripción debe tener letras y espacios", 400)
+      new ErrorHandler(
+        "La descripción solo admite letras, números y espacios",
+        400
+      )
     );
   }
 
@@ -128,16 +133,18 @@ exports.updateNoticia = catchAsyncErrors(async (req, res, next) => {
 
   if (!validNombre(titulo)) {
     return next(
-      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+      new ErrorHandler("El título solo admite letras, números y espacios", 400)
     );
   }
 
   if (!validNombre(descripcion)) {
     return next(
-      new ErrorHandler("La descripción debe tener letras y espacios", 400)
+      new ErrorHandler(
+        "La descripción solo admite letras, números y espacios",
+        400
+      )
     );
   }
-
   const newNoticiaData = {
     titulo: titulo,
     descripcion: descripcion,

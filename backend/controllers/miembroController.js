@@ -1,28 +1,45 @@
 const Miembro = require("../models/miembro");
-const Posicion = require("../models/posicion");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const cloudinary = require("cloudinary");
 
-exports.createMiembro = catchAsyncErrors(async (req, res, next) => {
-  const { nombre, fechaNacimiento } = req.body;
+function validNombre(n) {
+  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ]+$/.test(n);
+}
 
-  if (!nombre) {
-    return next(new ErrorHandler("Ingresa el nombre del miembro", 401));
+exports.createMiembro = catchAsyncErrors(async (req, res, next) => {
+  const { posicion, tipo, nombre, foto } = req.body;
+
+  if (!posicion) {
+    return next(new ErrorHandler("La posición seleccionada no es válida", 400));
   }
 
-  if (!fechaNacimiento) {
+  if (!tipo) {
     return next(
-      new ErrorHandler("Ingresa la fecha de nacimiento del miembro ", 401)
+      new ErrorHandler("El tipo de miembro seleccionado no es válido", 400)
+    );
+  }
+
+  if (!nombre) {
+    return next(new ErrorHandler("El nombre es obligatorio", 400));
+  }
+
+  if (foto === "") {
+    return next(new ErrorHandler("La foto es obligatoria", 400));
+  }
+
+  if (!validNombre(nombre)) {
+    return next(
+      new ErrorHandler("El nombre solo admite letras y espacios", 400)
     );
   }
 
   let fotoLink = {};
 
-  const result = await cloudinary.v2.uploader.upload(req.body.foto, {
+  const result = await cloudinary.v2.uploader.upload(foto, {
     folder: "miembros",
-    width: 255,
-    height: 350,
+    width: 200,
+    height: 400,
     crop: "scale",
   });
 
@@ -96,25 +113,31 @@ exports.updateMiembro = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Miembro no encontrado", 404));
   }
 
-  const { nombre, posicion, tipo } = req.body;
-
-  if (!nombre) {
-    return next(new ErrorHandler("El nombre es obligatorio", 401));
-  }
+  const { posicion, tipo, nombre } = req.body;
 
   if (!posicion) {
-    return next(new ErrorHandler("La posición seleccionada no es válida", 401));
+    return next(new ErrorHandler("La posición seleccionada no es válida", 400));
   }
 
   if (!tipo) {
     return next(
-      new ErrorHandler("El tipo de miembro seleccionado no es válido", 401)
+      new ErrorHandler("El tipo de miembro seleccionado no es válido", 400)
+    );
+  }
+
+  if (!nombre) {
+    return next(new ErrorHandler("El nombre es obligatorio", 400));
+  }
+
+  if (!validNombre(nombre)) {
+    return next(
+      new ErrorHandler("El nombre solo admite letras y espacios", 400)
     );
   }
 
   const newMiembroData = {
-    posicion: req.body.posicion,
-    tipo: req.body.tipo,
+    posicion: posicion,
+    tipo: tipo,
     nombre: nombre,
     numeroCamiseta: req.body.numeroCamiseta,
     fechaNacimiento: req.body.fechaNacimiento,

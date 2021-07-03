@@ -26,25 +26,36 @@ exports.createProducto = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("La descripción es obligatoria", 400));
   }
 
-  if (precio <= 0) {
-    return next(new ErrorHandler("El precio debe ser mayor a cero", 400));
+  if (precio <= 1 && precio > 100) {
+    return next(
+      new ErrorHandler(
+        "El precio solo admite valores entre 1 y 100 dólares",
+        400
+      )
+    );
   }
 
-  if (stock < 0) {
+  if (stock < 0 && stock > 100) {
     return next(
-      new ErrorHandler("La cantidad existente no debe ser menor a cero", 400)
+      new ErrorHandler(
+        "La cantidad existente solo admite valores entre 0 y 100",
+        400
+      )
     );
   }
 
   if (!validNombre(nombre)) {
     return next(
-      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+      new ErrorHandler("El nombre solo admite letras, números y espacios", 400)
     );
   }
 
   if (!validNombre(descripcion)) {
     return next(
-      new ErrorHandler("La descripción debe tener letras y espacios", 400)
+      new ErrorHandler(
+        "La descripción solo admite letras, números y espacios",
+        400
+      )
     );
   }
 
@@ -147,25 +158,36 @@ exports.updateProducto = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("La descripción es obligatoria", 400));
   }
 
-  if (req.body.precio <= 0) {
-    return next(new ErrorHandler("El precio debe ser mayor a cero", 400));
+  if (req.body.precio <= 1 && req.body.precio > 100) {
+    return next(
+      new ErrorHandler(
+        "El precio solo admite valores entre 1 y 100 dólares",
+        400
+      )
+    );
   }
 
-  if (req.body.stock < 0) {
+  if (req.body.stock < 0 && req.body.stock > 100) {
     return next(
-      new ErrorHandler("La cantidad existente no debe ser menor a cero", 400)
+      new ErrorHandler(
+        "La cantidad existente solo admite valores entre 0 y 100",
+        400
+      )
     );
   }
 
   if (!validNombre(req.body.nombre)) {
     return next(
-      new ErrorHandler("El nombre debe tener letras y espacios", 400)
+      new ErrorHandler("El nombre solo admite letras, números y espacios", 400)
     );
   }
 
   if (!validNombre(req.body.descripcion)) {
     return next(
-      new ErrorHandler("La descripción debe tener letras y espacios", 400)
+      new ErrorHandler(
+        "La descripción solo admite letras, números y espacios",
+        400
+      )
     );
   }
 
@@ -237,6 +259,19 @@ exports.deleteProducto = catchAsyncErrors(async (req, res, next) => {
 
 exports.createRevisionProducto = catchAsyncErrors(async (req, res, next) => {
   const { calificacion, comentario, productoId } = req.body;
+
+  if (!calificacion) {
+    return next(new ErrorHandler("La calificación es obligatoria", 400));
+  }
+
+  if (!validNombre(comentario)) {
+    return next(
+      new ErrorHandler(
+        "El comentario solo admite letras, números y espacios",
+        400
+      )
+    );
+  }
 
   const revision = {
     usuario: req.usuario._id,

@@ -3,18 +3,93 @@ const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const cloudinary = require("cloudinary");
 
+function validNombre(n) {
+  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ 0-9]+$/.test(n);
+}
+
 exports.createPartido = catchAsyncErrors(async (req, res, next) => {
+  const {
+    logoLocal,
+    nombreLocal,
+    golesLocal,
+    logoVisitante,
+    nombreVisitante,
+    golesVisitante,
+    fecha,
+    hora,
+    estadio,
+  } = req.body;
+
+  if (!nombreLocal) {
+    return next(
+      new ErrorHandler("El nombre del equipo local es obligatorio", 400)
+    );
+  }
+
+  if (logoLocal === "") {
+    return next(
+      new ErrorHandler("El logo del equipo local es obligatorio", 400)
+    );
+  }
+
+  if (golesLocal < 0) {
+    return next(
+      new ErrorHandler(
+        "Los goles del equipo local no admiten valores menores a 0 ",
+        400
+      )
+    );
+  }
+
+  if (!nombreVisitante) {
+    return next(
+      new ErrorHandler("El nombre del equipo visitante es obligatorio", 400)
+    );
+  }
+
+  if (logoVisitante === "") {
+    return next(
+      new ErrorHandler("El logo del equipo visitante es obligatorio", 400)
+    );
+  }
+
+  if (golesVisitante < 0) {
+    return next(
+      new ErrorHandler(
+        "Los goles del equipo visitante no admiten valores menores a 0 ",
+        400
+      )
+    );
+  }
+
+  if (fecha === "dd/mm/aaaa") {
+    return next(new ErrorHandler("La fecha seleccionada no es válida", 400));
+  }
+
+  if (hora === "--:--") {
+    return next(new ErrorHandler("La hora seleccionada no es válida", 400));
+  }
+
+  if (!validNombre(estadio)) {
+    return next(
+      new ErrorHandler(
+        "El nombre del estadio solo admite letras, números y espacios",
+        400
+      )
+    );
+  }
+
   let logoLocalLink = {};
   let logoVisitanteLink = {};
 
-  const result = await cloudinary.v2.uploader.upload(req.body.logoLocal, {
+  const result = await cloudinary.v2.uploader.upload(logoLocal, {
     folder: "partidos",
     width: 114,
     height: 108,
     crop: "scale",
   });
 
-  const result1 = await cloudinary.v2.uploader.upload(req.body.logoVisitante, {
+  const result1 = await cloudinary.v2.uploader.upload(logoVisitante, {
     folder: "partidos",
     width: 114,
     height: 108,
@@ -100,14 +175,71 @@ exports.updatePartido = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Partido no encontrado", 404));
   }
 
+  const {
+    nombreLocal,
+    golesLocal,
+    nombreVisitante,
+    golesVisitante,
+    fecha,
+    hora,
+    estadio,
+  } = req.body;
+
+  if (!nombreLocal) {
+    return next(
+      new ErrorHandler("El nombre del equipo local es obligatorio", 400)
+    );
+  }
+
+  if (golesLocal < 0) {
+    return next(
+      new ErrorHandler(
+        "Los goles del equipo local no admiten valores menores a 0 ",
+        400
+      )
+    );
+  }
+
+  if (!nombreVisitante) {
+    return next(
+      new ErrorHandler("El nombre del equipo visitante es obligatorio", 400)
+    );
+  }
+
+  if (golesVisitante < 0) {
+    return next(
+      new ErrorHandler(
+        "Los goles del equipo visitante no admiten valores menores a 0 ",
+        400
+      )
+    );
+  }
+
+  if (fecha === "dd/mm/aaaa") {
+    return next(new ErrorHandler("La fecha seleccionada no es válida", 400));
+  }
+
+  if (hora === "--:--") {
+    return next(new ErrorHandler("La hora seleccionada no es válida", 400));
+  }
+
+  if (!validNombre(estadio)) {
+    return next(
+      new ErrorHandler(
+        "El nombre del estadio solo admite letras, números y espacios",
+        400
+      )
+    );
+  }
+
   const newPartidoData = {
-    nombreLocal: req.body.nombreLocal,
-    golesLocal: req.body.golesLocal,
-    nombreVisitante: req.body.nombreVisitante,
-    golesVisitante: req.body.golesVisitante,
-    fecha: req.body.fecha,
-    hora: req.body.hora,
-    estadio: req.body.estadio,
+    nombreLocal: nombreLocal,
+    golesLocal: golesLocal,
+    nombreVisitante: nombreVisitante,
+    golesVisitante: golesVisitante,
+    fecha: fecha,
+    hora: hora,
+    estadio: estadio,
   };
 
   if (req.body.logoLocal !== "") {

@@ -150,7 +150,6 @@ const CreateNoticia = ({ history }) => {
                                   className="custom-file-input"
                                   accept="image/*"
                                   onChange={onChange}
-                                  required
                                 />
                                 <label className="custom-file-label">
                                   Agregar imagen
