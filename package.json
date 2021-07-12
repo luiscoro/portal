@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "SET node backend/server.js",
-    "dev": "SET NODE_ENV=DESAROLLO& nodemon backend/server",
-    "prod": "SET NODE_ENV=PRODUCCION& nodemon backend/server",
+    "dev": "SET NODE_ENV=DEVELOPMENT& nodemon backend/server",
+    "prod": "SET NODE_ENV=PRODUCTION& nodemon backend/server",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "Luis Coronel, Andrés Morales",
