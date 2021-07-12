@@ -269,11 +269,6 @@ const Header = () => {
                       Nuestra Tienda
                     </Link>
                   </li>
-                  <li>
-                    <Link to="/" style={{ textDecoration: "none" }}>
-                      Contacto
-                    </Link>
-                  </li>
                 </ul>
               </div>
             </nav>

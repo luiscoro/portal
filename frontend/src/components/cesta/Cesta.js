@@ -6,6 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItemCesta, removeItemCesta } from "../../actions/cestaActions";
 
 const Cesta = ({ history }) => {
+
+  const { authenticatedUsuario } = useSelector(
+    (state) => state.auth
+  );
+
   const dispatch = useDispatch();
 
   const { itemsCesta } = useSelector((state) => state.cesta);
@@ -31,7 +36,15 @@ const Cesta = ({ history }) => {
   };
 
   const checkoutHandler = () => {
-    history.push("/login?redirect=envio");
+
+    if (authenticatedUsuario === false) {
+      history.push("/login?redirect=envio");
+    }
+
+    if (authenticatedUsuario === true) {
+      history.push("/envio");
+    }
+
   };
   return (
     <>
