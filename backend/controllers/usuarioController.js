@@ -141,18 +141,18 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
   const resetUrl = `${req.protocol}://${req.get('host')}/password/reset/${resetToken}`;
 
-  const message = `La dirección para restablecer la contraseña es la siguiente:\n\n${resetUrl}\n\nEn caso de no haber solicitado esto, ignora este correo.`;
+  const message = `El enlace para restablecer su contraseña es la siguiente:\n\n${resetUrl}\n\nSi no has solicitado restablecer tu contraseña, ignora este correo electrónico.`;
 
   try {
     await sendEmail({
       email: usuario.email,
-      subject: "Restablecimiento de contraseña",
+      subject: "Restablece tu contraseña",
       message,
     });
 
     res.status(200).json({
       success: true,
-      message: `Correo enviado a: ${usuario.email}`,
+      message: `El enlace para restablecer su contraseña ha sido enviado a su correo electrónico: ${usuario.email}`,
     });
   } catch (error) {
     usuario.resetPasswordToken = undefined;
