@@ -21,11 +21,9 @@ const Login = ({ history, location }) => {
     (state) => state.auth
   );
 
-  const redirect = location.search ? location.search.split("=")[1] : "/";
-
   useEffect(() => {
     if (authenticatedUsuario) {
-      history.push(redirect);
+      history.push("/");
       window.location.reload();
     }
 
@@ -50,7 +48,7 @@ const Login = ({ history, location }) => {
       }
       dispatch(clearErrors());
     }
-  }, [dispatch, error, authenticatedUsuario, redirect, history]);
+  }, [dispatch, error, authenticatedUsuario, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();
