@@ -7,6 +7,10 @@ function validNombre(n) {
   return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ 0-9]+$/.test(n);
 }
 
+var fechaActual = new Date();
+fechaActual.setDate(fechaActual.getDate()-1);
+fechaActual.setHours(0,0,0,0);
+
 exports.createPartido = catchAsyncErrors(async (req, res, next) => {
   const {
     logoLocal,
@@ -19,6 +23,8 @@ exports.createPartido = catchAsyncErrors(async (req, res, next) => {
     hora,
     estadio,
   } = req.body;
+
+  var fechaPartido = new Date(fecha);
 
   if (!nombreLocal) {
     return next(
@@ -62,14 +68,25 @@ exports.createPartido = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  if (fecha === "dd/mm/aaaa") {
+
+  if (fechaPartido < fechaActual) {
+  
+    return next(new ErrorHandler("La fecha del partido no puede ser menor a la fecha actual", 400));
+  }
+
+  if (fecha === "") {
     return next(new ErrorHandler("La fecha seleccionada no es válida", 400));
   }
 
-  if (hora === "--:--") {
+  if (hora === "") {
     return next(new ErrorHandler("La hora seleccionada no es válida", 400));
   }
 
+  if (hora < "09:00" || hora > "19:00") {
+    return next(new ErrorHandler("La hora debe estar entre las 09:00 y 19:00", 400));
+  }
+
+  if(estadio !== ""){
   if (!validNombre(estadio)) {
     return next(
       new ErrorHandler(
@@ -77,6 +94,7 @@ exports.createPartido = catchAsyncErrors(async (req, res, next) => {
         400
       )
     );
+  }
   }
 
   let logoLocalLink = {};
@@ -215,23 +233,34 @@ exports.updatePartido = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  if (fecha === "dd/mm/aaaa") {
+  if (fechaPartido < fechaActual) {
+  
+    return next(new ErrorHandler("La fecha del partido no puede ser menor a la fecha actual", 400));
+  }
+
+  if (fecha === "") {
     return next(new ErrorHandler("La fecha seleccionada no es válida", 400));
   }
 
-  if (hora === "--:--") {
+  if (hora === "") {
     return next(new ErrorHandler("La hora seleccionada no es válida", 400));
   }
 
-  if (!validNombre(estadio)) {
-    return next(
-      new ErrorHandler(
-        "El nombre del estadio solo admite letras, números y espacios",
-        400
-      )
-    );
+  if (hora < "09:00" || hora > "19:00") {
+    return next(new ErrorHandler("La hora debe estar entre las 09:00 y 19:00", 400));
   }
-
+  
+  if(estadio !== ""){
+    if (!validNombre(estadio)) {
+      return next(
+        new ErrorHandler(
+          "El nombre del estadio solo admite letras, números y espacios",
+          400
+        )
+      );
+    }
+  }
+  
   const newPartidoData = {
     nombreLocal: nombreLocal,
     golesLocal: golesLocal,

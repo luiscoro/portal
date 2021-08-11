@@ -164,7 +164,7 @@ const ListPartidos = ({ history }) => {
               onClick={() => {
                 MySwal.fire({
                   background: "#f5ede4",
-                  title: "¿Está seguro de eliminar el producto?",
+                  title: "¿Está seguro de eliminar el partido?",
                   icon: "warning",
                   showCancelButton: true,
                   confirmButtonColor: "#3085d6",
