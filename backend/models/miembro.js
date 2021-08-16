@@ -19,7 +19,6 @@ const miembroSchema = new mongoose.Schema({
   },
   fechaNacimiento: {
     type: Date,
-    required: true,
   },
   nacionalidad: {
     type: String,

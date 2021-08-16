@@ -203,6 +203,8 @@ exports.updatePartido = catchAsyncErrors(async (req, res, next) => {
     estadio,
   } = req.body;
 
+  var fechaPartido = new Date(fecha);
+
   if (!nombreLocal) {
     return next(
       new ErrorHandler("El nombre del equipo local es obligatorio", 400)

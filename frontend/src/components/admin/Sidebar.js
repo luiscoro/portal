@@ -179,7 +179,7 @@ const Sidebar = () => {
               aria-expanded="false"
               className="dropdown-toggle"
             >
-              <i className="fa fa-table"></i> Clasificaciones
+              <i className="fa fa-table"></i> Clasificación
             </a>
             <ul className="collapse list-unstyled" id="clasificacionSubmenu">
               <li>

@@ -7,6 +7,9 @@ function validNombre(n) {
   return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ]+$/.test(n);
 }
 
+var ancho = 0;
+var alto = 0;
+
 exports.createMiembro = catchAsyncErrors(async (req, res, next) => {
   const { posicion, tipo, nombre, foto } = req.body;
 
@@ -18,6 +21,14 @@ exports.createMiembro = catchAsyncErrors(async (req, res, next) => {
     return next(
       new ErrorHandler("El tipo de miembro seleccionado no es válido", 400)
     );
+  }
+
+  if (tipo === "Jugador") {
+    ancho = 200;
+    alto = 400;
+  } else {
+    ancho = 255;
+    alto = 255;
   }
 
   if (!nombre) {
@@ -38,8 +49,8 @@ exports.createMiembro = catchAsyncErrors(async (req, res, next) => {
 
   const result = await cloudinary.v2.uploader.upload(foto, {
     folder: "miembros",
-    width: 200,
-    height: 400,
+    width: ancho,
+    height: alto,
     crop: "scale",
   });
 

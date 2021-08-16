@@ -5,7 +5,7 @@ const APIFeatures = require("../utils/featuresNoticia");
 const cloudinary = require("cloudinary");
 
 function validNombre(n) {
-  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ 0-9]+$/.test(n);
+  return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ 0-9 ,.]+$/.test(n);
 }
 
 exports.createNoticia = catchAsyncErrors(async (req, res, next) => {
@@ -70,10 +70,13 @@ exports.getNoticiasTop = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getNoticias = catchAsyncErrors(async (req, res, next) => {
-  const resPerPage = 1;
+  const resPerPage = 2;
   const noticiasCount = await Noticia.countDocuments();
 
-  const apiFeatures = new APIFeatures(Noticia.find(), req.query).search();
+  const apiFeatures = new APIFeatures(
+    Noticia.find().sort({ fecha: -1 }),
+    req.query
+  ).search();
 
   let noticias = await apiFeatures.query;
   let filteredNoticiasCount = noticias.length;

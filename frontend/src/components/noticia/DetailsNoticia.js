@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+import Clasificacion from "../clasificacion/Clasificacion";
 import Loader from "../section/Loader";
 import MetaData from "../section/MetaData";
 import { Link } from "react-router-dom";
@@ -102,77 +102,8 @@ const DetailsNoticia = ({ match }) => {
                       <p>{noticia.descripcion}</p>
                     </div>
                   </div>
-                  {/* post-item end */}
                 </div>
-                <div className="col-lg-4">
-                  <div className="sidebar">
-                    <div className="widget">
-                      <div className="widget-header">
-                        <i className="fa fa-bars" />
-                        <h4 className="widget-title">Tabla de posiciones</h4>
-                      </div>
-                      <div className="team-cart-table-area mb-30">
-                        <table
-                          className="team-cart-table bg_img base-overlay"
-                          data-background
-                        >
-                          <thead>
-                            <tr>
-                              <th>equipo</th>
-                              <th>puntos</th>
-                              <th>gd</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <span>01</span>Liver Pool
-                              </td>
-                              <td>03</td>
-                              <td>01</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <span>01</span>Dhaka Pro
-                              </td>
-                              <td>02</td>
-                              <td>00</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <span>01</span>Finica LC
-                              </td>
-                              <td>03</td>
-                              <td>01</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <span>01</span>Ace Milan
-                              </td>
-                              <td>03</td>
-                              <td>01</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <span>01</span>Wokapiya
-                              </td>
-                              <td>03</td>
-                              <td>01</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <span>01</span>Anchya
-                              </td>
-                              <td>01</td>
-                              <td>01</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                    {/* widget end */}
-                  </div>
-                </div>
+                <Clasificacion />
               </div>
             </div>
           </section>

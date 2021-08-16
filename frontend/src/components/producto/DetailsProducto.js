@@ -227,7 +227,7 @@ const DetailsProducto = ({ match }) => {
                         ></div>
                       </div>
                       <span id="no_of_reviews">
-                        ({producto.numeroRevisiones} Valoraciones)
+                        &nbsp; Valoraciones&nbsp;({producto.numeroRevisiones})
                       </span>
 
                       <hr />
