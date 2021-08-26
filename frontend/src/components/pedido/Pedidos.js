@@ -88,7 +88,7 @@ const Pedidos = () => {
           String(pedido.estadoPedido).includes("entregado") ? (
             <p style={{ color: "green" }}>{pedido.estadoPedido}</p>
           ) : (
-            <p style={{ color: "yellow" }}>{pedido.estadoPedido}</p>
+            <p style={{ color: "orange" }}>{pedido.estadoPedido}</p>
           ),
         estadoPago: (
           <p style={{ color: "green" }}>
