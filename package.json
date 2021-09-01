@@ -7,6 +7,7 @@
     "start": "SET node backend/server.js",
     "dev": "SET NODE_ENV=DEVELOPMENT& nodemon backend/server",
     "prod": "SET NODE_ENV=PRODUCTION& nodemon backend/server",
+    "test": "./node_modules/.bin/mocha --reporter spec",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "Luis Coronel, Andrés Morales",
@@ -14,12 +15,14 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "chai": "^4.3.4",
     "cloudinary": "^1.23.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
+    "mocha": "^9.1.1",
     "mongoose": "^5.10.16",
     "nodemailer": "^6.4.16",
     "stripe": "^8.128.0",

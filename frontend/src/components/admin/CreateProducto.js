@@ -167,6 +167,7 @@ const CreateProducto = ({ history }) => {
                                 type="number"
                                 value={precio}
                                 step="0.1"
+                                min="1"
                                 onChange={(e) => setPrecio(e.target.value)}
                               />
                             </div>
@@ -185,6 +186,7 @@ const CreateProducto = ({ history }) => {
                               <input
                                 type="number"
                                 value={stock}
+                                min="0"
                                 onChange={(e) => setStock(e.target.value)}
                               />
                             </div>
