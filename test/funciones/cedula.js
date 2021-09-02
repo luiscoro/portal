@@ -1,4 +1,4 @@
-exports.cedulaTest = function (cedula) {
+exports.cedulaTest = function(cedula){
   var res = 0;
   var cad = cedula;
   var total = 0;
