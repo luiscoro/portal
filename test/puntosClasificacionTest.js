@@ -10,3 +10,14 @@ describe("Testeo del componente Clasificacion: ", function () {
       });
     });
 });
+
+//CUANDO LOS CASOS DE PRUEBA NO SE CUMPLEN
+
+describe("Testeo del componente Clasificacion: ", function () {
+  describe("Revisión a la función puntosTest", function () {
+    it("Se verifica que existan puntos : assert.equal(value) ", function () {
+      result = functionClasificacion.puntosTest(3);
+      assert.equal(result, "Los puntos es obligatorio");
+    });
+  });
+});

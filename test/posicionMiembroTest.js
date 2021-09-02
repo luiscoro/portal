@@ -11,11 +11,12 @@ describe("Testeo del componente Miembro: ", function () {
     });
 });
 
-// describe("Testeo del componente Partido: ", function () {
-//   describe("Revisión a la función horaTest", function () {
-//     it("Se verifica que la hora este en el rango de 09:00 a 19:00 assert.equal(value) ", function () {
-//       result = functionPartido.horaTest("08:00");
-//       assert.equal(result, "La hora debe estar entre las 09:00 y 19:00");
-//     });
-//   });
-// });
+//CUANDO LOS CASOS DE PRUEBA NO SE CUMPLEN
+describe("Testeo del componente Miembro: ", function () {
+    describe("Revisión a la función posicionTest", function () {
+      it("Se verifica que exista una posicion : assert.equal(value) ", function () {
+        result = functionMiembro.posicionTest(9);
+        assert.equal(result, "La posición seleccionada no es válida");
+      });
+    });
+});

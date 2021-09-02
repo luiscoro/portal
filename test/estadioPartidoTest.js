@@ -19,3 +19,26 @@ describe("Testeo del componente Partido: ", function () {
       });
     });
 });
+
+
+// CASOS DE PRUEBA CUANDO NO SE CUMPLEN
+
+
+
+describe("Testeo del componente Partido: ", function () {
+    describe("Revisión a la función estadioTest", function () {
+      it("Se verifica que el nombre del estadio sea adecuado: assert.equal(value) ", function () {
+        result = functionPartido.estadioTest("El super 3");
+        assert.equal(result, "El nombre del estadio solo admite letras, números y espacios");
+      });
+    });
+});
+
+describe("Testeo del componente Partido: ", function () {
+    describe("Revisión a la función estadioVacioTest", function () {
+      it("Se verifica que el nombre del estadio no sea nulo o vacio: assert.equal(value) ", function () {
+        result = functionPartido.estadioVacioTest("nombre estadio lleno");
+        assert.equal(result, "El nombre del estadio no puede estar vacío");
+      });
+    });
+});

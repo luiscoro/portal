@@ -10,3 +10,15 @@ describe("Testeo del componente Clasificacion: ", function () {
       });
     });
 });
+
+// CASOS DE PRUEBA CUANDO NO SE CUMPLEN
+
+
+describe("Testeo del componente Clasificacion: ", function () {
+    describe("Revisión a la función nombreTest", function () {
+      it("Se verifica que existan puntos : assert.equal(value) ", function () {
+        result = functionClasificacion.equipoTest("Barcelona");
+        assert.equal(result, "El nombre es obligatorio");
+      });
+    });
+});

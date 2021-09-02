@@ -12,7 +12,7 @@ exports.fechaTest = function (fecha) {
   fechaActual.setHours(0, 0, 0, 0);
   if (fechaPartido < fechaActual)
     return "La fecha del partido no puede ser menor a la fecha actual";
-  else return "La fecha del partido fue menor a la fecha actual";
+  else return "La fecha del partido fue mayor o igual a la fecha actual";
 };
 
 exports.horaVaciaTest = function (hora){
@@ -20,7 +20,7 @@ exports.horaVaciaTest = function (hora){
   if (hora === null) {
     return "La hora seleccionada no es válida";
   }else{
-      return "La hora seleccionada ya no fue vacía, fue llena"
+      return "La hora seleccionada ya no esta vacía, fue llenada"
   }
 };
 exports.horaTest = function (hora) {
@@ -43,12 +43,12 @@ function validNombre(n) {
       if(!validNombre(nombreEstadio))
           return "El nombre del estadio solo admite letras, números y espacios"
           else
-          return "El nombre del estadio es válido"
+          return "El nombre del estadio fue ingresado"
   }
   exports.estadioVacioTest = function (nombreEstadio){
     console.log("Dato de entrada: "+nombreEstadio)
     if(nombreEstadio===null)
         return "El nombre del estadio no puede estar vacío"
         else
-        return "El nombre del estadio esta vacío"
+        return "El nombre del estadio fue llenado"
 }
