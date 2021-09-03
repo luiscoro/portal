@@ -249,6 +249,7 @@ const CreateMiembro = ({ history }) => {
                                 height="52"
                               />
                             </div>
+
                             <div className="frm-group">
                               <input type="submit" value="Crear" />
                             </div>
