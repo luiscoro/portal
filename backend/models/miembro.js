@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+var d = new Date();
+d.setHours(d.getHours() - 5);
 
 const miembroSchema = new mongoose.Schema({
   posicion: {
@@ -7,12 +9,17 @@ const miembroSchema = new mongoose.Schema({
     required: true,
   },
   tipo: {
-    type: String,
+    type: mongoose.Schema.ObjectId,
+    ref: "TipoMiembro",
     required: true,
   },
   nombre: {
     type: String,
     trim: true,
+  },
+  cedula: {
+    type: String,
+
   },
   numeroCamiseta: {
     type: Number,
@@ -32,6 +39,10 @@ const miembroSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+  },
+  estado: {
+    type: String,
+    default: "activo",
   },
 });
 

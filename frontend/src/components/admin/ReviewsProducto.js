@@ -132,6 +132,7 @@ const ReviewsProducto = () => {
         actions: (
           <button
             className="btn btn-danger py-1 px-2 ml-2"
+            title="Eliminar"
             onClick={() => {
               MySwal.fire({
                 background: "#f5ede4",

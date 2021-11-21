@@ -8,8 +8,8 @@ function validNombre(n) {
 }
 
 var fechaActual = new Date();
-fechaActual.setDate(fechaActual.getDate()-1);
-fechaActual.setHours(0,0,0,0);
+fechaActual.setDate(fechaActual.getDate() - 1);
+fechaActual.setHours(0, 0, 0, 0);
 
 exports.createPartido = catchAsyncErrors(async (req, res, next) => {
   const {
@@ -70,7 +70,7 @@ exports.createPartido = catchAsyncErrors(async (req, res, next) => {
 
 
   if (fechaPartido < fechaActual) {
-  
+
     return next(new ErrorHandler("La fecha del partido no puede ser menor a la fecha actual", 400));
   }
 
@@ -86,15 +86,15 @@ exports.createPartido = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("La hora debe estar entre las 09:00 y 19:00", 400));
   }
 
-  if(estadio !== ""){
-  if (!validNombre(estadio)) {
-    return next(
-      new ErrorHandler(
-        "El nombre del estadio solo admite letras, números y espacios",
-        400
-      )
-    );
-  }
+  if (estadio !== "") {
+    if (!validNombre(estadio)) {
+      return next(
+        new ErrorHandler(
+          "El nombre del estadio solo admite letras, números y espacios",
+          400
+        )
+      );
+    }
   }
 
   let logoLocalLink = {};
@@ -236,7 +236,7 @@ exports.updatePartido = catchAsyncErrors(async (req, res, next) => {
   }
 
   if (fechaPartido < fechaActual) {
-  
+
     return next(new ErrorHandler("La fecha del partido no puede ser menor a la fecha actual", 400));
   }
 
@@ -251,8 +251,8 @@ exports.updatePartido = catchAsyncErrors(async (req, res, next) => {
   if (hora < "09:00" || hora > "19:00") {
     return next(new ErrorHandler("La hora debe estar entre las 09:00 y 19:00", 400));
   }
-  
-  if(estadio !== ""){
+
+  if (estadio !== "") {
     if (!validNombre(estadio)) {
       return next(
         new ErrorHandler(
@@ -262,7 +262,7 @@ exports.updatePartido = catchAsyncErrors(async (req, res, next) => {
       );
     }
   }
-  
+
   const newPartidoData = {
     nombreLocal: nombreLocal,
     golesLocal: golesLocal,
@@ -319,18 +319,22 @@ exports.updatePartido = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.deletePartido = catchAsyncErrors(async (req, res, next) => {
-  const partido = await Partido.findById(req.params.id);
 
-  if (!partido) {
-    return next(new ErrorHandler("Partido no encontrado", 404));
-  }
-  const imagen_id = partido.logoLocal.public_id;
-  await cloudinary.v2.uploader.destroy(imagen_id);
+  const newPartidoData = {
+    estado: "inactivo",
+  };
 
-  const imagen1_id = partido.logoVisitante.public_id;
-  await cloudinary.v2.uploader.destroy(imagen1_id);
 
-  await partido.remove();
+  const partido = await Partido.findByIdAndUpdate(
+    req.params.id,
+    newPartidoData,
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
+
 
   res.status(200).json({
     success: true,

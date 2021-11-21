@@ -10,6 +10,9 @@ import {
   GET_PEDIDOS_FAIL,
   GET_PEDIDOS_REQUEST,
   GET_PEDIDOS_SUCCESS,
+  GET_PEDIDOSMENSUAL_FAIL,
+  GET_PEDIDOSMENSUAL_REQUEST,
+  GET_PEDIDOSMENSUAL_SUCCESS,
   PEDIDOS_FAIL,
   PEDIDOS_REQUEST,
   PEDIDOS_SUCCESS,
@@ -85,17 +88,20 @@ export const pedidosReducer = (state = { pedidos: [] }, action) => {
 export const pedidoDetailsReducer = (state = { pedido: {} }, action) => {
   switch (action.type) {
     case PEDIDO_DETAILS_REQUEST:
+    case GET_PEDIDOSMENSUAL_REQUEST:
       return {
         loading: true,
       };
 
     case PEDIDO_DETAILS_SUCCESS:
+    case GET_PEDIDOSMENSUAL_SUCCESS:
       return {
         loading: false,
         pedido: action.payload,
       };
 
     case PEDIDO_DETAILS_FAIL:
+    case GET_PEDIDOSMENSUAL_FAIL:
       return {
         loading: false,
         error: action.payload,

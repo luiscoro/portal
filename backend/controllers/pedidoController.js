@@ -7,6 +7,7 @@ const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 var d = new Date();
 d.setHours(d.getHours() - 5);
 
+
 exports.createPedido = catchAsyncErrors(async (req, res, next) => {
   const {
     itemsPedido,
@@ -75,7 +76,11 @@ exports.Pedidos = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getPedidos = catchAsyncErrors(async (req, res, next) => {
-  const pedidos = await Pedido.find();
+  const pedidos = await Pedido.find().populate(
+    "usuario",
+    "nombre cedula email"
+  );;
+
 
   let montoTotal = 0;
 
@@ -87,6 +92,85 @@ exports.getPedidos = catchAsyncErrors(async (req, res, next) => {
     success: true,
     montoTotal,
     pedidos,
+  });
+});
+
+exports.getPedidoMensual = catchAsyncErrors(async (req, res, next) => {
+  const pedidos = await Pedido.find();
+  const anio = req.params.anio;
+
+  let montoEnero = 0;
+  let montoFebrero = 0;
+  let montoMarzo = 0;
+  let montoAbril = 0;
+  let montoMayo = 0;
+  let montoJunio = 0;
+  let montoJulio = 0;
+  let montoAgosto = 0;
+  let montoSeptiembre = 0;
+  let montoOctubre = 0;
+  let montoNoviembre = 0;
+  let montoDiciembre = 0;
+
+  pedidos.forEach((pedido) => {
+    var fecha = ((pedido.fechaPago).toString());
+    var let1 = fecha.substring(11, 15);
+    var let2 = fecha.substring(4, 7);
+    var letra = let1 + let2;
+    if (letra === anio + "Jan") {
+      montoEnero += pedido.precioTotal;
+    }
+    if (letra === anio + "Feb") {
+      montoFebrero += pedido.precioTotal;
+    }
+    if (letra === anio + "Mar") {
+      montoMarzo += pedido.precioTotal;
+    }
+    if (letra === anio + "Apr") {
+      montoAbril += pedido.precioTotal;
+    }
+    if (letra === anio + "May") {
+      montoMayo += pedido.precioTotal;
+    }
+    if (letra === anio + "Jun") {
+      montoJunio += pedido.precioTotal;
+    }
+    if (letra === anio + "Jul") {
+      montoJulio += pedido.precioTotal;
+    }
+    if (letra === anio + "Aug") {
+      montoAgosto += pedido.precioTotal;
+    }
+    if (letra === anio + "Sep") {
+      montoSeptiembre += pedido.precioTotal;
+    }
+    if (letra === anio + "Oct") {
+      montoOctubre += pedido.precioTotal;
+    }
+    if (letra === anio + "Nov") {
+      montoNoviembre += pedido.precioTotal;
+    }
+    if (letra === anio + "Dec") {
+      montoDiciembre += pedido.precioTotal;
+    }
+
+
+  });
+
+  res.status(200).json({
+    success: true,
+    montoEnero,
+    montoFebrero,
+    montoMarzo,
+    montoAbril,
+    montoMayo,
+    montoJunio,
+    montoJulio,
+    montoAgosto,
+    montoSeptiembre,
+    montoOctubre,
+    montoNoviembre,
+    montoDiciembre
   });
 });
 
@@ -110,13 +194,20 @@ exports.updatePedido = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.deletePedido = catchAsyncErrors(async (req, res, next) => {
-  const pedido = await Pedido.findById(req.params.id);
 
-  if (!pedido) {
-    return next(new ErrorHandler("Pedido no encontrado con este id", 404));
-  }
+  const newPedidoData = {
+    estadoPedido: "entregado",
+  };
 
-  await pedido.remove();
+  const pedido = await Pedido.findByIdAndUpdate(
+    req.params.id,
+    newPedidoData,
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
 
   res.status(200).json({
     success: true,

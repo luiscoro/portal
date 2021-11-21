@@ -22,6 +22,12 @@ const Sidebar = () => {
             </a>
             <ul className="collapse list-unstyled" id="miembroSubmenu">
               <li>
+                <Link to="/admin-tipomiembros">
+                  <i className="fa fa-universal-access"></i> Tipos
+                </Link>
+              </li>
+
+              <li>
                 <Link to="/admin-miembros">
                   <i className="fa fa-clipboard"></i> Listado
                 </Link>
@@ -45,7 +51,31 @@ const Sidebar = () => {
               </li>
             </ul>
           </li>
+          <li>
+            <a
+              href="#contratoSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              className="dropdown-toggle"
+            >
+              <i className="fa fa-briefcase"></i> Contratos
+            </a>
+            <ul className="collapse list-unstyled" id="contratoSubmenu">
 
+              <li>
+                <Link to="/admin-contratos">
+                  <i className="fa fa-clipboard"></i> Listado
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/admin-contrato">
+                  <i className="fa fa-plus"></i> Nuevo
+                </Link>
+              </li>
+
+            </ul>
+          </li>
           <li>
             <a
               href="#dirigenteSubmenu"

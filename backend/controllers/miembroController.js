@@ -1,4 +1,5 @@
 const Miembro = require("../models/miembro");
+const Posicion = require("../models/posicion");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const cloudinary = require("cloudinary");
@@ -70,8 +71,11 @@ exports.createMiembro = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getJugadores = catchAsyncErrors(async (req, res, next) => {
-  const miembros = await Miembro.find({ tipo: "Jugador" });
-
+  const miembros = await Miembro.find().populate(
+    "tipo",
+    "nombre"
+  ).populate("posicion",
+    "nombre");;
   res.status(200).json({
     success: true,
     miembros,
@@ -79,7 +83,13 @@ exports.getJugadores = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getCuerpoTecnico = catchAsyncErrors(async (req, res, next) => {
-  const miembros = await Miembro.find({ tipo: "Cuerpo técnico" });
+
+
+  const miembros = await Miembro.find().populate(
+    "tipo",
+    "nombre"
+  ).populate("posicion",
+    "nombre");;
 
   res.status(200).json({
     success: true,
@@ -97,7 +107,13 @@ exports.getCuerpoMedico = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getAdminMiembros = catchAsyncErrors(async (req, res, next) => {
-  const miembros = await Miembro.find();
+  const miembros = await Miembro.find().populate(
+    "tipo",
+    "nombre"
+  ).populate("posicion",
+    "nombre");;
+
+
   res.status(200).json({
     success: true,
     miembros,
@@ -184,15 +200,19 @@ exports.updateMiembro = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.deleteMiembro = catchAsyncErrors(async (req, res, next) => {
-  const miembro = await Miembro.findById(req.params.id);
+  const newMiembroData = {
+    estado: "inactivo",
+  };
 
-  if (!miembro) {
-    return next(new ErrorHandler("Miembro no encontrado", 404));
-  }
-  const foto_id = miembro.foto.public_id;
-  await cloudinary.v2.uploader.destroy(foto_id);
-
-  await miembro.remove();
+  const miembro = await Miembro.findByIdAndUpdate(
+    req.params.id,
+    newMiembroData,
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
 
   res.status(200).json({
     success: true,

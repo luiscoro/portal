@@ -110,6 +110,11 @@ const ListPosiciones = ({ history }) => {
           sort: "asc",
         },
         {
+          label: "Estado",
+          field: "estado",
+          sort: "asc",
+        },
+        {
           label: "Acciones",
           field: "acciones",
         },
@@ -121,16 +126,19 @@ const ListPosiciones = ({ history }) => {
       data.rows.push({
         id: posicion._id,
         nombre: posicion.nombre,
+        estado: posicion.estado,
         acciones: (
           <>
             <Link
               to={`/admin-posicion/${posicion._id}`}
               className="btn btn-primary py-1 px-2"
+              title="Editar"
             >
               <i className="fa fa-pencil"></i>
             </Link>
             <button
               className="btn btn-danger py-1 px-2 ml-2"
+              title="Eliminar"
               onClick={() => {
                 MySwal.fire({
                   background: "#f5ede4",

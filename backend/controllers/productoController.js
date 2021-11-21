@@ -116,7 +116,9 @@ exports.getProductos = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getAdminProductos = catchAsyncErrors(async (req, res, next) => {
-  const productos = await Producto.find();
+  const productos = await Producto.find().populate(
+    "categoria",
+    "nombre");
 
   res.status(200).json({
     success: true,
@@ -130,6 +132,7 @@ exports.getSingleProducto = catchAsyncErrors(async (req, res, next) => {
   if (!producto) {
     return next(new ErrorHandler("Producto no encontrado", 404));
   }
+
 
   res.status(200).json({
     success: true,

@@ -27,6 +27,10 @@ const noticiaSchema = new mongoose.Schema({
     type: Date,
     default: d,
   },
+  estado: {
+    type: String,
+    default: "activa",
+  },
 });
 
 module.exports = mongoose.model("Noticia", noticiaSchema);

@@ -13,6 +13,8 @@ import {
   clearErrors,
 } from "../../actions/productoActions";
 import { DELETE_PRODUCTO_RESET } from "../../constants/productoConstants";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 var MySwal;
 var bandera;
@@ -98,6 +100,11 @@ const ListProductos = ({ history }) => {
     const data = {
       columns: [
         {
+          label: "Categoría",
+          field: "categoria",
+          sort: "asc",
+        },
+        {
           label: "Nombre",
           field: "nombre",
           sort: "asc",
@@ -117,7 +124,11 @@ const ListProductos = ({ history }) => {
           field: "stock",
           sort: "asc",
         },
-
+        {
+          label: "Marca",
+          field: "marca",
+          sort: "asc",
+        },
         {
           label: "Foto",
           field: "foto",
@@ -132,10 +143,12 @@ const ListProductos = ({ history }) => {
 
     productos.forEach((producto) => {
       data.rows.push({
+        categoria: producto.categoria && producto.categoria.nombre,
         nombre: producto.nombre,
         precio: `$${producto.precio}`,
         descripcion: producto.descripcion,
         stock: producto.stock,
+        marca: producto.marca,
         foto: (
           <img
             alt=""
@@ -149,11 +162,13 @@ const ListProductos = ({ history }) => {
             <Link
               to={`/admin-producto/${producto._id}`}
               className="btn btn-primary py-1 px-2"
+              title="Editar"
             >
               <i className="fa fa-pencil"></i>
             </Link>
             <button
               className="btn btn-danger py-1 px-2 ml-2"
+              title="Eliminar"
               onClick={() => {
                 MySwal.fire({
                   background: "#f5ede4",
@@ -193,6 +208,45 @@ const ListProductos = ({ history }) => {
   const deleteProductoHandler = (id) => {
     dispatch(deleteProducto(id));
   };
+
+
+  const exportPdf = () => {
+
+    var img = new Image(10, 10);
+    img.crossOrigin = "";
+    img.src = "//i.imgur.com/qU9CtWQ.png";
+
+    const unit = "pt";
+    const size = "A4";
+    const orientation = "portrait";
+
+    const doc = new jsPDF(orientation, unit, size);
+
+    doc.setFontSize(15);
+    const title = "Listado de productos";
+    const headers = [["CATEGORÍA", "NOMBRE", "PRECIO", "DESCRIPCIÓN", "CANTIDAD EXISTENTE", "MARCA"]];
+
+    const rows = [];
+
+    productos.forEach(producto => {
+
+      var temp = [producto.categoria && producto.categoria.nombre, producto.nombre, "$" + producto.precio, producto.descripcion, producto.stock, producto.marca];
+      rows.push(temp);
+    });
+
+
+    let content = {
+      startY: 80,
+      head: headers,
+      body: rows
+    };
+
+    doc.addImage(img, 275, 5);
+    doc.text(title, 40, 70);
+    doc.autoTable(content);
+    doc.save("productos.pdf")
+  }
+
   return (
     <>
       <MetaData title={"Listar productos"} />
@@ -211,9 +265,22 @@ const ListProductos = ({ history }) => {
                 Crear nuevo
               </Link>
               <h3 className="my-4">Listado de productos</h3>
+              <div className="botonpdf">
+                <button
+                  className="btn btn-danger py-1 px-2 ml-2"
+                  onClick={() => {
+                    exportPdf()
+                  }}
+                  title="Generar PDF"
+                >
+
+                  <i className="fa fa-file-pdf-o"></i>
+                </button>
+              </div>
               {loading ? (
                 <Loader />
               ) : (
+
                 <MDBDataTable
                   data={setProductos()}
                   className="px-3"

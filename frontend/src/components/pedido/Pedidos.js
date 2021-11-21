@@ -85,7 +85,7 @@ const Pedidos = () => {
         precio: `$${pedido.precioTotal}`,
         estado:
           pedido.estadoPedido &&
-          String(pedido.estadoPedido).includes("entregado") ? (
+            String(pedido.estadoPedido).includes("entregado") ? (
             <p style={{ color: "green" }}>{pedido.estadoPedido}</p>
           ) : (
             <p style={{ color: "orange" }}>{pedido.estadoPedido}</p>
@@ -98,7 +98,7 @@ const Pedidos = () => {
         acciones: (
           <Link
             to={`/pedido/${pedido._id}`}
-            className="btn btn-primary py-1 px-2"
+            className="btn btn-primary py-1 px-2" title="Editar"
           >
             <i className="fa fa-eye"></i>
           </Link>

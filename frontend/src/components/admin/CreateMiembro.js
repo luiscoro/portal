@@ -8,6 +8,7 @@ import Loader from "../section/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { createMiembro, clearErrors } from "../../actions/miembroActions";
 import { getAdminPosiciones } from "../../actions/posicionActions";
+import { getAdminTipoMiembros } from "../../actions/tipoMiembroActions";
 import { CREATE_MIEMBRO_RESET } from "../../constants/miembroConstants";
 
 var MySwal;
@@ -19,6 +20,7 @@ const CreateMiembro = ({ history }) => {
     posicion: "",
     tipo: "",
     nombre: "",
+    cedula: "",
     numeroCamiseta: "",
     fechaNacimiento: "",
     nacionalidad: "",
@@ -28,6 +30,7 @@ const CreateMiembro = ({ history }) => {
     posicion,
     tipo,
     nombre,
+    cedula,
     numeroCamiseta,
     fechaNacimiento,
     nacionalidad,
@@ -39,12 +42,15 @@ const CreateMiembro = ({ history }) => {
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
   const dispatch1 = useDispatch();
+  const dispatch2 = useDispatch();
 
   const { error, success } = useSelector((state) => state.createMiembro);
   const { loading, posiciones } = useSelector((state) => state.posiciones);
+  const { loading1, tipoMiembros } = useSelector((state) => state.tipoMiembros);
 
   useEffect(() => {
     dispatch1(getAdminPosiciones());
+    dispatch2(getAdminTipoMiembros());
     if (error) {
       MySwal.fire({
         background: "#f5ede4",
@@ -77,7 +83,7 @@ const CreateMiembro = ({ history }) => {
       });
       dispatch({ type: CREATE_MIEMBRO_RESET });
     }
-  }, [dispatch, error, success, history, dispatch1]);
+  }, [dispatch, error, success, history, dispatch1, dispatch2]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -86,6 +92,7 @@ const CreateMiembro = ({ history }) => {
     formData.set("posicion", posicion);
     formData.set("tipo", tipo);
     formData.set("nombre", nombre);
+    formData.set("cedula", cedula);
     formData.set("numeroCamiseta", numeroCamiseta);
     formData.set("fechaNacimiento", fechaNacimiento);
     formData.set("nacionalidad", nacionalidad);
@@ -142,19 +149,29 @@ const CreateMiembro = ({ history }) => {
                           >
                             <div className="frm-group">
                               <label>Tipo</label>
-                              <select
-                                name="tipo"
-                                value={tipo}
-                                onChange={onChange}
-                              >
-                                <option value={""}>
-                                  Seleccione el tipo de miembro
-                                </option>
-                                <option>Jugador</option>
-                                <option>Cuerpo técnico</option>
-                                <option>Cuerpo médico</option>
-                              </select>
+                              {loading1 ? (
+                                <Loader />
+                              ) : (
+                                <select
+                                  name="tipo"
+                                  value={tipo}
+                                  onChange={onChange}
+                                >
+                                  <option value={""}>
+                                    Seleccione el tipo de miembro
+                                  </option>
+                                  {tipoMiembros.map((tipo) => (
+                                    <option
+                                      key={tipo._id}
+                                      value={tipo._id}
+                                    >
+                                      {tipo.nombre}
+                                    </option>
+                                  ))}
+                                </select>
+                              )}
                             </div>
+
                             <div className="frm-group">
                               <label>Posición</label>
                               {loading ? (
@@ -191,6 +208,18 @@ const CreateMiembro = ({ history }) => {
                               />
                             </div>
                             <div className="frm-group">
+                              <label>Identificación</label>
+                              <input
+                                name="cedula"
+                                type="text"
+                                placeholder="Ingresa la cédula de identidad"
+                                value={cedula}
+                                onChange={onChange}
+                              />
+                            </div>
+
+                            <div className="frm-group">
+
                               <label>Número de camiseta</label>
                               <input
                                 name="numeroCamiseta"

@@ -32,6 +32,8 @@ import CreateDirigente from "./components/admin/CreateDirigente";
 import CreateClasificacion from "./components/admin/CreateClasificacion";
 import CreatePosicion from "./components/admin/CreatePosicion";
 import CreateMiembro from "./components/admin/CreateMiembro";
+import CreateTipoMiembro from "./components/admin/CreateTipoMiembro";
+import CreateContrato from "./components/admin/CreateContrato";
 import ListCategorias from "./components/admin/ListCategorias";
 import ListProductos from "./components/admin/ListProductos";
 import ListInformacion from "./components/admin/ListInformacion";
@@ -43,6 +45,8 @@ import ListDirigentes from "./components/admin/ListDirigentes";
 import ListClasificaciones from "./components/admin/ListClasificaciones";
 import ListPosiciones from "./components/admin/ListPosiciones";
 import ListMiembros from "./components/admin/ListMiembros";
+import ListTipoMiembros from "./components/admin/ListTipoMiembros";
+import ListContratos from "./components/admin/ListContratos";
 import UpdateInformacion from "./components/admin/UpdateInformacion";
 import UpdateCategoria from "./components/admin/UpdateCategoria";
 import UpdateProducto from "./components/admin/UpdateProducto";
@@ -54,6 +58,8 @@ import UpdateDirigente from "./components/admin/UpdateDirigente";
 import UpdateClasificacion from "./components/admin/UpdateClasificacion";
 import UpdatePosicion from "./components/admin/UpdatePosicion";
 import UpdateMiembro from "./components/admin/UpdateMiembro";
+import UpdateTipoMiembro from "./components/admin/UpdateTipoMiembro";
+import UpdateContrato from "./components/admin/UpdateContrato";
 import ListPedidos from "./components/admin/ListPedidos";
 import UpdatePedido from "./components/admin/UpdatePedido";
 import ReviewsProducto from "./components/admin/ReviewsProducto";
@@ -314,6 +320,40 @@ function App() {
           path="/admin-miembro/:id"
           esAdmin={true}
           component={UpdateMiembro}
+        />
+        <PrivateRoute
+          path="/admin-tipomiembro"
+          esAdmin={true}
+          component={CreateTipoMiembro}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-tipomiembros"
+          esAdmin={true}
+          component={ListTipoMiembros}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-tipomiembro/:id"
+          esAdmin={true}
+          component={UpdateTipoMiembro}
+        />
+        <PrivateRoute
+          path="/admin-contrato"
+          esAdmin={true}
+          component={CreateContrato}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-contratos"
+          esAdmin={true}
+          component={ListContratos}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-contrato/:id"
+          esAdmin={true}
+          component={UpdateContrato}
         />
         <PrivateRoute
           path="/admin-pedidos"

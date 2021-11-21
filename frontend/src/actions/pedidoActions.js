@@ -11,6 +11,9 @@ import {
   GET_PEDIDOS_FAIL,
   GET_PEDIDOS_REQUEST,
   GET_PEDIDOS_SUCCESS,
+  GET_PEDIDOSMENSUAL_FAIL,
+  GET_PEDIDOSMENSUAL_REQUEST,
+  GET_PEDIDOSMENSUAL_SUCCESS,
   PEDIDOS_FAIL,
   PEDIDOS_REQUEST,
   PEDIDOS_SUCCESS,
@@ -63,6 +66,25 @@ export const getPedidos = () => async (dispatch) => {
     });
   }
 };
+
+export const getPedidosMensual = (anio) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_PEDIDOSMENSUAL_REQUEST });
+
+    const { data } = await axios.get(`/api/pedidos/mensual/${anio}`);
+
+    dispatch({
+      type: GET_PEDIDOSMENSUAL_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_PEDIDOSMENSUAL_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
 
 export const getPedidoDetails = (id) => async (dispatch) => {
   try {

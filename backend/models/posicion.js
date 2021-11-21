@@ -6,6 +6,10 @@ const posicionSchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
+  estado: {
+    type: String,
+    default: "activo",
+  },
 });
 
 module.exports = mongoose.model("Posicion", posicionSchema);

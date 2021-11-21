@@ -16,11 +16,15 @@ import { addItemCesta } from "../../actions/cestaActions";
 import { CREATE_REVISION_RESET } from "../../constants/productoConstants";
 
 var MySwal;
+var cant;
+var idProd;
+var temporales;
 
 const DetailsProducto = ({ match }) => {
   const [cantidad, setCantidad] = useState(1);
   const [calificacion, setCalificacion] = useState(0);
   const [comentario, setComentario] = useState("");
+
 
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
@@ -33,8 +37,11 @@ const DetailsProducto = ({ match }) => {
     (state) => state.createRevision
   );
 
+
+
   useEffect(() => {
     dispatch(getProductoDetails(match.params.id));
+    localStorage.setItem("idProd", producto._id);
 
     if (error) {
       MySwal.fire({
@@ -95,26 +102,75 @@ const DetailsProducto = ({ match }) => {
       });
       dispatch({ type: CREATE_REVISION_RESET });
     }
-  }, [dispatch, error, revisionError, match.params.id, success]);
+
+  }, [dispatch, error, revisionError, match.params.id, success, producto._id]);
+
 
   const addCesta = () => {
-    dispatch(addItemCesta(match.params.id, cantidad));
-    MySwal.fire({
-      background: "#f5ede4",
-      toast: true,
-      showCloseButton: true,
-      icon: "success",
-      iconColor: "green",
-      title: "El producto ha sido añadido a la cesta de pedidos.",
-      position: "bottom",
-      showConfirmButton: false,
-      timer: 5000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener("mouseover", Swal.stopTimer);
-        toast.addEventListener("mouseleave", Swal.resumeTimer);
-      },
-    });
+
+
+    idProd = localStorage.getItem("idProd");
+
+    console.log(idProd);
+
+    temporales = JSON.parse(localStorage.getItem("itemsCesta"));
+    console.log(temporales);
+
+    if (!Object.keys(temporales).length) {
+      cant = 0;
+    } else {
+      const res = temporales.some(item => item.producto === String(idProd));
+
+      if (res) {
+        const result = temporales.filter(tempo => tempo.producto === String(idProd));
+        cant = result[0].cantidad;
+      } else {
+        cant = 0;
+      }
+
+    }
+
+
+    cant = cant + cantidad;
+
+
+    if (cant > producto.stock) {
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "warning",
+        iconColor: "orange",
+        title: "La cantidad disponible de este producto ya ha sido agregado a tu cesta",
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+    } else {
+
+      dispatch(addItemCesta(match.params.id, cant));
+      MySwal.fire({
+        background: "#f5ede4",
+        toast: true,
+        showCloseButton: true,
+        icon: "success",
+        iconColor: "green",
+        title: "El producto ha sido añadido a la cesta de pedidos.",
+        position: "bottom",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseover", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+    }
   };
 
   const increaseCantidad = () => {
@@ -123,6 +179,7 @@ const DetailsProducto = ({ match }) => {
     if (count.valueAsNumber >= producto.stock) return;
 
     const cantidad = count.valueAsNumber + 1;
+
     setCantidad(cantidad);
   };
 
@@ -132,6 +189,7 @@ const DetailsProducto = ({ match }) => {
     if (count.valueAsNumber <= 1) return;
 
     const cantidad = count.valueAsNumber - 1;
+
     setCantidad(cantidad);
   };
 
@@ -196,7 +254,7 @@ const DetailsProducto = ({ match }) => {
               <div className="row">
                 <div className="col-lg-12">
                   <div className="product-details-area">
-                    <div className="col-12 col-lg-5 img-fluid">
+                    <div className="col-12 col-lg-5 img-fluid mt-5">
                       <Carousel pause="hover">
                         {producto.imagenes &&
                           producto.imagenes.map((imagen) => (
@@ -283,6 +341,7 @@ const DetailsProducto = ({ match }) => {
                       <hr />
 
                       <h4 className="mt-2">Descripción:</h4>
+
                       <p>{producto.descripcion}</p>
                       <hr />
                       <p id="product_seller mb-3">
@@ -391,7 +450,8 @@ const DetailsProducto = ({ match }) => {
             </div>
           </section>
         </>
-      )}
+      )
+      }
     </>
   );
 };

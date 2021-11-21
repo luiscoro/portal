@@ -13,7 +13,8 @@ import {
   clearErrors,
 } from "../../actions/partidoActions";
 import { DELETE_PARTIDO_RESET } from "../../constants/partidoConstants";
-
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 var MySwal;
 var bandera;
 
@@ -99,19 +100,13 @@ const ListPartidos = ({ history }) => {
     const data = {
       columns: [
         {
-          label: "Equipo local",
+          label: "Equipo Local",
           field: "nombreLocal",
           sort: "asc",
         },
         {
-          label: "Goles local",
-          field: "golesLocal",
-          sort: "asc",
-        },
-        {
-          label: "Goles visitante",
-          field: "golesVisitante",
-          sort: "asc",
+          label: "Resultado",
+          field: "resultado",
         },
         {
           label: "Equipo visitante",
@@ -142,56 +137,59 @@ const ListPartidos = ({ history }) => {
     };
 
     partidos.forEach((partido) => {
-      data.rows.push({
-        nombreLocal: partido.nombreLocal,
-        golesLocal: partido.golesLocal,
-        golesVisitante: partido.golesVisitante,
-        nombreVisitante: partido.nombreVisitante,
-        fecha: partido.fecha,
-        hora: partido.hora,
-        estadio: partido.estadio,
+      if (partido.estado === "activo") {
+        data.rows.push({
+          nombreLocal: partido.nombreLocal,
+          resultado: partido.golesLocal + "-" + partido.golesVisitante,
+          nombreVisitante: partido.nombreVisitante,
+          fecha: partido.fecha,
+          hora: partido.hora,
+          estadio: partido.estadio,
 
-        acciones: (
-          <>
-            <Link
-              to={`/admin-partido/${partido._id}`}
-              className="btn btn-primary py-1 px-2"
-            >
-              <i className="fa fa-pencil"></i>
-            </Link>
-            <button
-              className="btn btn-danger py-1 px-2 ml-2"
-              onClick={() => {
-                MySwal.fire({
-                  background: "#f5ede4",
-                  title: "¿Está seguro de eliminar el partido?",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Si",
-                  cancelButtonText: "Cancelar",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    deletePartidoHandler(partido._id);
-                    MySwal.fire({
-                      background: "#f5ede4",
-                      icon: "success",
-                      title: "El partido ha sido eliminado con éxito",
-                      showConfirmButton: true,
-                      confirmButtonColor: "#3085d6",
-                      showCloseButton: false,
-                      timer: 3000,
-                    });
-                  }
-                });
-              }}
-            >
-              <i className="fa fa-trash"></i>
-            </button>
-          </>
-        ),
-      });
+          acciones: (
+            <>
+              <Link
+                to={`/admin-partido/${partido._id}`}
+                className="btn btn-primary py-1 px-2"
+                title="Editar"
+              >
+                <i className="fa fa-pencil"></i>
+              </Link>
+              <button
+                className="btn btn-danger py-1 px-2 ml-2"
+                title="Eliminar"
+                onClick={() => {
+                  MySwal.fire({
+                    background: "#f5ede4",
+                    title: "¿Está seguro de eliminar el partido?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Si",
+                    cancelButtonText: "Cancelar",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      deletePartidoHandler(partido._id);
+                      MySwal.fire({
+                        background: "#f5ede4",
+                        icon: "success",
+                        title: "El partido ha sido eliminado con éxito",
+                        showConfirmButton: true,
+                        confirmButtonColor: "#3085d6",
+                        showCloseButton: false,
+                        timer: 3000,
+                      });
+                    }
+                  });
+                }}
+              >
+                <i className="fa fa-trash"></i>
+              </button>
+            </>
+          ),
+        });
+      }
     });
 
     return data;
@@ -200,6 +198,45 @@ const ListPartidos = ({ history }) => {
   const deletePartidoHandler = (id) => {
     dispatch(deletePartido(id));
   };
+
+
+  const exportPdf = () => {
+    var img = new Image(10, 10);
+    img.crossOrigin = "";
+    img.src = "//i.imgur.com/qU9CtWQ.png";
+
+    const unit = "pt";
+    const size = "A4";
+    const orientation = "portrait";
+
+    const doc = new jsPDF(orientation, unit, size);
+
+    doc.setFontSize(15);
+    const title = "Listado de partidos";
+    const headers = [["EQUIPO LOCAL", "RESULTADO", "EQUIPO VISITANTE", "FECHA", "HORA", "ESTADIO"]];
+
+    const rows = [];
+
+    partidos.forEach(partido => {
+      if (partido.estado === "activo") {
+        var temp = [partido.nombreLocal, partido.golesLocal + "-" + partido.golesVisitante, partido.nombreVisitante, partido.fecha, partido.hora, partido.estadio];
+        rows.push(temp);
+      }
+    }
+    );
+
+
+    let content = {
+      startY: 80,
+      head: headers,
+      body: rows
+    };
+
+    doc.addImage(img, 275, 5);
+    doc.text(title, 40, 70);
+    doc.autoTable(content);
+    doc.save("partidos.pdf")
+  }
 
   return (
     <>
@@ -222,6 +259,18 @@ const ListPartidos = ({ history }) => {
                   Crear nuevo
                 </Link>
                 <h3 className="my-4">Listado de partidos</h3>
+                <div className="botonpdf">
+                  <button
+                    className="btn btn-danger py-1 px-2 ml-2"
+                    onClick={() => {
+                      exportPdf()
+                    }}
+                    title="Generar PDF"
+                  >
+
+                    <i className="fa fa-file-pdf-o"></i>
+                  </button>
+                </div>
                 <MDBDataTable
                   data={setPartidos()}
                   className="px-3"

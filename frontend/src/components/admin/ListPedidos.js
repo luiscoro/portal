@@ -13,7 +13,8 @@ import {
   clearErrors,
 } from "../../actions/pedidoActions";
 import { DELETE_PEDIDO_RESET } from "../../constants/pedidoConstants";
-
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 var MySwal;
 var bandera;
 
@@ -76,6 +77,77 @@ const ListPedidos = ({ history }) => {
     dispatch(deletePedido(id));
   };
 
+  const exportPdf = (id) => {
+
+    var img = new Image(10, 10);
+    img.crossOrigin = "";
+    img.src = "//i.imgur.com/qU9CtWQ.png";
+
+    var ced, nom, corr, tel, ciu, dir, codp, fecha;
+    const unit = "pt";
+    const size = "A4";
+    const orientation = "portrait";
+
+    const doc = new jsPDF(orientation, unit, size);
+
+    doc.setFontSize(12);
+    const title = "PEDIDO N° " + id;
+    const headers = [["CANTIDAD", "DESCRIPCIÓN", "PRECIO UNITARIO", "PRECIO TOTAL"]];
+
+    const rows = [];
+
+    pedidos.forEach(pedido => {
+      if (pedido._id === id) {
+        ced = pedido.usuario && pedido.usuario.cedula;
+        nom = pedido.usuario && pedido.usuario.nombre;
+        corr = pedido.usuario && pedido.usuario.email;
+        tel = pedido.infoEnvio && pedido.infoEnvio.telefono;
+        ciu = pedido.infoEnvio && pedido.infoEnvio.ciudad;
+        dir = pedido.infoEnvio && pedido.infoEnvio.direccion;
+        codp = pedido.infoEnvio && pedido.infoEnvio.codigoPostal;
+        fecha = (pedido.fechaPago).toLocaleString();
+        // eslint-disable-next-line
+        pedido.itemsPedido.map((item) => {
+          var temp = [item.cantidad, item.nombre, item.precio, item.cantidad * item.precio];
+          rows.push(temp);
+        })
+        var temp1 = ["", "", "", ""]
+        rows.push(temp1);
+        temp1 = ["", "", "SUB TOTAL", pedido.precioItems]
+        rows.push(temp1);
+        temp1 = ["", "", "I.V.A (12%)", pedido.precioImpuesto]
+        rows.push(temp1);
+        temp1 = ["", "", "PRECIO DE ENVÍO", pedido.precioEnvio]
+        rows.push(temp1);
+        temp1 = ["", "", "TOTAL PEDIDO ", "$ " + pedido.precioTotal]
+        rows.push(temp1);
+      }
+
+    });
+
+    var fechap = fecha.substring(0, 10);
+    let content = {
+      startY: 215,
+      head: headers,
+      body: rows
+    };
+
+    doc.addImage(img, 275, 5);
+    doc.text(title, 40, 70);
+    doc.text("_____________________________________________________________________________", 40, 75);
+    doc.text("Datos de facturación y envío", 40, 90);
+    doc.text("N° cédula : " + ced, 40, 110);
+    doc.text("Nombre : " + nom, 40, 125);
+    doc.text("Correo electrónico : " + corr, 40, 140);
+    doc.text("N° teléfono : " + tel, 40, 155);
+    doc.text("Ciudad : " + ciu, 40, 170);
+    doc.text("Dirección : " + dir, 40, 185);
+    doc.text("Código Postal : " + codp, 40, 200);
+    doc.text("Fecha del pedido : " + fechap, 275, 110);
+    doc.autoTable(content);
+    doc.save("pedido" + id + ".pdf")
+  }
+
   const setPedidos = () => {
     const data = {
       columns: [
@@ -85,8 +157,8 @@ const ListPedidos = ({ history }) => {
           sort: "asc",
         },
         {
-          label: "Número de productos",
-          field: "numOfItems",
+          label: "Nombre del cliente",
+          field: "usuario",
           sort: "asc",
         },
         {
@@ -116,15 +188,17 @@ const ListPedidos = ({ history }) => {
     pedidos.forEach((pedido) => {
       data.rows.push({
         id: pedido._id,
-        numOfItems: pedido.itemsPedido.length,
+        usuario: pedido.usuario && pedido.usuario.nombre,
         precio: `$${pedido.precioTotal}`,
         estado:
           pedido.estadoPedido &&
-          String(pedido.estadoPedido).includes("entregado") ? (
+            String(pedido.estadoPedido).includes("entregado") ? (
             <p style={{ color: "green" }}>{pedido.estadoPedido}</p>
-          ) : (
-            <p style={{ color: "red" }}>{pedido.estadoPedido}</p>
-          ),
+          ) :
+            pedido.estadoPedido &&
+              String(pedido.estadoPedido).includes("enviado") ? (
+              <p style={{ color: "orange" }}>{pedido.estadoPedido}</p>
+            ) : (<p style={{ color: "red" }}>{pedido.estadoPedido}</p>),
         estadoPago: (
           <p style={{ color: "green" }}>
             {pedido.infoPago && pedido.infoPago.estado}
@@ -135,15 +209,18 @@ const ListPedidos = ({ history }) => {
             <Link
               to={`/admin-pedido/${pedido._id}`}
               className="btn btn-primary py-1 px-2"
+              title="Editar"
             >
               <i className="fa fa-pencil"></i>
             </Link>
             <button
               className="btn btn-danger py-1 px-2 ml-2"
+              title="Eliminar"
               onClick={() => {
                 MySwal.fire({
                   background: "#f5ede4",
                   title: "¿Está seguro de eliminar el pedido?",
+                  text: "Si elimina el pedido se asume que ya ha sido entregado, por lo tanto se actualizará el estado.",
                   icon: "warning",
                   showCancelButton: true,
                   confirmButtonColor: "#3085d6",
@@ -167,6 +244,16 @@ const ListPedidos = ({ history }) => {
               }}
             >
               <i className="fa fa-trash"></i>
+            </button>
+            <button
+              className="btn btn-danger py-1 px-2 ml-2"
+              title="Generar PDF"
+              onClick={() => {
+                exportPdf(pedido._id)
+              }}
+            >
+
+              <i className="fa fa-file-pdf-o"></i>
             </button>
           </>
         ),

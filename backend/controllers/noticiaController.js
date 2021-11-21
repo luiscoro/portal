@@ -182,15 +182,20 @@ exports.updateNoticia = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.deleteNoticia = catchAsyncErrors(async (req, res, next) => {
-  const noticia = await Noticia.findById(req.params.id);
 
-  if (!noticia) {
-    return next(new ErrorHandler("Noticia no encontrada", 404));
-  }
-  const imagen_id = noticia.imagen.public_id;
-  await cloudinary.v2.uploader.destroy(imagen_id);
+  const newNoticiaData = {
+    estado: "inactiva",
+  };
 
-  await noticia.remove();
+  const noticia = await Noticia.findByIdAndUpdate(
+    req.params.id,
+    newNoticiaData,
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
 
   res.status(200).json({
     success: true,

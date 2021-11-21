@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-
 import { Link } from "react-router-dom";
-
+import { Bar } from 'react-chartjs-2';
 import MetaData from "../section/MetaData";
 import Loader from "../section/Loader";
 import Sidebar from "./Sidebar";
@@ -10,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getAdminProductos } from "../../actions/productoActions";
 import { getAdminPedidos } from "../../actions/pedidoActions";
+import { getPedidosMensual } from "../../actions/pedidoActions";
 import { getAdminNoticias } from "../../actions/noticiaActions";
 import { getUsuarios } from "../../actions/usuarioActions";
 
@@ -28,12 +28,42 @@ const Dashboard = () => {
     loading,
   } = useSelector((state) => state.getPedidos);
 
+  const { pedido = {} } = useSelector((state) => state.pedidoDetails);
+  const {
+    montoEnero,
+    montoFebrero,
+    montoMarzo,
+    montoAbril,
+    montoMayo,
+    montoJunio,
+    montoJulio,
+    montoAgosto,
+    montoSeptiembre,
+    montoOctubre,
+    montoNoviembre,
+    montoDiciembre
+  } = pedido;
+  const anio = "2021";
+
   useEffect(() => {
     dispatch(getAdminProductos());
     dispatch(getAdminPedidos());
     dispatch(getAdminNoticias());
     dispatch(getUsuarios());
+    dispatch(getPedidosMensual(anio));
   }, [dispatch]);
+
+  const grafico = {
+    labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    datasets: [
+      {
+        label: 'Ventas por mes del año: ' + (new Date().getFullYear()),
+        backgroundColor: 'rgba(75,181,67,1)',
+        borderWidth: 0,
+        data: [montoEnero, montoFebrero, montoMarzo, montoAbril, montoMayo, montoJunio, montoJulio, montoAgosto, montoSeptiembre, montoOctubre, montoNoviembre, montoDiciembre]
+      }
+    ]
+  }
 
   return (
     <>
@@ -50,19 +80,6 @@ const Dashboard = () => {
             ) : (
               <>
                 <MetaData title={"Dashboard"} />
-
-                <div className="row pr-4">
-                  <div className="col-xl-12 col-sm-12 mb-3">
-                    <div className="card text-white bg-success o-hidden h-100">
-                      <div className="card-body">
-                        <div className="text-center card-font-size">
-                          Total Ventas
-                          <br /> <b>${montoTotal && montoTotal.toFixed(2)}</b>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <div className="row pr-4">
                   <div className="col-xl-3 col-sm-6 mb-3">
                     <div className="card text-white bg-info o-hidden h-100">
@@ -166,6 +183,36 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
+
+                <div className="row pr-4">
+                  <div className="col-xl-12 col-sm-12 mb-3">
+                    <div className="card text-white bg-success o-hidden h-100">
+                      <div className="card-body">
+                        <div className="text-center card-font-size">
+                          Total Ventas
+                          <br /> <b>${montoTotal && montoTotal.toFixed(2)}</b>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row pr-4">
+                  <Bar
+                    data={grafico}
+                    options={{
+                      title: {
+                        display: true,
+                        text: 'Ventas por mes',
+                        fontSize: 20
+                      },
+                      legend: {
+                        display: true,
+                        position: 'right'
+                      }
+                    }}
+                  />
+                </div>
+
 
                 {/* <div className="row pr-4">
                   <div className="col-xl-3 col-sm-6 mb-3">

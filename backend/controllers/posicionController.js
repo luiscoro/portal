@@ -82,13 +82,19 @@ exports.updatePosicion = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.deletePosicion = catchAsyncErrors(async (req, res, next) => {
-  const posicion = await Posicion.findById(req.params.id);
+  const newPosicionData = {
+    estado: "inactivo",
+  };
 
-  if (!posicion) {
-    return next(new ErrorHandler("Posición no encontrada", 404));
-  }
-
-  await posicion.remove();
+  const posicion = await Posicion.findByIdAndUpdate(
+    req.params.id,
+    newPosicionData,
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
 
   res.status(200).json({
     success: true,
