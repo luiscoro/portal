@@ -1,8 +1,5 @@
 const mongoose = require("mongoose");
 
-var d = new Date();
-d.setHours(d.getHours() - 5);
-
 const productoSchema = new mongoose.Schema({
   categoria: {
     type: mongoose.Schema.ObjectId,
@@ -71,9 +68,9 @@ const productoSchema = new mongoose.Schema({
       },
     },
   ],
-  fechaCreacion: {
-    type: Date,
-    default: d,
+  estado: {
+    type: String,
+    default: "activo",
   },
 });
 

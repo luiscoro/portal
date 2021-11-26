@@ -9,13 +9,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, clearErrors } from "../../actions/usuarioActions";
 
 var MySwal;
+var redirigir;
 
-const Login = ({ history, location }) => {
+const Login = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   MySwal = withReactContent(Swal);
+  redirigir = parseInt(localStorage.getItem("redirigir"));
   const dispatch = useDispatch();
+
 
   const { authenticatedUsuario, error, loading } = useSelector(
     (state) => state.auth
@@ -23,8 +26,12 @@ const Login = ({ history, location }) => {
 
   useEffect(() => {
     if (authenticatedUsuario) {
-      history.push("/");
-      window.location.reload();
+      if (redirigir === 0) {
+        history.push("/");
+
+      } else {
+        window.location = "/envio";
+      }
     }
 
     if (error) {

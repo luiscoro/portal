@@ -240,23 +240,22 @@ exports.updateProducto = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.deleteProducto = catchAsyncErrors(async (req, res, next) => {
-  const producto = await Producto.findById(req.params.id);
+  const newProductoData = {
+    estado: "inactivo",
+  };
 
-  if (!producto) {
-    return next(new ErrorHandler("Producto no encontrado", 404));
-  }
-
-  for (let i = 0; i < producto.imagenes.length; i++) {
-    const result = await cloudinary.v2.uploader.destroy(
-      producto.imagenes[i].public_id
-    );
-  }
-
-  await producto.remove();
+  const producto = await Producto.findByIdAndUpdate(
+    req.params.id,
+    newProductoData,
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
 
   res.status(200).json({
     success: true,
-    message: "Producto eliminado",
   });
 });
 

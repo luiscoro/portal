@@ -101,100 +101,104 @@ const Tienda = ({ match }) => {
               </h4>
               {keyword ? (
                 <>
-                  <div className="row">
-                    <div className="col-lg-9">
-                      {productos.map((producto) => (
-                        <Producto
-                          key={producto._id}
-                          producto={producto}
-                          col={3}
-                        />
-                      ))}
-                    </div>
-                    <div className="col-lg-3">
-                      <div className="sidebar">
-                        <div className="widget">
-                          <div className="widget-header">
-                            <i className="fa fa-bars" />
-                            <h4 className="widget-title">
-                              Filtrar por categoría
-                            </h4>
+                  {filteredProductosCount === 0 ? (
+                    <h5 className="title">No se encontró algún producto con el nombre ingresado</h5>
+                  ) : (
+                    <div className="row">
+                      <div className="col-lg-9">
+                        {productos.map((producto) => (
+                          <Producto
+                            key={producto._id}
+                            producto={producto}
+                            col={3}
+                          />
+                        ))}
+                      </div>
+                      <div className="col-lg-3">
+                        <div className="sidebar">
+                          <div className="widget">
+                            <div className="widget-header">
+                              <i className="fa fa-bars" />
+                              <h4 className="widget-title">
+                                Filtrar por categoría
+                              </h4>
+                            </div>
+                            <ul className="category-list">
+                              {categorias.map((categoria) => (
+                                <li key={categoria._id}>
+                                  <a
+                                    href
+                                    onClick={() => setCategoria(categoria._id)}
+                                    style={{
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    {categoria.nombre}
+                                    <i className="fa fa-angle-double-right" />
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
-                          <ul className="category-list">
-                            {categorias.map((categoria) => (
-                              <li key={categoria._id}>
-                                <a
-                                  href
-                                  onClick={() => setCategoria(categoria._id)}
+
+                          <div className="widget">
+                            <div className="widget-header">
+                              <i className="fa fa-bars" />
+                              <h4 className="widget-title">Filtrar por precio</h4>
+                            </div>
+                            <div className="price-range">
+                              <Range
+                                marks={{
+                                  1: `$1`,
+                                  100: `$100`,
+                                }}
+                                min={1}
+                                max={100}
+                                defaultValue={[1, 100]}
+                                tipFormatter={(value) => `$${value}`}
+                                tipProps={{
+                                  placement: "top",
+                                  visible: true,
+                                }}
+                                value={precio}
+                                onChange={(precio) => setPrecio(precio)}
+                              />
+                            </div>
+                          </div>
+
+                          <div className="widget">
+                            <div className="widget-header">
+                              <i className="fa fa-bars" />
+                              <h4 className="widget-title">
+                                Filtrar por calificación
+                              </h4>
+                            </div>
+                            <ul className="pl-0">
+                              {[5, 4, 3, 2, 1, 0].map((star) => (
+                                <li
                                   style={{
                                     cursor: "pointer",
+                                    listStyleType: "none",
                                   }}
+                                  key={star}
+                                  onClick={() => setCalificacion(star)}
                                 >
-                                  {categoria.nombre}
-                                  <i className="fa fa-angle-double-right" />
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        <div className="widget">
-                          <div className="widget-header">
-                            <i className="fa fa-bars" />
-                            <h4 className="widget-title">Filtrar por precio</h4>
+                                  <div className="rating-outer">
+                                    <div
+                                      className="rating-inner"
+                                      style={{
+                                        width: `${star * 20}%`,
+                                      }}
+                                    ></div>
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
-                          <div className="price-range">
-                            <Range
-                              marks={{
-                                1: `$1`,
-                                100: `$100`,
-                              }}
-                              min={1}
-                              max={100}
-                              defaultValue={[1, 100]}
-                              tipFormatter={(value) => `$${value}`}
-                              tipProps={{
-                                placement: "top",
-                                visible: true,
-                              }}
-                              value={precio}
-                              onChange={(precio) => setPrecio(precio)}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="widget">
-                          <div className="widget-header">
-                            <i className="fa fa-bars" />
-                            <h4 className="widget-title">
-                              Filtrar por calificación
-                            </h4>
-                          </div>
-                          <ul className="pl-0">
-                            {[5, 4, 3, 2, 1, 0].map((star) => (
-                              <li
-                                style={{
-                                  cursor: "pointer",
-                                  listStyleType: "none",
-                                }}
-                                key={star}
-                                onClick={() => setCalificacion(star)}
-                              >
-                                <div className="rating-outer">
-                                  <div
-                                    className="rating-inner"
-                                    style={{
-                                      width: `${star * 20}%`,
-                                    }}
-                                  ></div>
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </>
               ) : (
                 <>

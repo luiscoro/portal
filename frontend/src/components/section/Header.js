@@ -105,7 +105,7 @@ const Header = () => {
                                       {item.nombre}
                                     </Link>
                                   </h6>
-                                  <span className="price">{item.precio}</span>
+                                  <span className="price">$ {item.precio}</span>
                                   <span className="quantity">
                                     {item.cantidad}
                                   </span>

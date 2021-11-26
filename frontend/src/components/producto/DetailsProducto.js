@@ -130,45 +130,55 @@ const DetailsProducto = ({ match }) => {
 
     }
 
-
     cant = cant + cantidad;
-
 
     if (cant > producto.stock) {
       MySwal.fire({
         background: "#f5ede4",
-        toast: true,
-        showCloseButton: true,
         icon: "warning",
         iconColor: "orange",
-        title: "La cantidad disponible de este producto ya ha sido agregado a tu cesta",
-        position: "bottom",
-        showConfirmButton: false,
-        timer: 5000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseover", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
+        title: "Lo sentimos, no se puede agregar más de la cantidad disponible del producto",
+        html:
+          '<b>' + producto.nombre + '</b> ' +
+          '<p></p> ' +
+          'Cantidad disponible: ' + producto.stock + '<p></p> ' +
+          'Cantidad que deseas agregar : ' + cant,
+        showCancelButton: true,
+        confirmButtonColor: "#0047a5",
+        cancelButtonColor: "#008000",
+        confirmButtonText: "Ver cesta",
+        cancelButtonText: "Comprar otros productos",
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "/cesta";
+        } else {
+          window.location.href = "/tienda";
+        }
       });
     } else {
 
       dispatch(addItemCesta(match.params.id, cant));
       MySwal.fire({
         background: "#f5ede4",
-        toast: true,
-        showCloseButton: true,
         icon: "success",
         iconColor: "green",
-        title: "El producto ha sido añadido a la cesta de pedidos.",
-        position: "bottom",
-        showConfirmButton: false,
-        timer: 5000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseover", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
+        title: "El producto ha sido añadido a tu cesta de pedidos",
+        html:
+          '<b>' + producto.nombre + '</b> ' +
+          '<p></p> ' +
+          'Cantidad : ' + cant + '<p></p> ' +
+          'Precio : $' + producto.precio,
+        showCancelButton: true,
+        confirmButtonColor: "#0047a5",
+        cancelButtonColor: "#008000",
+        confirmButtonText: "Ver cesta",
+        cancelButtonText: "Continuar comprando",
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "/cesta";
+        }
       });
     }
   };

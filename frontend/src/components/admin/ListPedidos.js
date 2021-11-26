@@ -157,7 +157,7 @@ const ListPedidos = ({ history }) => {
           sort: "asc",
         },
         {
-          label: "Nombre del cliente",
+          label: "Solicitante",
           field: "usuario",
           sort: "asc",
         },

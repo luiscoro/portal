@@ -38,6 +38,7 @@ const Cesta = ({ history }) => {
   const checkoutHandler = () => {
 
     if (authenticatedUsuario === false) {
+      localStorage.setItem("redirigir", 1);
       history.push("/login?redirect=envio");
     }
 

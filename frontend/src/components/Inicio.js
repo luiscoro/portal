@@ -8,6 +8,7 @@ import TopNoticias from "./noticia/TopNoticias";
 import Auspiciantes from "./auspiciante/Auspiciantes";
 
 const Inicio = () => {
+  localStorage.setItem("redirigir", 0);
   return (
     <>
       <MetaData title={"Inicio"} />

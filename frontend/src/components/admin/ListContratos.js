@@ -185,7 +185,7 @@ const ListContratos = ({ history }) => {
         doc.text("________________________", 300, 550);
         doc.text("    Edgar Nogales", 315, 565);
         doc.text(" PRESIDENTE DEL CLUB", 315, 580);
-        doc.save("report.pdf")
+        doc.save("contrato" + mie + ".pdf")
     }
 
 
