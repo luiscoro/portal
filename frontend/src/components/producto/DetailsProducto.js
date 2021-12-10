@@ -253,7 +253,30 @@ const DetailsProducto = ({ match }) => {
   return (
     <>
       <MetaData title={producto.nombre} />
-      <Banner title={producto.nombre} />
+      <section className="inner-banner-section bg_img base-overlay">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
+              <div className="inner-banner-content text-center">
+                <h2 className="page-title">Detalles</h2>
+                <ol className="breadcum d-flex justify-content-center">
+                  <li>
+                    <Link to="/" style={{ textDecoration: "none" }}>
+                      Inicio
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/tienda" style={{ textDecoration: "none" }}>
+                      Tienda
+                    </Link>
+                  </li>
+                  <li>{producto.nombre}</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       {loading ? (
         <Loader />
       ) : (
