@@ -7,6 +7,10 @@ function validNombre(n) {
   return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ 0-9]+$/.test(n);
 }
 
+function validGoles(num) {
+  return /^-?[0-9]+$/.test(num);
+}
+
 var fechaActual = new Date();
 fechaActual.setDate(fechaActual.getDate() - 1);
 fechaActual.setHours(0, 0, 0, 0);
@@ -38,14 +42,12 @@ exports.createPartido = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  if (golesLocal < 0) {
-    return next(
-      new ErrorHandler(
-        "Los goles del equipo local no admiten valores menores a 0 ",
-        400
-      )
-    );
+  if (golesLocal != "") {
+    if (!validGoles(golesLocal) || golesLocal < 0 || golesLocal > 50) {
+      return next(new ErrorHandler("Los goles del equipo local solo admite valores entre 1 y 50 ", 400));
+    }
   }
+
 
   if (!nombreVisitante) {
     return next(
@@ -59,13 +61,10 @@ exports.createPartido = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  if (golesVisitante < 0) {
-    return next(
-      new ErrorHandler(
-        "Los goles del equipo visitante no admiten valores menores a 0 ",
-        400
-      )
-    );
+  if (golesVisitante != "") {
+    if (!validGoles(golesVisitante) || golesVisitante < 0 || golesVisitante > 50) {
+      return next(new ErrorHandler("Los goles del equipo visitante solo admite valores entre 1 y 50 ", 400));
+    }
   }
 
 
@@ -76,6 +75,10 @@ exports.createPartido = catchAsyncErrors(async (req, res, next) => {
 
   if (fecha === "") {
     return next(new ErrorHandler("La fecha seleccionada no es válida", 400));
+  }
+  if (fechaPartido.getFullYear() > fechaActual.getFullYear()) {
+
+    return next(new ErrorHandler("La fecha del partido no puede ser el siguiente año", 400));
   }
 
   if (hora === "") {
@@ -211,13 +214,10 @@ exports.updatePartido = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  if (golesLocal < 0) {
-    return next(
-      new ErrorHandler(
-        "Los goles del equipo local no admiten valores menores a 0 ",
-        400
-      )
-    );
+  if (golesLocal != "") {
+    if (!validGoles(golesLocal) || golesLocal < 0 || golesLocal > 50) {
+      return next(new ErrorHandler("Los goles del equipo local solo admite valores entre 1 y 50 ", 400));
+    }
   }
 
   if (!nombreVisitante) {
@@ -226,13 +226,15 @@ exports.updatePartido = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  if (golesVisitante < 0) {
-    return next(
-      new ErrorHandler(
-        "Los goles del equipo visitante no admiten valores menores a 0 ",
-        400
-      )
-    );
+  if (golesVisitante != "") {
+    if (!validGoles(golesVisitante) || golesVisitante < 0 || golesVisitante > 50) {
+      return next(new ErrorHandler("Los goles del equipo visitante solo admite valores entre 1 y 50 ", 400));
+    }
+  }
+
+  if (fechaPartido.getFullYear() > fechaActual.getFullYear()) {
+
+    return next(new ErrorHandler("La fecha del partido no puede ser el siguiente año", 400));
   }
 
   if (fechaPartido < fechaActual) {

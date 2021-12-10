@@ -140,8 +140,8 @@ const UpdatePosicion = ({ history, match, location }) => {
                                 value={estado}
                                 onChange={(e) => setEstado(e.target.value)}
                               >
-                                <option value="activo">activo</option>
-                                <option value="inactivo">inactivo</option>
+                                <option value="activa">activa</option>
+                                <option value="inactiva">inactiva</option>
                               </select>
                             </div>
                             <div className="frm-group">

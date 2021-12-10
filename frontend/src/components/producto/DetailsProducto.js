@@ -111,10 +111,9 @@ const DetailsProducto = ({ match }) => {
 
     idProd = localStorage.getItem("idProd");
 
-    console.log(idProd);
+    var temp = localStorage.getItem("itemsCesta")
 
-    temporales = JSON.parse(localStorage.getItem("itemsCesta"));
-    console.log(temporales);
+    temporales = temp ? JSON.parse(temp) : [];
 
     if (!Object.keys(temporales).length) {
       cant = 0;

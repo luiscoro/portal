@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { countries } from "countries-list";
+import { getCountries } from "country-list-spanish";
 import MetaData from "../section/MetaData";
 import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
@@ -14,7 +14,8 @@ import { CREATE_MIEMBRO_RESET } from "../../constants/miembroConstants";
 var MySwal;
 
 const CreateMiembro = ({ history }) => {
-  const countriesList = Object.values(countries);
+
+  const listPaises = Object.values(getCountries());
 
   const [miembro, setMiembro] = useState({
     posicion: "",
@@ -23,7 +24,7 @@ const CreateMiembro = ({ history }) => {
     cedula: "",
     numeroCamiseta: "",
     fechaNacimiento: "",
-    nacionalidad: "",
+    nacionalidad: "Ecuador",
   });
 
   const {
@@ -45,8 +46,8 @@ const CreateMiembro = ({ history }) => {
   const dispatch2 = useDispatch();
 
   const { error, success } = useSelector((state) => state.createMiembro);
-  const { loading, posiciones } = useSelector((state) => state.posiciones);
-  const { loading1, tipoMiembros } = useSelector((state) => state.tipoMiembros);
+  const { posiciones } = useSelector((state) => state.posiciones);
+  const { loading, tipoMiembros } = useSelector((state) => state.tipoMiembros);
 
   useEffect(() => {
     dispatch1(getAdminPosiciones());
@@ -149,7 +150,7 @@ const CreateMiembro = ({ history }) => {
                           >
                             <div className="frm-group">
                               <label>Tipo</label>
-                              {loading1 ? (
+                              {loading ? (
                                 <Loader />
                               ) : (
                                 <select
@@ -160,12 +161,12 @@ const CreateMiembro = ({ history }) => {
                                   <option value={""}>
                                     Seleccione el tipo de miembro
                                   </option>
-                                  {tipoMiembros.map((tipo) => (
+                                  {tipoMiembros.filter(tipoM => tipoM.estado === "activo").map(filtTipoM => (
                                     <option
-                                      key={tipo._id}
-                                      value={tipo._id}
+                                      key={filtTipoM._id}
+                                      value={filtTipoM._id}
                                     >
-                                      {tipo.nombre}
+                                      {filtTipoM.nombre}
                                     </option>
                                   ))}
                                 </select>
@@ -174,8 +175,10 @@ const CreateMiembro = ({ history }) => {
 
                             <div className="frm-group">
                               <label>Posición</label>
-                              {loading ? (
-                                <Loader />
+                              {tipo === "" ? (
+                                <option value={""}>
+                                  Seleccione primero el tipo de miembro
+                                </option>
                               ) : (
                                 <select
                                   name="posicion"
@@ -185,12 +188,12 @@ const CreateMiembro = ({ history }) => {
                                   <option value={""}>
                                     Seleccione la posición del miembro
                                   </option>
-                                  {posiciones.map((posicion) => (
+                                  {posiciones.filter(posicion => posicion.tipo === tipo && posicion.estado === "activa").map(filtposicion => (
                                     <option
-                                      key={posicion._id}
-                                      value={posicion._id}
+                                      key={filtposicion._id}
+                                      value={filtposicion._id}
                                     >
-                                      {posicion.nombre}
+                                      {filtposicion.nombre}
                                     </option>
                                   ))}
                                 </select>
@@ -226,7 +229,6 @@ const CreateMiembro = ({ history }) => {
                                 type="number"
                                 placeholder="Ingresa el número de camiseta"
                                 value={numeroCamiseta}
-                                min="1"
                                 onChange={onChange}
                               />
                             </div>
@@ -247,9 +249,9 @@ const CreateMiembro = ({ history }) => {
                                 value={nacionalidad}
                                 onChange={onChange}
                               >
-                                {countriesList.map((pais) => (
-                                  <option key={pais.name} value={pais.name}>
-                                    {pais.name}
+                                {listPaises.map((pais, i) => (
+                                  <option key={i} value={pais}>
+                                    {pais}
                                   </option>
                                 ))}
                               </select>

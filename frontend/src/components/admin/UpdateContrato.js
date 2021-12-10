@@ -32,7 +32,6 @@ const UpdateContrato = ({ match, history }) => {
     const contratoId = match.params.id;
 
     useEffect(() => {
-        console.log(contrato && contrato._id !== contratoId);
         if (contrato && contrato._id !== contratoId) {
             dispatch(getContratoDetails(contratoId));
         } else {
@@ -156,33 +155,56 @@ const UpdateContrato = ({ match, history }) => {
                                                             />
                                                         </div>
                                                         <div className="frm-group">
-                                                            <label>Estado</label>
-                                                            <input
-                                                                type="text"
+                                                            <label>Estado:</label>
+                                                            <select
+                                                                name="estado"
                                                                 value={estado}
                                                                 onChange={(e) => setEstado(e.target.value)}
-                                                                disabled
-                                                            />
+
+                                                            >
+                                                                <option value="vigente">vigente</option>
+                                                                <option value="terminado">terminado</option>
+                                                            </select>
                                                         </div>
                                                         <div className="frm-group">
-                                                            <label>Fecha de inicio</label>
-                                                            <input
-                                                                type="date"
-                                                                value={fechaInicio}
-                                                                onChange={(e) => setFechaInicio(e.target.value)}
-                                                            />
+                                                            {estado === "terminado" ? (
+                                                                <>
+                                                                    <label>Fecha de inicio</label>
+                                                                    <input
+                                                                        type="date"
+                                                                        value={String(fechaInicio).substring(0, 10)}
+                                                                        onChange={(e) => setFechaInicio(e.target.value)}
+
+                                                                    />
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <label>Fecha de inicio</label>
+                                                                    <input
+                                                                        type="date"
+                                                                        value={String(fechaInicio).substring(0, 10)}
+                                                                        onChange={(e) => setFechaInicio(e.target.value)}
+                                                                        disabled
+
+                                                                    />
+                                                                </>
+                                                            )}
+
                                                         </div>
                                                         <div className="frm-group">
-                                                            <label>Fecha de fin</label>
+
                                                             {tipo === "indefinido" ? (
                                                                 <></>
                                                             ) : (
-                                                                <input
-                                                                    name="fechaFin"
-                                                                    type="date"
-                                                                    value={fechaFin}
-                                                                    onChange={(e) => setFechaFin(e.target.value)}
-                                                                />
+                                                                <>
+                                                                    <label>Fecha de fin</label>
+                                                                    <input
+                                                                        name="fechaFin"
+                                                                        type="date"
+                                                                        value={String(fechaFin).substring(0, 10)}
+                                                                        onChange={(e) => setFechaFin(e.target.value)}
+                                                                    />
+                                                                </>
                                                             )}
                                                         </div>
 

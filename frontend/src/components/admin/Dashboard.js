@@ -4,9 +4,7 @@ import { Bar } from 'react-chartjs-2';
 import MetaData from "../section/MetaData";
 import Loader from "../section/Loader";
 import Sidebar from "./Sidebar";
-
 import { useDispatch, useSelector } from "react-redux";
-
 import { getAdminProductos } from "../../actions/productoActions";
 import { getAdminPedidos } from "../../actions/pedidoActions";
 import { getPedidosMensual } from "../../actions/pedidoActions";
@@ -21,12 +19,9 @@ const Dashboard = () => {
   const { usuarios } = useSelector((state) => state.getUsuarios);
   const {
     montoTotal,
-    /* pedidos,
-    pedidosPendientes,
-    pedidosEnviados,
-    pedidosEntregados, */
     loading,
   } = useSelector((state) => state.getPedidos);
+
 
   const { pedido = {} } = useSelector((state) => state.pedidoDetails);
   const {
@@ -44,6 +39,7 @@ const Dashboard = () => {
     montoDiciembre
   } = pedido;
   const anio = "2021";
+
 
   useEffect(() => {
     dispatch(getAdminProductos());
@@ -212,112 +208,6 @@ const Dashboard = () => {
                     }}
                   />
                 </div>
-
-
-                {/* <div className="row pr-4">
-                  <div className="col-xl-3 col-sm-6 mb-3">
-                    <div className="card text-white bg-info o-hidden h-100">
-                      <div className="card-body">
-                        <div className="text-center card-font-size">
-                          <i className="fa fa-shopping-basket"></i> Pedidos
-                          registrados
-                          <br /> <b>{pedidos && pedidos.length}</b>
-                        </div>
-                      </div>
-                      <Link
-                        className="card-footer text-white clearfix small z-1"
-                        to="/admin-pedidos"
-                      >
-                        <span className="float-left" style={{ color: "white" }}>
-                          Ver listado
-                        </span>
-                        <span className="float-right">
-                          <i
-                            className="fa fa-angle-right"
-                            style={{ color: "white" }}
-                          ></i>
-                        </span>
-                      </Link>
-                    </div>
-                  </div>
-
-                  <div className="col-xl-3 col-sm-6 mb-3">
-                    <div className="card text-white bg-danger o-hidden h-100">
-                      <div className="card-body">
-                        <div className="text-center card-font-size">
-                          <i className="fa fa-exclamation-triangle"></i> Pedidos
-                          no enviados
-                          <br /> <b>{pedidosPendientes}</b>
-                        </div>
-                      </div>
-                      <Link
-                        className="card-footer text-white clearfix small z-1"
-                        to="/admin-pedidos"
-                      >
-                        <span className="float-left" style={{ color: "white" }}>
-                          Ver listado
-                        </span>
-                        <span className="float-right">
-                          <i
-                            className="fa fa-angle-right"
-                            style={{ color: "white" }}
-                          ></i>
-                        </span>
-                      </Link>
-                    </div>
-                  </div>
-
-                  <div className="col-xl-3 col-sm-6 mb-3">
-                    <div className="card text-white bg-dark o-hidden h-100">
-                      <div className="card-body">
-                        <div className="text-center card-font-size">
-                          <i className="fa fa-truck"></i> Pedidos enviados
-                          <br /> <b>{pedidosEnviados}</b>
-                        </div>
-                      </div>
-                      <Link
-                        className="card-footer text-white clearfix small z-1"
-                        to="/admin-pedidos"
-                      >
-                        <span className="float-left" style={{ color: "white" }}>
-                          Ver listado
-                        </span>
-                        <span className="float-right">
-                          <i
-                            className="fa fa-angle-right"
-                            style={{ color: "white" }}
-                          ></i>
-                        </span>
-                      </Link>
-                    </div>
-                  </div>
-
-                  <div className="col-xl-3 col-sm-6 mb-3">
-                    <div className="card text-white bg-success o-hidden h-100">
-                      <div className="card-body">
-                        <div className="text-center card-font-size">
-                          <i className="fa fa-shopping-basket"></i> Pedidos
-                          entregados
-                          <br /> <b>{pedidosEntregados}</b>
-                        </div>
-                      </div>
-                      <Link
-                        className="card-footer text-white clearfix small z-1"
-                        to="/admin-pedidos"
-                      >
-                        <span className="float-left" style={{ color: "white" }}>
-                          Ver listado
-                        </span>
-                        <span className="float-right">
-                          <i
-                            className="fa fa-angle-right"
-                            style={{ color: "white" }}
-                          ></i>
-                        </span>
-                      </Link>
-                    </div>
-                  </div>
-                </div> */}
               </>
             )}
           </div>

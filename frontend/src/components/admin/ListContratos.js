@@ -129,7 +129,7 @@ const ListContratos = ({ history }) => {
         var img = new Image(10, 10);
         img.crossOrigin = "";
         img.src = "//i.imgur.com/qU9CtWQ.png";
-        var ced, mie, nac, fec, tip, feci, fecf, fechi, fechf, sue;
+        var ced, mie, nac, fec, tip, feci, fecf, sue;
 
         const unit = "pt";
         const size = "A4";
@@ -147,14 +147,12 @@ const ListContratos = ({ history }) => {
                 nac = contrato.miembro.nacionalidad;
                 fec = contrato.miembro.fechaNacimiento;
                 tip = contrato.tipo;
-                feci = contrato.fechaInicio.toLocaleString();
-                fecf = contrato.fechaFin.toLocaleString();
+                feci = String(contrato.fechaInicio).substring(0, 10);
+                fecf = (contrato.fechaFin === null ? ("") : (String(contrato.fechaFin).substring(0, 10)));
                 sue = contrato.sueldo;
             }
         });
 
-        fechi = feci.substring(0, 10);
-        fechf = fecf.substring(0, 10);
 
         doc.addImage(img, 275, 5);
         doc.text(title, 40, 70);
@@ -172,8 +170,8 @@ const ListContratos = ({ history }) => {
         ).age, 40, 225);
         doc.text("3.- VIGENCIA", 40, 255);
         doc.text("Tipo de contrato : " + tip, 40, 270);
-        doc.text("Fecha de inicio : " + fechi, 40, 285);
-        doc.text("Fecha de fin : " + fechf, 40, 300);
+        doc.text("Fecha de inicio : " + feci, 40, 285);
+        doc.text("Fecha de fin : " + fecf, 40, 300);
         doc.text("4.- SUELDO", 40, 330);
         doc.text("A la cantidad de $: " + sue + " se incluirán las primas definidas de forma interna.", 40, 345);
         doc.text("4.- CONDICIONES LABORALES", 40, 375);
@@ -187,6 +185,47 @@ const ListContratos = ({ history }) => {
         doc.text(" PRESIDENTE DEL CLUB", 315, 580);
         doc.save("contrato" + mie + ".pdf")
     }
+
+    const exportContratos = () => {
+
+        var img = new Image(10, 10);
+        img.crossOrigin = "";
+        img.src = "//i.imgur.com/qU9CtWQ.png";
+
+        const unit = "pt";
+        const size = "A4";
+        const orientation = "portrait";
+
+        const doc = new jsPDF(orientation, unit, size);
+
+        doc.setFontSize(15);
+        const title = "Listado de contratos";
+        const tipo = "Tipo de miembro: " + tipoMiembro.nombre;
+        const headers = [["TIPO DE CONTRATO", "NOMBRE DEL MIEMBRO", "SUELDO", "FECHA INICIO", "FECHA DE FIN"]];
+
+        const rows = [];
+
+        contratos.forEach(contrato => {
+            if (contrato.miembro && contrato.miembro.tipo === tipoId && contrato.miembro.estado === "activo" && contrato.estado === est) {
+                var temp = [contrato.tipo, contrato.miembro && contrato.miembro.nombre, "$ " + contrato.sueldo, String(contrato.fechaInicio).substring(0, 10), (contrato.fechaFin === null ? ("") : (String(contrato.fechaFin).substring(0, 10)))];
+                rows.push(temp);
+            }
+        });
+
+
+        let content = {
+            startY: 80,
+            head: headers,
+            body: rows
+        };
+
+        doc.addImage(img, 275, 5);
+        doc.text(title, 40, 70);
+        doc.text(tipo, 275, 70);
+        doc.autoTable(content);
+        doc.save("contratos" + tipoMiembro.nombre + ".pdf")
+    }
+
 
 
     const setContratos = () => {
@@ -231,12 +270,10 @@ const ListContratos = ({ history }) => {
             if (contrato.miembro && contrato.miembro.tipo === tipoId && contrato.miembro.estado === "activo" && contrato.estado === est) {
                 data.rows.push({
                     tipo: contrato.tipo,
-                    cedula: contrato.miembro && contrato.miembro.cedula,
                     nombre: contrato.miembro && contrato.miembro.nombre,
-                    nacionalidad: contrato.miembro && contrato.miembro.nacionalidad,
                     sueldo: contrato.sueldo,
-                    fechaInicio: (contrato.fechaInicio).substring(0, 10),
-                    fechaFin: (contrato.fechaFin).substring(10, 0),
+                    fechaInicio: String(contrato.fechaInicio).substring(0, 10),
+                    fechaFin: (contrato.fechaFin === null ? (<></>) : (String(contrato.fechaFin).substring(0, 10))),
                     acciones: (
                         <>
                             <Link
@@ -311,6 +348,13 @@ const ListContratos = ({ history }) => {
                 <div className="dashboard">
                     <div className="col-12 col-md-10">
                         <>
+                            <br />
+                            <Link
+                                to={`/admin-contrato`}
+                                className="btn btn-primary btn-radius"
+                            >
+                                Crear nuevo
+                            </Link>
                             <h3 className="my-4">Listado de contratos</h3>
 
                             <div className="row justify-content-center mt-5">
@@ -356,7 +400,30 @@ const ListContratos = ({ history }) => {
                                 </div>
                             </div>
 
+                            {est === "vigente" ? (
+                                <div className="botonpdf">
+                                    <button
+                                        className="btn btn-danger py-1 px-2 ml-2"
+                                        onClick={() => {
+                                            exportContratos()
+                                        }}
+                                        title="Generar PDF"
+                                    >
 
+                                        <i className="fa fa-file-pdf-o"></i>
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="botonpdf">
+                                    <button
+                                        className="btn btn-danger py-1 px-2 ml-2"
+                                        disabled
+                                    >
+
+                                        <i className="fa fa-file-pdf-o"></i>
+                                    </button>
+                                </div>
+                            )}
                             <MDBDataTable
                                 data={setContratos()}
                                 className="px-3"

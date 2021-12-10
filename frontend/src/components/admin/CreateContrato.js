@@ -16,7 +16,7 @@ const CreateContrato = ({ history }) => {
     const [miembro, setMiembro] = useState("");
     const [tipoMiembro, setTipoMiembro] = useState("");
     const [tipo, setTipo] = useState("");
-    const [sueldo, setSueldo] = useState(0.0);
+    const [sueldo, setSueldo] = useState(200.0);
     const [fechaInicio, setFechaInicio] = useState("");
     const [fechaFin, setFechaFin] = useState("");
 
@@ -188,16 +188,19 @@ const CreateContrato = ({ history }) => {
                                                             />
                                                         </div>
                                                         <div className="frm-group">
-                                                            <label>Fecha de fin</label>
+
                                                             {tipo === "indefinido" ? (
                                                                 <></>
                                                             ) : (
-                                                                <input
-                                                                    name="fechaFin"
-                                                                    type="date"
-                                                                    value={fechaFin}
-                                                                    onChange={(e) => setFechaFin(e.target.value)}
-                                                                />
+                                                                <>
+                                                                    <label>Fecha de fin</label>
+                                                                    <input
+                                                                        name="fechaFin"
+                                                                        type="date"
+                                                                        value={fechaFin}
+                                                                        onChange={(e) => setFechaFin(e.target.value)}
+                                                                    />
+                                                                </>
                                                             )}
                                                         </div>
 

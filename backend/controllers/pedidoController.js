@@ -83,14 +83,22 @@ exports.getPedidos = catchAsyncErrors(async (req, res, next) => {
 
 
   let montoTotal = 0;
+  let cantP;
 
   pedidos.forEach((pedido) => {
     montoTotal += pedido.precioTotal;
   });
 
+  const pedidosPendientes = pedidos
+    .filter(ped => ped.estadoPedido === "pendiente de envío");
+
+  cantP = pedidosPendientes.length;
+
+
   res.status(200).json({
     success: true,
     montoTotal,
+    cantP,
     pedidos,
   });
 });

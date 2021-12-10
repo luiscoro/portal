@@ -22,6 +22,7 @@ const UpdateProducto = ({ match, history }) => {
   const [categoria, setCategoria] = useState("");
   const [stock, setStock] = useState(0);
   const [marca, setMarca] = useState("");
+  const [estado, setEstado] = useState("");
   const [imagenes, setImagenes] = useState([]);
   const [oldImagenes, setOldImagenes] = useState([]);
   const [imagenesPreview, setImagenesPreview] = useState([]);
@@ -50,7 +51,9 @@ const UpdateProducto = ({ match, history }) => {
       setCategoria(producto.categoria);
       setMarca(producto.marca);
       setStock(producto.stock);
+      setEstado(producto.estado);
       setOldImagenes(producto.imagenes);
+
     }
 
     if (error) {
@@ -119,7 +122,7 @@ const UpdateProducto = ({ match, history }) => {
     formData.set("categoria", categoria);
     formData.set("stock", stock);
     formData.set("marca", marca);
-
+    formData.set("estado", estado);
     imagenes.forEach((imagen) => {
       formData.append("imagenes", imagen);
     });
@@ -240,6 +243,18 @@ const UpdateProducto = ({ match, history }) => {
                                 value={marca}
                                 onChange={(e) => setMarca(e.target.value)}
                               />
+                            </div>
+                            <div className="frm-group">
+                              <label>Estado:</label>
+                              <select
+                                name="estado"
+                                value={estado}
+                                onChange={(e) => setEstado(e.target.value)}
+
+                              >
+                                <option value="activo">activo</option>
+                                <option value="inactivo">inactivo</option>
+                              </select>
                             </div>
                             <div className="frm-group">
                               <label>Imágenes:</label>

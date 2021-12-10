@@ -50,20 +50,10 @@ exports.getSingleTipoMiembro = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.updateTipoMiembro = catchAsyncErrors(async (req, res, next) => {
-    const { nombre, estado } = req.body;
+    const { estado } = req.body;
 
-    if (!nombre) {
-        return next(new ErrorHandler("El nombre es obligatorio", 400));
-    }
-
-    if (!validNombre(nombre)) {
-        return next(
-            new ErrorHandler("El nombre solo admite letras y espacios", 400)
-        );
-    }
 
     const newTipoMiembroData = {
-        nombre: nombre,
         estado: estado,
     };
 

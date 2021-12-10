@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const posicionSchema = new mongoose.Schema({
+  tipo: {
+    type: mongoose.Schema.ObjectId,
+    ref: "TipoMiembro",
+    required: true,
+  },
   nombre: {
     type: String,
     unique: true,
@@ -8,7 +13,7 @@ const posicionSchema = new mongoose.Schema({
   },
   estado: {
     type: String,
-    default: "activo",
+    default: "activa",
   },
 });
 

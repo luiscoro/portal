@@ -16,8 +16,8 @@ import { getAdminTipoMiembros } from "../../actions/tipoMiembroActions";
 import { DELETE_MIEMBRO_RESET } from "../../constants/miembroConstants";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-
-
+var ageCalculator = require("age-calculator");
+let { AgeFromDateString } = ageCalculator;
 var MySwal;
 var bandera;
 
@@ -135,12 +135,17 @@ const ListMiembros = ({ history }) => {
           sort: "asc",
         },
         {
+          label: "Edad",
+          field: "edad",
+          sort: "asc",
+        },
+        {
           label: "Nacionalidad",
           field: "nacionalidad",
           sort: "asc",
         },
         {
-          label: "Número de camiseta",
+          label: "Camiseta",
           field: "numeroCamiseta",
         },
         {
@@ -165,9 +170,12 @@ const ListMiembros = ({ history }) => {
         data.rows.push({
           cedula: miembro.cedula,
           posicion: miembro.posicion && miembro.posicion.nombre,
+          edad: new AgeFromDateString(
+            miembro.fechaNacimiento.substring(0, 10)
+          ).age,
           nombre: miembro.nombre,
           nacionalidad: miembro.nacionalidad,
-          numeroCamiseta: miembro.numeroCamiseta,
+          numeroCamiseta: (miembro.numeroCamiseta === null ? (<></>) : ("# " + miembro.numeroCamiseta)),
           estado: miembro.estado,
           foto: (
             <img
@@ -245,14 +253,15 @@ const ListMiembros = ({ history }) => {
     doc.setFontSize(15);
     const title = "Listado de miembros";
     const tipo = "Tipo: " + tipoId;
-    const estado = "Estado: " + est;
-    const headers = [["NOMBRE", "NACIONALIDAD"]];
+    const headers = [["IDENTIFICACIÓN", "POSICIÓN", "NOMBRE", "EDAD", "NACIONALIDAD", "NÚMERO DE CAMISETA"]];
 
     const rows = [];
 
     miembros.forEach(miembro => {
       if (miembro.tipo && miembro.tipo.nombre === tipoId && miembro.estado === est) {
-        var temp = [miembro.nombre, miembro.nacionalidad];
+        var temp = [miembro.cedula, miembro.posicion && miembro.posicion.nombre, miembro.nombre, new AgeFromDateString(
+          miembro.fechaNacimiento.substring(0, 10)
+        ).age, miembro.nacionalidad, (miembro.numeroCamiseta === null ? (<></>) : ("# " + miembro.numeroCamiseta))];
         rows.push(temp);
       }
     });
@@ -267,9 +276,8 @@ const ListMiembros = ({ history }) => {
     doc.addImage(img, 275, 5);
     doc.text(title, 40, 70);
     doc.text(tipo, 275, 70);
-    doc.text(estado, 375, 70);
     doc.autoTable(content);
-    doc.save("report.pdf")
+    doc.save(tipoId + ".pdf")
   }
 
 
@@ -283,6 +291,13 @@ const ListMiembros = ({ history }) => {
         <div className="dashboard">
           <div className="col-12 col-md-10">
             <>
+              <br />
+              <Link
+                to={`/admin-miembro`}
+                className="btn btn-primary btn-radius"
+              >
+                Crear nuevo
+              </Link>
               <h3 className="my-4">Listado de miembros del club</h3>
 
               <div className="row justify-content-center mt-5">
@@ -315,7 +330,6 @@ const ListMiembros = ({ history }) => {
                           <option value={""}>Filtrar por tipo</option>
                           <option value="activo">activo</option>
                           <option value="inactivo">inactivo</option>
-                          <option value="histórico">histórico</option>
                         </select>
                       ) : (
                         <></>
@@ -326,18 +340,30 @@ const ListMiembros = ({ history }) => {
                 </div>
               </div>
 
-              <div className="botonpdf">
-                <button
-                  className="btn btn-danger py-1 px-2 ml-2"
-                  onClick={() => {
-                    exportPdf()
-                  }}
-                  title="Generar PDF"
-                >
+              {est === "activo" ? (
+                <div className="botonpdf">
+                  <button
+                    className="btn btn-danger py-1 px-2 ml-2"
+                    onClick={() => {
+                      exportPdf()
+                    }}
+                    title="Generar PDF"
+                  >
 
-                  <i className="fa fa-file-pdf-o"></i>
-                </button>
-              </div>
+                    <i className="fa fa-file-pdf-o"></i>
+                  </button>
+                </div>
+              ) : (
+                <div className="botonpdf">
+                  <button
+                    className="btn btn-danger py-1 px-2 ml-2"
+                    disabled
+                  >
+
+                    <i className="fa fa-file-pdf-o"></i>
+                  </button>
+                </div>
+              )}
               <MDBDataTable
                 data={setMiembros()}
                 className="px-3"

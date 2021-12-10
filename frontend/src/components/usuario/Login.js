@@ -20,14 +20,19 @@ const Login = ({ history }) => {
   const dispatch = useDispatch();
 
 
-  const { authenticatedUsuario, error, loading } = useSelector(
+  const { usuario, authenticatedUsuario, error, loading } = useSelector(
     (state) => state.auth
   );
 
   useEffect(() => {
     if (authenticatedUsuario) {
       if (redirigir === 0) {
-        history.push("/");
+
+        if (usuario && usuario.rol === "administrador") {
+          history.push("/dashboard");
+        } else {
+          history.push("/");
+        }
 
       } else {
         window.location = "/envio";
@@ -55,7 +60,7 @@ const Login = ({ history }) => {
       }
       dispatch(clearErrors());
     }
-  }, [dispatch, error, authenticatedUsuario, history]);
+  }, [dispatch, error, authenticatedUsuario, usuario, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();

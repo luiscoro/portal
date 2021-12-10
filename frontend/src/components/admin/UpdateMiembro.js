@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { countries } from "countries-list";
+import { getCountries } from "country-list-spanish";
 import MetaData from "../section/MetaData";
 import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
@@ -20,7 +20,7 @@ var ageCalculator = require("age-calculator");
 let { AgeFromDateString } = ageCalculator;
 
 const UpdateMiembro = ({ match, history }) => {
-  const countriesList = Object.values(countries);
+  const listPaises = Object.values(getCountries());
 
   const [posicion, setPosicion] = useState("");
   const [tipo, setTipo] = useState("");
@@ -42,15 +42,14 @@ const UpdateMiembro = ({ match, history }) => {
   const { error: updateError, esActualizado } = useSelector(
     (state) => state.miembro
   );
-  const { loading, posiciones } = useSelector((state) => state.posiciones);
-  const { loading1, tipoMiembros } = useSelector((state) => state.tipoMiembros);
+  const { posiciones } = useSelector((state) => state.posiciones);
+  const { loading, tipoMiembros } = useSelector((state) => state.tipoMiembros);
 
   const miembroId = match.params.id;
 
   useEffect(() => {
     dispatch1(getAdminPosiciones());
     dispatch2(getAdminTipoMiembros());
-    console.log(miembro && miembro._id !== miembroId);
     if (miembro && miembro._id !== miembroId) {
       dispatch(getMiembroDetails(miembroId));
     } else {
@@ -182,12 +181,12 @@ const UpdateMiembro = ({ match, history }) => {
                           >
                             <div className="frm-group">
                               <label>Tipo de miembro</label>
-                              {loading1 ? (
+                              {loading ? (
                                 <Loader />
                               ) : (
                                 <select
                                   value={tipo}
-                                  onChange={(e) => setPosicion(e.target.value)}
+                                  onChange={(e) => setTipo(e.target.value)}
                                 >
                                   <option>
                                     Seleccione el tipo de miembro
@@ -205,26 +204,30 @@ const UpdateMiembro = ({ match, history }) => {
                             </div>
                             <div className="frm-group">
                               <label>Posición</label>
-                              {loading ? (
-                                <Loader />
+                              {tipo === "" ? (
+                                <option value={""}>
+                                  Seleccione primero el tipo de miembro
+                                </option>
                               ) : (
                                 <select
+                                  name="posicion"
                                   value={posicion}
                                   onChange={(e) => setPosicion(e.target.value)}
                                 >
-                                  <option>
+                                  <option value={""}>
                                     Seleccione la posición del miembro
                                   </option>
-                                  {posiciones.map((posicion) => (
+                                  {posiciones.filter(posicion => posicion.tipo === tipo && posicion.estado === "activa").map(filtposicion => (
                                     <option
-                                      key={posicion._id}
-                                      value={posicion._id}
+                                      key={filtposicion._id}
+                                      value={filtposicion._id}
                                     >
-                                      {posicion.nombre}
+                                      {filtposicion.nombre}
                                     </option>
                                   ))}
                                 </select>
                               )}
+
                             </div>
                             <div className="frm-group">
                               <label>Nombre</label>
@@ -242,6 +245,7 @@ const UpdateMiembro = ({ match, history }) => {
                                 placeholder="Ingresa el número de cédula"
                                 value={cedula}
                                 onChange={(e) => setCedula(e.target.value)}
+                                disabled
                               />
                             </div>
                             <div className="frm-group">
@@ -250,7 +254,6 @@ const UpdateMiembro = ({ match, history }) => {
                                 type="number"
                                 placeholder="Ingresa el número de camiseta"
                                 value={numeroCamiseta}
-                                min="1"
                                 onChange={(e) =>
                                   setNumeroCamiseta(e.target.value)
                                 }
@@ -281,9 +284,9 @@ const UpdateMiembro = ({ match, history }) => {
                                   setNacionalidad(e.target.value)
                                 }
                               >
-                                {countriesList.map((pais) => (
-                                  <option key={pais.name} value={pais.name}>
-                                    {pais.name}
+                                {listPaises.map((pais, i) => (
+                                  <option key={i} value={pais}>
+                                    {pais}
                                   </option>
                                 ))}
                               </select>
@@ -296,7 +299,6 @@ const UpdateMiembro = ({ match, history }) => {
                               >
                                 <option value="activo">activo</option>
                                 <option value="inactivo">inactivo</option>
-                                <option value="histórico">histórico</option>
                               </select>
                             </div>
 

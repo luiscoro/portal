@@ -1,7 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Sidebar = () => {
+
+  const {
+    cantP
+  } = useSelector((state) => state.getPedidos);
+
   return (
     <div className="sidebar-wrapper">
       <nav id="sidebar">
@@ -144,7 +150,7 @@ const Sidebar = () => {
 
           <li>
             <Link to="/admin-pedidos">
-              <i className="fa fa-shopping-basket"></i> Pedidos
+              <i className="fa fa-shopping-basket"></i> Pedidos({cantP} nuevos)
             </Link>
           </li>
 

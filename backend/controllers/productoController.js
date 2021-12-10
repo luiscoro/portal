@@ -9,6 +9,14 @@ function validNombre(n) {
   return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ 0-9]+$/.test(n);
 }
 
+function validPrecio(precio) {
+  return /^\d{1,3}(?:,\d{3})*$/.test(precio);
+}
+
+function validCantidad(num) {
+  return /^-?[0-9]+$/.test(num);
+}
+
 exports.createProducto = catchAsyncErrors(async (req, res, next) => {
   const { categoria, nombre, precio, stock, descripcion } = req.body;
 
@@ -26,7 +34,7 @@ exports.createProducto = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("La descripción es obligatoria", 400));
   }
 
-  if (precio <= 1 && precio > 100) {
+  if (precio < 1 || precio > 100) {
     return next(
       new ErrorHandler(
         "El precio solo admite valores entre 1 y 100 dólares",
@@ -35,14 +43,24 @@ exports.createProducto = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  if (stock < 0 && stock > 100) {
+  if (!validPrecio(precio)) {
     return next(
       new ErrorHandler(
-        "La cantidad existente solo admite valores entre 0 y 100",
+        "El precio no es válido",
         400
       )
     );
   }
+
+  if (!validCantidad(stock) || stock < 0 || stock > 100) {
+    return next(
+      new ErrorHandler(
+        "La cantidad existente debe ser válida y solo se admite valores entre 0 y 100",
+        400
+      )
+    );
+  }
+
 
   if (!validNombre(nombre)) {
     return next(
@@ -96,7 +114,9 @@ exports.getProductos = catchAsyncErrors(async (req, res, next) => {
   const resPerPage = 4;
   const productosCount = await Producto.countDocuments();
 
-  const apiFeatures = new APIFeatures(Producto.find(), req.query)
+  const apiFeatures = new APIFeatures(Producto.find().populate(
+    "categoria",
+    "estado"), req.query)
     .search()
     .filter();
 
@@ -118,7 +138,7 @@ exports.getProductos = catchAsyncErrors(async (req, res, next) => {
 exports.getAdminProductos = catchAsyncErrors(async (req, res, next) => {
   const productos = await Producto.find().populate(
     "categoria",
-    "nombre");
+    "nombre estado");
 
   res.status(200).json({
     success: true,
@@ -161,7 +181,7 @@ exports.updateProducto = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("La descripción es obligatoria", 400));
   }
 
-  if (req.body.precio <= 1 && req.body.precio > 100) {
+  if (req.body.precio < 1 || req.body.precio > 100) {
     return next(
       new ErrorHandler(
         "El precio solo admite valores entre 1 y 100 dólares",
@@ -170,14 +190,24 @@ exports.updateProducto = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  if (req.body.stock < 0 && req.body.stock > 100) {
+  if (!validPrecio(req.body.precio)) {
     return next(
       new ErrorHandler(
-        "La cantidad existente solo admite valores entre 0 y 100",
+        "El precio no es válido",
         400
       )
     );
   }
+
+  if (!validCantidad(req.body.stock) || req.body.stock < 0 || req.body.stock > 100) {
+    return next(
+      new ErrorHandler(
+        "La cantidad existente debe ser válida y solo se admite valores entre 0 y 100",
+        400
+      )
+    );
+  }
+
 
   if (!validNombre(req.body.nombre)) {
     return next(

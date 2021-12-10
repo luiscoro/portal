@@ -106,7 +106,7 @@ const Tienda = ({ match }) => {
                   ) : (
                     <div className="row">
                       <div className="col-lg-9">
-                        {productos.map((producto) => (
+                        {productos.filter(pro => pro.estado === "activo"(pro.categoria && pro.categoria.estado === "activa")).map(producto => (
                           <Producto
                             key={producto._id}
                             producto={producto}
@@ -124,7 +124,7 @@ const Tienda = ({ match }) => {
                               </h4>
                             </div>
                             <ul className="category-list">
-                              {categorias.map((categoria) => (
+                              {categorias.filter(cat => cat.estado === "activa").map(categoria => (
                                 <li key={categoria._id}>
                                   <a
                                     href
@@ -204,7 +204,7 @@ const Tienda = ({ match }) => {
                 <>
                   <div className="row">
                     <div className="col-lg-9">
-                      {productos.map((producto) => (
+                      {productos.filter(pro => pro.estado === "activo" && (pro.categoria && pro.categoria.estado === "activa")).map(producto => (
                         <Producto
                           key={producto._id}
                           producto={producto}
@@ -222,7 +222,7 @@ const Tienda = ({ match }) => {
                             </h4>
                           </div>
                           <ul className="category-list">
-                            {categorias.map((categoria) => (
+                            {categorias.filter(cat => cat.estado === "activa").map(categoria => (
                               <li key={categoria._id}>
                                 <a
                                   href

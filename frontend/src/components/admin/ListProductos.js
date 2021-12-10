@@ -130,6 +130,11 @@ const ListProductos = ({ history }) => {
           sort: "asc",
         },
         {
+          label: "Estado",
+          field: "estado",
+          sort: "asc",
+        },
+        {
           label: "Foto",
           field: "foto",
         },
@@ -142,64 +147,67 @@ const ListProductos = ({ history }) => {
     };
 
     productos.forEach((producto) => {
-      data.rows.push({
-        categoria: producto.categoria && producto.categoria.nombre,
-        nombre: producto.nombre,
-        precio: `$${producto.precio}`,
-        descripcion: producto.descripcion,
-        stock: producto.stock,
-        marca: producto.marca,
-        foto: (
-          <img
-            alt=""
-            src={producto.imagenes && producto.imagenes[0].url}
-            width="55"
-            height="52"
-          />
-        ),
-        acciones: (
-          <>
-            <Link
-              to={`/admin-producto/${producto._id}`}
-              className="btn btn-primary py-1 px-2"
-              title="Editar"
-            >
-              <i className="fa fa-pencil"></i>
-            </Link>
-            <button
-              className="btn btn-danger py-1 px-2 ml-2"
-              title="Eliminar"
-              onClick={() => {
-                MySwal.fire({
-                  background: "#f5ede4",
-                  title: "¿Está seguro de eliminar el producto?",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Si",
-                  cancelButtonText: "Cancelar",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    deleteProductoHandler(producto._id);
-                    MySwal.fire({
-                      background: "#f5ede4",
-                      icon: "success",
-                      title: "El producto ha sido eliminado con éxito",
-                      showConfirmButton: true,
-                      confirmButtonColor: "#3085d6",
-                      showCloseButton: false,
-                      timer: 3000,
-                    });
-                  }
-                });
-              }}
-            >
-              <i className="fa fa-trash"></i>
-            </button>
-          </>
-        ),
-      });
+      if (producto.categoria && producto.categoria.estado === "activa") {
+        data.rows.push({
+          categoria: producto.categoria && producto.categoria.nombre,
+          nombre: producto.nombre,
+          precio: `$${producto.precio}`,
+          descripcion: producto.descripcion,
+          stock: producto.stock,
+          marca: producto.marca,
+          estado: producto.estado,
+          foto: (
+            <img
+              alt=""
+              src={producto.imagenes && producto.imagenes[0].url}
+              width="55"
+              height="52"
+            />
+          ),
+          acciones: (
+            <>
+              <Link
+                to={`/admin-producto/${producto._id}`}
+                className="btn btn-primary py-1 px-2"
+                title="Editar"
+              >
+                <i className="fa fa-pencil"></i>
+              </Link>
+              <button
+                className="btn btn-danger py-1 px-2 ml-2"
+                title="Eliminar"
+                onClick={() => {
+                  MySwal.fire({
+                    background: "#f5ede4",
+                    title: "¿Está seguro de eliminar el producto?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Si",
+                    cancelButtonText: "Cancelar",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      deleteProductoHandler(producto._id);
+                      MySwal.fire({
+                        background: "#f5ede4",
+                        icon: "success",
+                        title: "El producto ha sido eliminado con éxito",
+                        showConfirmButton: true,
+                        confirmButtonColor: "#3085d6",
+                        showCloseButton: false,
+                        timer: 3000,
+                      });
+                    }
+                  });
+                }}
+              >
+                <i className="fa fa-trash"></i>
+              </button>
+            </>
+          ),
+        });
+      }
     });
 
     return data;
@@ -224,14 +232,15 @@ const ListProductos = ({ history }) => {
 
     doc.setFontSize(15);
     const title = "Listado de productos";
-    const headers = [["CATEGORÍA", "NOMBRE", "PRECIO", "DESCRIPCIÓN", "CANTIDAD EXISTENTE", "MARCA"]];
+    const headers = [["CATEGORÍA", "NOMBRE", "PRECIO", "DESCRIPCIÓN", "CANTIDAD EXISTENTE", "MARCA", "ESTADO"]];
 
     const rows = [];
 
     productos.forEach(producto => {
-
-      var temp = [producto.categoria && producto.categoria.nombre, producto.nombre, "$" + producto.precio, producto.descripcion, producto.stock, producto.marca];
-      rows.push(temp);
+      if (producto.categoria && producto.categoria.estado === "activa") {
+        var temp = [producto.categoria && producto.categoria.nombre, producto.nombre, "$" + producto.precio, producto.descripcion, producto.stock, producto.marca, producto.estado];
+        rows.push(temp);
+      }
     });
 
 

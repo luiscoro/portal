@@ -16,10 +16,11 @@ const miembroSchema = new mongoose.Schema({
   nombre: {
     type: String,
     trim: true,
+    unique: true,
   },
   cedula: {
     type: String,
-
+    unique: true,
   },
   numeroCamiseta: {
     type: Number,

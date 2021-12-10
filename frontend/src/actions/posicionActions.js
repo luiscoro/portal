@@ -36,7 +36,7 @@ export const getAdminPosiciones = () => async (dispatch) => {
   }
 };
 
-export const createPosicion = (nombre) => async (dispatch) => {
+export const createPosicion = (nombre, tipo) => async (dispatch) => {
   try {
     dispatch({ type: CREATE_POSICION_REQUEST });
 
@@ -48,7 +48,7 @@ export const createPosicion = (nombre) => async (dispatch) => {
 
     const { data } = await axios.post(
       `/api/admin/posicion/nueva`,
-      { nombre },
+      { nombre, tipo },
       config
     );
 
