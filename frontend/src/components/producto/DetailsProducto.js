@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../section/Loader";
 import MetaData from "../section/MetaData";
-import Banner from "../section/Banner";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Carousel } from "react-bootstrap";
