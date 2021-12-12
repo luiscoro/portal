@@ -90,7 +90,7 @@ const DetailsProducto = ({ match }) => {
         showCloseButton: true,
         icon: "success",
         iconColor: "green",
-        title: "Su revisión ha sido publicada con éxito",
+        title: "Su valoración ha sido registrada con éxito",
         position: "bottom",
         showConfirmButton: false,
         timer: 5000,

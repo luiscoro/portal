@@ -82,13 +82,13 @@ const Noticias = ({ match }) => {
                     {filteredNoticiasCount === 0 ? (
                       <h5 className="title">No se encontró alguna noticia con el nombre ingresado</h5>
                     ) : (
-                      noticias.map((noticia) => (
+                      noticias.filter(not => not.estado === "activa").map(noticia => (
                         <Noticia key={noticia._id} noticia={noticia} col={6} />
                       )))}
 
                   </>
                 ) : (
-                  noticias.map((noticia) => (
+                  noticias.filter(not => not.estado === "activa").map(noticia => (
                     <Noticia key={noticia._id} noticia={noticia} col={6} />
                   ))
                 )}

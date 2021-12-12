@@ -16,6 +16,9 @@ var MySwal;
 const UpdatePerfil = ({ history }) => {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
+  const [cedula, setCedula] = useState("");
+  const [direccion, setDireccion] = useState("");
+  const [telefono, setTelefono] = useState("");
 
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
@@ -29,6 +32,9 @@ const UpdatePerfil = ({ history }) => {
     if (usuario) {
       setNombre(usuario.nombre);
       setEmail(usuario.email);
+      setCedula(usuario.cedula);
+      setDireccion(usuario.direccion);
+      setTelefono(usuario.telefono);
     }
 
     if (error) {
@@ -77,6 +83,9 @@ const UpdatePerfil = ({ history }) => {
     const formData = new FormData();
     formData.set("nombre", nombre);
     formData.set("email", email);
+    formData.set("cedula", cedula);
+    formData.set("direccion", direccion);
+    formData.set("telefono", telefono);
 
     dispatch(updatePerfil(formData));
   };
@@ -94,23 +103,69 @@ const UpdatePerfil = ({ history }) => {
                   <h3 className="title">Actualiza los datos de tu cuenta</h3>
                   <form className="login-form" onSubmit={submitHandler}>
                     <div className="frm-group">
-                      <label>Nombre:</label>
+
+                      <label>Nombre</label>
                       <input
                         type="text"
                         name="nombre"
                         value={nombre}
-                        placeholder="Nombre"
+                        placeholder="Ingresa el nombre"
                         onChange={(e) => setNombre(e.target.value)}
                       />
                     </div>
                     <div className="frm-group">
-                      <label>Correo electrónico:</label>
+                      <label>Correo electrónico</label>
                       <input
                         type="text"
                         name="email"
                         value={email}
-                        placeholder="Correo electrónico"
+                        placeholder="Ingresa el correo electrónico"
                         onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </div>
+                    <div className="frm-group">
+
+                      {cedula === "" ? (
+                        <>
+                          <label>Identificación:</label>
+                          <input
+                            type="text"
+                            placeholder="Ingresa la cédula de identidad"
+                            value={cedula}
+                            onChange={(e) => setCedula(e.target.value)}
+
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <label>Identificación:</label>
+                          <input
+                            type="text"
+                            placeholder="Ingresa la cédula de identidad"
+                            value={cedula}
+                            onChange={(e) => setCedula(e.target.value)}
+                            disabled
+                          />
+                        </>
+                      )}
+                    </div>
+
+                    <div className="frm-group">
+                      <label>Dirección</label>
+                      <input
+                        type="text"
+                        placeholder="Ingresa la dirección"
+                        value={direccion}
+                        onChange={(e) => setDireccion(e.target.value)}
+                      />
+                    </div>
+                    <div className="frm-group">
+                      <label>Teléfono</label>
+                      <input
+                        type="text"
+                        placeholder="Ingresa el número de teléfono"
+                        value={telefono}
+                        onChange={(e) => setTelefono(e.target.value)}
                       />
                     </div>
                     <div className="frm-group">

@@ -149,10 +149,6 @@ const ListMiembros = ({ history }) => {
           field: "numeroCamiseta",
         },
         {
-          label: "Estado",
-          field: "estado",
-        },
-        {
           label: "Foto",
           field: "foto",
         },
@@ -176,7 +172,6 @@ const ListMiembros = ({ history }) => {
           nombre: miembro.nombre,
           nacionalidad: miembro.nacionalidad,
           numeroCamiseta: (miembro.numeroCamiseta === null ? (<></>) : ("# " + miembro.numeroCamiseta)),
-          estado: miembro.estado,
           foto: (
             <img
               alt=""
@@ -312,11 +307,15 @@ const ListMiembros = ({ history }) => {
                           onChange={(e) => setTipoId(e.target.value)}
                         >
                           <option value={""}>Filtrar por tipo de miembro</option>
-                          {tipoMiembros.map((tipo) => (
-                            <option key={tipo._id} value={tipo.nombre}>
-                              {tipo.nombre}
+                          {tipoMiembros.filter(tipoM => tipoM.estado === "activo").map(filtTipoM => (
+                            <option
+                              key={filtTipoM._id}
+                              value={filtTipoM.nombre}
+                            >
+                              {filtTipoM.nombre}
                             </option>
                           ))}
+
                         </select>
                       )}
                     </div>

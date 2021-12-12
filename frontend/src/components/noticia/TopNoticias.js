@@ -33,7 +33,7 @@ const TopNoticias = () => {
         </div>
         <>
           <div className="row mb-none-30">
-            {noticias.map((noticia) => (
+            {noticias.filter(not => not.estado === "activa").map(noticia => (
               <div className="col-lg-6" key={noticia._id}>
                 <div className="post-item post-list--style mb-30">
                   <div className="thumb">

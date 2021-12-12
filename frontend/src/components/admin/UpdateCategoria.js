@@ -15,6 +15,7 @@ var MySwal;
 
 const UpdateCategoria = ({ history, match, location }) => {
   const [nombre, setNombre] = useState("");
+  const [estado, setEstado] = useState("");
 
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const UpdateCategoria = ({ history, match, location }) => {
       dispatch(getCategoriaDetails(categoriaId));
     } else {
       setNombre(categoria.nombre);
+      setEstado(categoria.estado);
     }
 
     if (error) {
@@ -98,6 +100,7 @@ const UpdateCategoria = ({ history, match, location }) => {
 
     const formData = new FormData();
     formData.set("nombre", nombre);
+    formData.set("estado", estado);
 
     dispatch(updateCategoria(categoria._id, formData));
   };
@@ -131,6 +134,16 @@ const UpdateCategoria = ({ history, match, location }) => {
                                 value={nombre}
                                 onChange={(e) => setNombre(e.target.value)}
                               />
+                            </div>
+                            <div className="frm-group">
+                              <label>Estado:</label>
+                              <select
+                                value={estado}
+                                onChange={(e) => setEstado(e.target.value)}
+                              >
+                                <option value="activa">activa</option>
+                                <option value="inactiva">inactiva</option>
+                              </select>
                             </div>
                             <div className="frm-group">
                               <input type="submit" value="Actualizar" />

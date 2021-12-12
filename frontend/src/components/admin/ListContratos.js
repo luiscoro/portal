@@ -283,47 +283,59 @@ const ListContratos = ({ history }) => {
                             >
                                 <i className="fa fa-pencil"></i>
                             </Link>
-                            <button
-                                className="btn btn-danger py-1 px-2 ml-2"
-                                title="Eliminar"
-                                onClick={() => {
-                                    MySwal.fire({
-                                        background: "#f5ede4",
-                                        title: "¿Está seguro de eliminar el contrato?",
-                                        icon: "warning",
-                                        showCancelButton: true,
-                                        confirmButtonColor: "#3085d6",
-                                        cancelButtonColor: "#d33",
-                                        confirmButtonText: "Si",
-                                        cancelButtonText: "Cancelar",
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            deleteContratoHandler(contrato._id);
+                            {contrato.estado === "vigente" ? (
+                                <>
+                                    <button
+                                        className="btn btn-danger py-1 px-2 ml-2"
+                                        title="Eliminar"
+                                        onClick={() => {
                                             MySwal.fire({
                                                 background: "#f5ede4",
-                                                icon: "success",
-                                                title: "El contrato ha sido eliminado con éxito",
-                                                showConfirmButton: true,
+                                                title: "¿Está seguro de eliminar el contrato?",
+                                                icon: "warning",
+                                                showCancelButton: true,
                                                 confirmButtonColor: "#3085d6",
-                                                showCloseButton: false,
-                                                timer: 3000,
+                                                cancelButtonColor: "#d33",
+                                                confirmButtonText: "Si",
+                                                cancelButtonText: "Cancelar",
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    deleteContratoHandler(contrato._id);
+                                                    MySwal.fire({
+                                                        background: "#f5ede4",
+                                                        icon: "success",
+                                                        title: "El contrato ha sido eliminado con éxito",
+                                                        showConfirmButton: true,
+                                                        confirmButtonColor: "#3085d6",
+                                                        showCloseButton: false,
+                                                        timer: 3000,
+                                                    });
+                                                }
                                             });
-                                        }
-                                    });
-                                }}
-                            >
-                                <i className="fa fa-trash"></i>
-                            </button>
-                            <button
-                                className="btn btn-danger py-1 px-2 ml-2"
-                                title="Generar PDF"
-                                onClick={() => {
-                                    exportPdf(contrato._id)
-                                }}
-                            >
+                                        }}
+                                    >
+                                        <i className="fa fa-trash"></i>
+                                    </button>
+                                    <button
+                                        className="btn btn-danger py-1 px-2 ml-2"
+                                        title="Generar PDF"
+                                        onClick={() => {
+                                            exportPdf(contrato._id)
+                                        }}
+                                    ><i className="fa fa-file-pdf-o"></i></button>
+                                </>) : (<>
 
-                                <i className="fa fa-file-pdf-o"></i>
-                            </button>
+                                    <button
+                                        className="btn btn-danger py-1 px-2 ml-2"
+                                        disabled
+                                    >
+                                        <i className="fa fa-trash"></i>
+                                    </button>
+                                    <button
+                                        className="btn btn-danger py-1 px-2 ml-2"
+                                        disabled
+                                    ><i className="fa fa-file-pdf-o"></i></button></>)}
+
                         </>
                     ),
                 });
@@ -369,12 +381,13 @@ const ListContratos = ({ history }) => {
                                                     onChange={(e) => setTipoId(e.target.value)}
                                                 >
                                                     <option value={""}>Filtrar por tipo de miembro</option>
-                                                    {tipoMiembros.map((tipo) => (
-                                                        <option key={tipo._id} value={tipo._id}>
-                                                            {tipo.nombre}
-
+                                                    {tipoMiembros.filter(tipoM => tipoM.estado === "activo").map(filtTipoM => (
+                                                        <option
+                                                            key={filtTipoM._id}
+                                                            value={filtTipoM._id}
+                                                        >
+                                                            {filtTipoM.nombre}
                                                         </option>
-
                                                     ))}
 
                                                 </select>

@@ -155,7 +155,7 @@ const UpdateContrato = ({ match, history }) => {
                                                             />
                                                         </div>
                                                         <div className="frm-group">
-                                                            <label>Estado:</label>
+                                                            <label>Estado</label>
                                                             <select
                                                                 name="estado"
                                                                 value={estado}

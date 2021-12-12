@@ -155,16 +155,6 @@ const Cesta = ({ history }) => {
                       <li>
                         <span className="caption">subtotal</span>
                         <span>
-                          {itemsCesta.reduce(
-                            (acc, item) => acc + Number(item.cantidad),
-                            0
-                          )}{" "}
-                          (Unidades)
-                        </span>
-                      </li>
-                      <li>
-                        <span className="caption">total</span>
-                        <span>
                           {" "}
                           $
                           {itemsCesta
@@ -173,6 +163,37 @@ const Cesta = ({ history }) => {
                               0
                             )
                             .toFixed(2)}
+                        </span>
+                      </li>
+                      <li>
+                        <span className="caption">iva(12%)</span>
+                        <span>
+                          {" "}
+                          $
+                          {(itemsCesta
+                            .reduce(
+                              (acc, item) => acc + item.cantidad * item.precio,
+                              0
+                            )
+                            * 12 / (100)).toFixed(2)}
+                        </span>
+                      </li>
+                      <li>
+                        <span className="caption">total</span>
+                        <span>
+                          {" "}
+                          $
+                          {(itemsCesta
+                            .reduce(
+                              (acc, item) => acc + item.cantidad * item.precio,
+                              0
+                            ) + itemsCesta
+                              .reduce(
+                                (acc, item) => acc + item.cantidad * item.precio,
+                                0
+                              )
+                            * 12 / (100)
+                          ).toFixed(2)}
                         </span>
                       </li>
                     </ul>

@@ -210,7 +210,7 @@ const Pago = ({ history }) => {
                     autoComplete="off"
                   >
                     <div className="frm-group">
-                      <label>Número de tarjeta:</label>
+                      <label>Número de tarjeta</label>
                       <br />
 
                       <CardNumberElement
@@ -220,7 +220,7 @@ const Pago = ({ history }) => {
                       />
                     </div>
                     <div className="frm-group">
-                      <label>Fecha de caducidad:</label>
+                      <label>Fecha de caducidad</label>
                       <br />
                       <CardExpiryElement
                         type="text"
@@ -230,7 +230,7 @@ const Pago = ({ history }) => {
                     </div>
 
                     <div className="frm-group">
-                      <label>Código de seguridad (CVC):</label>
+                      <label>Código de seguridad (CVC)</label>
                       <br />
                       <CardCvcElement
                         type="text"

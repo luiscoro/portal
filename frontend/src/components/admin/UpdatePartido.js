@@ -188,7 +188,7 @@ const UpdatePartido = ({ match, history }) => {
                               <input
                                 name="nombreLocal"
                                 type="text"
-                                placeholder="Ingrese el nombre del equipo local"
+                                placeholder="Ingresa el nombre del equipo local"
                                 value={nombreLocal}
                                 onChange={(e) => setNombreLocal(e.target.value)}
                               />

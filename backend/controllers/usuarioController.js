@@ -8,6 +8,7 @@ const crypto = require("crypto");
 var d = new Date();
 d.setHours(d.getHours() - 5);
 
+
 function validNombre(n) {
   return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ]+$/.test(n);
 }
@@ -46,6 +47,7 @@ function validCedula(c) {
 
     return res;
   }
+  return res;
 }
 
 function validTelefono(t) {
@@ -184,8 +186,22 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
+  if (!req.body.password || !req.body.confirmPassword) {
+    return next(new ErrorHandler("La contraseña es obligatoria", 400));
+  }
+
+
   if (req.body.password !== req.body.confirmPassword) {
     return next(new ErrorHandler("Las contraseñas no coinciden", 400));
+  }
+
+  if (!validPassword(req.body.password)) {
+    return next(
+      new ErrorHandler(
+        "La contraseña debe tener al menos 8 caracteres, una letra y un número",
+        400
+      )
+    );
   }
 
   usuario.password = req.body.password;
@@ -307,7 +323,7 @@ exports.updateInfoEnvio = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.updatePerfil = catchAsyncErrors(async (req, res, next) => {
-  const { nombre, email } = req.body;
+  const { nombre, email, cedula, direccion, telefono } = req.body;
 
   if (!nombre) {
     return next(new ErrorHandler("El nombre es obligatorio", 400));
@@ -323,13 +339,47 @@ exports.updatePerfil = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
+
   if (!validEmail(email)) {
     return next(new ErrorHandler("El correo electrónico no es válido", 400));
+  }
+
+
+  if (cedula != "") {
+    if (validCedula(cedula) == 0) {
+      return next(new ErrorHandler("El número de cédula no es válido", 400));
+    }
+  }
+
+  if (telefono != "") {
+    if (!validTelefono(telefono)) {
+      return next(
+        new ErrorHandler(
+          "El número de teléfono o celular solo puede tener 9 o 10 dígitos",
+          400
+        )
+      );
+    }
+  }
+
+
+  if (direccion != "") {
+    if (!validDireccion(direccion)) {
+      return next(
+        new ErrorHandler(
+          "La dirección solo admite letras, números y espacios",
+          400
+        )
+      );
+    }
   }
 
   const newUsuarioData = {
     nombre: nombre,
     email: email,
+    cedula: cedula,
+    telefono: telefono,
+    direccion: direccion,
   };
 
   const usuario = await Usuario.findByIdAndUpdate(

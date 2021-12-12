@@ -155,7 +155,7 @@ const CreateContrato = ({ history }) => {
                                                         </div>
 
                                                         <div className="frm-group">
-                                                            <label>Tipo de contrato:</label>
+                                                            <label>Tipo de contrato</label>
                                                             <select
                                                                 name="tipo"
                                                                 value={tipo}
@@ -169,7 +169,7 @@ const CreateContrato = ({ history }) => {
                                                             </select>
                                                         </div>
                                                         <div className="frm-group">
-                                                            <label>Sueldo:</label>
+                                                            <label>Sueldo ($)</label>
                                                             <input
                                                                 name="sueldo"
                                                                 type="number"

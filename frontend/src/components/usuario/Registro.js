@@ -14,6 +14,11 @@ const Registro = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [passwordShown, setPasswordShown] = useState(false);
+  const togglePasswordVisiblity = () => {
+    setPasswordShown(passwordShown ? false : true);
+  };
+
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
@@ -81,31 +86,38 @@ const Registro = ({ history }) => {
                     autocomplete="off"
                   >
                     <div className="frm-group">
+                      < label>Nombre</label>
                       <input
                         type="text"
                         name="nombre"
                         value={nombre}
-                        placeholder="Nombre"
+                        placeholder="Ingresa el nombre"
                         onChange={(e) => setNombre(e.target.value)}
                       />
                     </div>
                     <div className="frm-group">
+                      <label>Correo electrónico</label>
                       <input
                         type="text"
                         name="email"
                         value={email}
-                        placeholder="Correo electrónico"
+                        placeholder="Ingresa el correo electrónico"
                         onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
                     <div className="frm-group">
+                      <label>Contraseña</label>
                       <input
-                        type="password"
+                        type={passwordShown ? "text" : "password"}
                         name="password"
-                        placeholder="Contraseña"
+                        placeholder="Ingresa la contraseña"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                       />
+                      <i className="fa fa-eye" onClick={togglePasswordVisiblity} style={{
+                        position: "absolute", top: "65%",
+                        right: "20%", color: "#0047a5", cursor: "pointer"
+                      }} />
                     </div>
                     <div className="frm-group">
                       <input

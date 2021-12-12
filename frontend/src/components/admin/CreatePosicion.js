@@ -112,7 +112,7 @@ const CreatePosicion = ({ history }) => {
                               <input
                                 name="nombre"
                                 type="text"
-                                placeholder="Ingrese el nombre"
+                                placeholder="Ingresa el nombre"
                                 value={nombre}
                                 onChange={(e) => setNombre(e.target.value)}
                               />

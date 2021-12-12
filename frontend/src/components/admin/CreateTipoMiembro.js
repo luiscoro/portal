@@ -80,11 +80,11 @@ const CreateTipoMiembro = ({ history }) => {
                                                     <h3 className="title">Nuevo tipo de miembro</h3>
                                                     <form className="login-form" onSubmit={submitHandler}>
                                                         <div className="frm-group">
-                                                            <label>Tipo de miembro</label>
+                                                            <label>Nombre</label>
                                                             <input
                                                                 name="nombre"
                                                                 type="text"
-                                                                placeholder="Ingresa el tipo de miembro"
+                                                                placeholder="Ingresa el nombre"
                                                                 value={nombre}
                                                                 onChange={(e) => setNombre(e.target.value)}
                                                             />

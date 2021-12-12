@@ -49,12 +49,6 @@ const Sidebar = () => {
                   <i className="fa fa-universal-access"></i> Posiciones
                 </Link>
               </li>
-
-              <li>
-                <Link to="/admin-posicion">
-                  <i className="fa fa-plus"></i> Nueva posición
-                </Link>
-              </li>
             </ul>
           </li>
           <li>
@@ -137,12 +131,6 @@ const Sidebar = () => {
               <li>
                 <Link to="/admin-categorias">
                   <i className="fa fa-list-alt"></i> Categorías
-                </Link>
-              </li>
-
-              <li>
-                <Link to="/admin-categoria">
-                  <i className="fa fa-plus"></i> Nueva categoría
                 </Link>
               </li>
             </ul>

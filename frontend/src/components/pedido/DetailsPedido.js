@@ -70,16 +70,13 @@ const DetailsPedido = ({ match }) => {
                     <b>Número de pedido:</b> {pedido._id}
                   </p>
                   <p>
-                    <b>Total pagado:</b> ${precioTotal}
-                  </p>
-                  <p>
                     <b>Estado pedido:</b> {estadoPedido}
                   </p>
                   <p>
                     <b>Estado pago:</b> {infoPago && infoPago.estado}
                   </p>
 
-                  <h4 className="my-4">Productos:</h4>
+                  <h4 className="my-4">Productos</h4>
 
                   <div className="cart-item my-1">
                     {itemsPedido &&
@@ -101,7 +98,10 @@ const DetailsPedido = ({ match }) => {
                           </div>
 
                           <div className="col-4 col-lg-3 mt-4 mt-lg-0">
-                            <p>{item.cantidad} Unidades</p>
+                            <p>
+                              {item.cantidad} x ${item.precio} ={" "}
+                              <b>${(item.cantidad * item.precio).toFixed(2)}</b>
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -126,7 +126,26 @@ const DetailsPedido = ({ match }) => {
                   <p>
                     <b>Código Postal:</b> {infoEnvio && infoEnvio.codigoPostal}
                   </p>
+
+                  <br></br>
+                  <div className="order-summary-wrapper">
+                    <h4 className="mb-4">Resumen del pago</h4>
+
+                    <p>
+                      <b>Subtotal:</b> ${pedido.precioItems}
+                    </p>
+                    <p>
+                      <b>Envío:</b> ${pedido.precioEnvio}
+                    </p>
+                    <p>
+                      <b>Iva(12%):</b> ${pedido.precioImpuesto}
+                    </p>
+                    <p>
+                      <b>Total:</b> ${precioTotal}
+                    </p>
+                  </div>
                 </div>
+
               </div>
             </div>
           </section>

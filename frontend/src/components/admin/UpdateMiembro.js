@@ -180,7 +180,7 @@ const UpdateMiembro = ({ match, history }) => {
                             encType="multipart/form-data"
                           >
                             <div className="frm-group">
-                              <label>Tipo de miembro</label>
+                              <label>Tipo</label>
                               {loading ? (
                                 <Loader />
                               ) : (
@@ -191,12 +191,12 @@ const UpdateMiembro = ({ match, history }) => {
                                   <option>
                                     Seleccione el tipo de miembro
                                   </option>
-                                  {tipoMiembros.map((tipo) => (
+                                  {tipoMiembros.filter(tipoM => tipoM.estado === "activo").map(filtTipoM => (
                                     <option
-                                      key={tipo._id}
-                                      value={tipo._id}
+                                      key={filtTipoM._id}
+                                      value={filtTipoM._id}
                                     >
-                                      {tipo.nombre}
+                                      {filtTipoM.nombre}
                                     </option>
                                   ))}
                                 </select>

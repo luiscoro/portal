@@ -80,6 +80,7 @@ const ForgotPassword = () => {
                   <h3 className="title">Recupera tu cuenta</h3>
                   <form className="login-form" onSubmit={submitHandler}>
                     <div className="frm-group">
+                      <label>Correo electrónico</label>
                       <input
                         type="text"
                         name="email"

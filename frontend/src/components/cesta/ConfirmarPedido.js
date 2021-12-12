@@ -12,7 +12,7 @@ const ConfirmarPedido = ({ history }) => {
     (acc, item) => acc + item.precio * item.cantidad,
     0
   );
-  const precioEnvio = precioItems > 50 ? 0 : 5;
+  const precioEnvio = usuario && usuario.ciudad === "Santo Domingo" ? 0 : 5;
   const precioImpuesto = Number((0.12 * precioItems).toFixed(2));
   const precioTotal = (precioItems + precioEnvio + precioImpuesto).toFixed(2);
 
@@ -95,7 +95,7 @@ const ConfirmarPedido = ({ history }) => {
                     <span>${precioEnvio}</span>
                   </li>
                   <li>
-                    <span className="caption">impuestos</span>
+                    <span className="caption">iva(12%)</span>
                     <span>${precioImpuesto}</span>
                   </li>
                   <li>

@@ -296,13 +296,15 @@ exports.createRevisionProducto = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("La calificación es obligatoria", 400));
   }
 
-  if (!validNombre(comentario)) {
-    return next(
-      new ErrorHandler(
-        "El comentario solo admite letras, números y espacios",
-        400
-      )
-    );
+  if (comentario != "") {
+    if (!validNombre(comentario)) {
+      return next(
+        new ErrorHandler(
+          "El comentario solo admite letras, números y espacios",
+          400
+        )
+      );
+    }
   }
 
   const revision = {

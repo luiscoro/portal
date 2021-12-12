@@ -176,7 +176,7 @@ const UpdateProducto = ({ match, history }) => {
                             encType="multipart/form-data"
                           >
                             <div className="frm-group">
-                              <label>Categoría:</label>
+                              <label>Categoría</label>
                               {loading ? (
                                 <Loader />
                               ) : (
@@ -187,7 +187,7 @@ const UpdateProducto = ({ match, history }) => {
                                   <option>
                                     Seleccione la categoría del producto
                                   </option>
-                                  {categorias.map((categoria) => (
+                                  {categorias.filter(cat => cat.estado === "activa").map(categoria => (
                                     <option
                                       key={categoria._id}
                                       value={categoria._id}
@@ -202,7 +202,7 @@ const UpdateProducto = ({ match, history }) => {
                               <label>Nombre</label>
                               <input
                                 type="text"
-                                placeholder="Nombre del producto"
+                                placeholder="Ingresa el nombre"
                                 value={nombre}
                                 onChange={(e) => setNombre(e.target.value)}
                               />
@@ -219,7 +219,7 @@ const UpdateProducto = ({ match, history }) => {
                             <div className="frm-group">
                               <label>Descripción</label>
                               <textarea
-                                placeholder="Descripción del producto..."
+                                placeholder="Ingresa la descripción..."
                                 value={descripcion}
                                 rows={2}
                                 onChange={(e) => setDescripcion(e.target.value)}
@@ -227,7 +227,7 @@ const UpdateProducto = ({ match, history }) => {
                             </div>
 
                             <div className="frm-group">
-                              <label>Cantidad existente:</label>
+                              <label>Cantidad existente</label>
                               <input
                                 type="number"
                                 value={stock}
@@ -239,13 +239,13 @@ const UpdateProducto = ({ match, history }) => {
                               <label>Marca</label>
                               <input
                                 type="text"
-                                placeholder="Marca del producto"
+                                placeholder="Ingresa la marca"
                                 value={marca}
                                 onChange={(e) => setMarca(e.target.value)}
                               />
                             </div>
                             <div className="frm-group">
-                              <label>Estado:</label>
+                              <label>Estado</label>
                               <select
                                 name="estado"
                                 value={estado}
@@ -257,7 +257,7 @@ const UpdateProducto = ({ match, history }) => {
                               </select>
                             </div>
                             <div className="frm-group">
-                              <label>Imágenes:</label>
+                              <label>Imágenes</label>
 
                               <div className="custom-file">
                                 <input

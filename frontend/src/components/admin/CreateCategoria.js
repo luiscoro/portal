@@ -83,11 +83,11 @@ const CreateCategoria = ({ history }) => {
                           </h3>
                           <form className="login-form" onSubmit={submitHandler}>
                             <div className="frm-group">
-                              <label>Nombre:</label>
+                              <label>Nombre</label>
                               <input
                                 name="nombre"
                                 type="text"
-                                placeholder="Nombre de la categoría"
+                                placeholder="Ingresa el nombre"
                                 value={nombre}
                                 onChange={(e) => setNombre(e.target.value)}
                               />

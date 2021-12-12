@@ -12,6 +12,16 @@ const NewPassword = ({ history, match }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [passwordShown, setPasswordShown] = useState(false);
+  const togglePasswordVisiblity = () => {
+    setPasswordShown(passwordShown ? false : true);
+  };
+
+  const [passwordShown1, setPasswordShown1] = useState(false);
+  const togglePasswordVisiblity1 = () => {
+    setPasswordShown1(passwordShown1 ? false : true);
+  };
+
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
@@ -76,24 +86,34 @@ const NewPassword = ({ history, match }) => {
                   <h3 className="title">Crea una nueva contraseña</h3>
                   <form className="login-form" onSubmit={submitHandler}>
                     <div className="frm-group">
+                      <label>Nueva contraseña</label>
                       <input
-                        type="password"
+                        type={passwordShown ? "text" : "password"}
                         name="pass"
                         id="pass"
                         placeholder="Ingresa la contraseña"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                       />
+                      <i className="fa fa-eye" onClick={togglePasswordVisiblity} style={{
+                        position: "absolute", top: "38%",
+                        right: "20%", color: "#0047a5", cursor: "pointer"
+                      }} />
                     </div>
+                    <label>Confirmar nueva contraseña</label>
                     <div className="frm-group">
                       <input
-                        type="password"
+                        type={passwordShown1 ? "text" : "password"}
                         name="pass"
                         id="pass"
-                        placeholder="Confirma tu contraseña"
+                        placeholder="Ingresa la contraseña nuevamente"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                       />
+                      <i className="fa fa-eye" onClick={togglePasswordVisiblity1} style={{
+                        position: "absolute", top: "62%",
+                        right: "20%", color: "#0047a5", cursor: "pointer"
+                      }} />
                     </div>
                     <div className="frm-group">
                       <input type="submit" value="Actualizar contraseña" />

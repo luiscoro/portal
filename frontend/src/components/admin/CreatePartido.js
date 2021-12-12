@@ -165,7 +165,7 @@ const CreatePartido = ({ history }) => {
                               <input
                                 name="nombreLocal"
                                 type="text"
-                                placeholder="Nombre del equipo local"
+                                placeholder="Ingresa el nombre del equipo local"
                                 value={nombreLocal}
                                 onChange={onChange}
                               />
@@ -201,7 +201,7 @@ const CreatePartido = ({ history }) => {
                                 name="golesLocal"
                                 type="number"
                                 min="0"
-                                placeholder="Cantidad de goles del equipo local"
+                                placeholder="Ingresa la cantidad de goles del equipo local"
                                 value={golesLocal}
                                 onChange={onChange}
                               />
@@ -212,7 +212,7 @@ const CreatePartido = ({ history }) => {
                               <input
                                 name="nombreVisitante"
                                 type="text"
-                                placeholder="Nombre del equipo visitante"
+                                placeholder="Ingresa el nombre del equipo visitante"
                                 value={nombreVisitante}
                                 onChange={onChange}
                               />
@@ -249,7 +249,7 @@ const CreatePartido = ({ history }) => {
                                 name="golesVisitante"
                                 type="number"
                                 min="0"
-                                placeholder="Cantidad de goles del equipo visitante"
+                                placeholder="Ingresa la cantidad de goles del equipo visitante"
                                 value={golesVisitante}
                                 onChange={onChange}
                               />
@@ -279,7 +279,7 @@ const CreatePartido = ({ history }) => {
                               <input
                                 name="estadio"
                                 type="text"
-                                placeholder="Nombre del estadio"
+                                placeholder="Ingresa el nombre del estadio"
                                 value={estadio}
                                 onChange={onChange}
                               />

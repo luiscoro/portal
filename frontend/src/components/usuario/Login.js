@@ -15,6 +15,11 @@ const Login = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [passwordShown, setPasswordShown] = useState(false);
+  const togglePasswordVisiblity = () => {
+    setPasswordShown(passwordShown ? false : true);
+  };
+
   MySwal = withReactContent(Swal);
   redirigir = parseInt(localStorage.getItem("redirigir"));
   const dispatch = useDispatch();
@@ -87,22 +92,28 @@ const Login = ({ history }) => {
                         autoComplete="off"
                       >
                         <div className="frm-group">
+                          < label>Correo electrónico</label>
                           <input
                             type="text"
                             name="email"
-                            placeholder="Correo electrónico"
+                            placeholder="Ingresa el correo electrónico"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                           />
                         </div>
                         <div className="frm-group">
+                          < label>Contraseña</label>
                           <input
-                            type="password"
+                            type={passwordShown ? "text" : "password"}
                             name="password"
-                            placeholder="Contraseña"
+                            placeholder="Ingresa la contraseña"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                           />
+                          <i className="fa fa-eye" onClick={togglePasswordVisiblity} style={{
+                            position: "absolute", top: "57%",
+                            right: "20%", color: "#0047a5", cursor: "pointer"
+                          }} />
                         </div>
                         <div className="frm-group">
                           <input type="submit" value="Iniciar sesión" />
