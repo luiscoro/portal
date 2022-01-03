@@ -11,9 +11,7 @@ describe("Testeo del componente Miembro: ", function () {
     });
 });
 
-
 //CUANDO LOS CASOS DE PRUEBA NO SE CUMPLEN
-
 describe("Testeo del componente Miembro: ", function () {
     describe("Revisión a la función nombreTest", function () {
       it("Se verifica que exista un nombre : assert.equal(value) ", function () {

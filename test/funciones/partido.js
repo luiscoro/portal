@@ -1,7 +1,9 @@
 exports.golesTest = function (goles) {
     console.log("Dato de entrada: "+goles)
-  if (goles < 0) return "La cantidad de goles no puede ser menor a cero";
-  else return "La cantidad de goles fue mayor o igual a cero";
+  if (goles < 0) 
+  return "La cantidad de goles no puede ser menor a cero";
+  else 
+  return "La cantidad de goles fue mayor o igual a cero";
 };
 
 exports.fechaTest = function (fecha) {

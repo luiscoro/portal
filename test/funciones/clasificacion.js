@@ -8,7 +8,7 @@ exports.equipoTest = function (nombre){
 
 exports.puntosTest = function (puntos){
     console.log("Dato de entrada: "+puntos)
-    if (!puntos) 
+    if (!golesd) 
         return "Los puntos es obligatorio";
       else
       return "Los puntos fueron ingresados"
