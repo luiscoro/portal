@@ -98,7 +98,7 @@ const Envio = ({ history }) => {
                       <label>Identificación:</label>
                       <input
                         type="text"
-                        placeholder="Cédula de identidad"
+                        placeholder="Ingresa la cédula de identidad"
                         value={cedula}
                         onChange={(e) => setCedula(e.target.value)}
                       />
@@ -123,7 +123,7 @@ const Envio = ({ history }) => {
                       <label>Dirección:</label>
                       <input
                         type="text"
-                        placeholder="Dirección de envío"
+                        placeholder="Ingresa la dirección de envío"
                         value={direccion}
                         onChange={(e) => setDireccion(e.target.value)}
                       />
@@ -132,7 +132,7 @@ const Envio = ({ history }) => {
                       <label>Teléfono:</label>
                       <input
                         type="text"
-                        placeholder="Número de teléfono o celular"
+                        placeholder="Ingresa el número de teléfono"
                         value={telefono}
                         onChange={(e) => setTelefono(e.target.value)}
                       />
@@ -142,7 +142,7 @@ const Envio = ({ history }) => {
                       <label>Código Postal:</label>
                       <input
                         type="text"
-                        placeholder="Código postal de tu localidad"
+                        placeholder="Ingresa el código postal de tu localidad"
                         value={codigoPostal}
                         onChange={(e) => setCodigoPostal(e.target.value)}
                       />

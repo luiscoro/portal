@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { countries } from "countries-list";
+import { getCountries } from "country-list-spanish";
 import MetaData from "../section/MetaData";
 import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
@@ -8,26 +8,30 @@ import Loader from "../section/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { createMiembro, clearErrors } from "../../actions/miembroActions";
 import { getAdminPosiciones } from "../../actions/posicionActions";
+import { getAdminTipoMiembros } from "../../actions/tipoMiembroActions";
 import { CREATE_MIEMBRO_RESET } from "../../constants/miembroConstants";
 
 var MySwal;
 
 const CreateMiembro = ({ history }) => {
-  const countriesList = Object.values(countries);
+
+  const listPaises = Object.values(getCountries());
 
   const [miembro, setMiembro] = useState({
     posicion: "",
     tipo: "",
     nombre: "",
+    cedula: "",
     numeroCamiseta: "",
     fechaNacimiento: "",
-    nacionalidad: "",
+    nacionalidad: "Ecuador",
   });
 
   const {
     posicion,
     tipo,
     nombre,
+    cedula,
     numeroCamiseta,
     fechaNacimiento,
     nacionalidad,
@@ -39,12 +43,15 @@ const CreateMiembro = ({ history }) => {
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
   const dispatch1 = useDispatch();
+  const dispatch2 = useDispatch();
 
   const { error, success } = useSelector((state) => state.createMiembro);
-  const { loading, posiciones } = useSelector((state) => state.posiciones);
+  const { posiciones } = useSelector((state) => state.posiciones);
+  const { loading, tipoMiembros } = useSelector((state) => state.tipoMiembros);
 
   useEffect(() => {
     dispatch1(getAdminPosiciones());
+    dispatch2(getAdminTipoMiembros());
     if (error) {
       MySwal.fire({
         background: "#f5ede4",
@@ -77,7 +84,7 @@ const CreateMiembro = ({ history }) => {
       });
       dispatch({ type: CREATE_MIEMBRO_RESET });
     }
-  }, [dispatch, error, success, history, dispatch1]);
+  }, [dispatch, error, success, history, dispatch1, dispatch2]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -86,6 +93,7 @@ const CreateMiembro = ({ history }) => {
     formData.set("posicion", posicion);
     formData.set("tipo", tipo);
     formData.set("nombre", nombre);
+    formData.set("cedula", cedula);
     formData.set("numeroCamiseta", numeroCamiseta);
     formData.set("fechaNacimiento", fechaNacimiento);
     formData.set("nacionalidad", nacionalidad);
@@ -142,23 +150,35 @@ const CreateMiembro = ({ history }) => {
                           >
                             <div className="frm-group">
                               <label>Tipo</label>
-                              <select
-                                name="tipo"
-                                value={tipo}
-                                onChange={onChange}
-                              >
-                                <option value={""}>
-                                  Seleccione el tipo de miembro
-                                </option>
-                                <option>Jugador</option>
-                                <option>Cuerpo técnico</option>
-                                <option>Cuerpo médico</option>
-                              </select>
-                            </div>
-                            <div className="frm-group">
-                              <label>Posición</label>
                               {loading ? (
                                 <Loader />
+                              ) : (
+                                <select
+                                  name="tipo"
+                                  value={tipo}
+                                  onChange={onChange}
+                                >
+                                  <option value={""}>
+                                    Seleccione el tipo de miembro
+                                  </option>
+                                  {tipoMiembros.filter(tipoM => tipoM.estado === "activo").map(filtTipoM => (
+                                    <option
+                                      key={filtTipoM._id}
+                                      value={filtTipoM._id}
+                                    >
+                                      {filtTipoM.nombre}
+                                    </option>
+                                  ))}
+                                </select>
+                              )}
+                            </div>
+
+                            <div className="frm-group">
+                              <label>Posición</label>
+                              {tipo === "" ? (
+                                <option value={""}>
+                                  Seleccione primero el tipo de miembro
+                                </option>
                               ) : (
                                 <select
                                   name="posicion"
@@ -168,12 +188,12 @@ const CreateMiembro = ({ history }) => {
                                   <option value={""}>
                                     Seleccione la posición del miembro
                                   </option>
-                                  {posiciones.map((posicion) => (
+                                  {posiciones.filter(posicion => posicion.tipo === tipo && posicion.estado === "activa").map(filtposicion => (
                                     <option
-                                      key={posicion._id}
-                                      value={posicion._id}
+                                      key={filtposicion._id}
+                                      value={filtposicion._id}
                                     >
-                                      {posicion.nombre}
+                                      {filtposicion.nombre}
                                     </option>
                                   ))}
                                 </select>
@@ -191,13 +211,24 @@ const CreateMiembro = ({ history }) => {
                               />
                             </div>
                             <div className="frm-group">
+                              <label>Identificación</label>
+                              <input
+                                name="cedula"
+                                type="text"
+                                placeholder="Ingresa la cédula de identidad"
+                                value={cedula}
+                                onChange={onChange}
+                              />
+                            </div>
+
+                            <div className="frm-group">
+
                               <label>Número de camiseta</label>
                               <input
                                 name="numeroCamiseta"
                                 type="number"
                                 placeholder="Ingresa el número de camiseta"
                                 value={numeroCamiseta}
-                                min="1"
                                 onChange={onChange}
                               />
                             </div>
@@ -218,9 +249,9 @@ const CreateMiembro = ({ history }) => {
                                 value={nacionalidad}
                                 onChange={onChange}
                               >
-                                {countriesList.map((pais) => (
-                                  <option key={pais.name} value={pais.name}>
-                                    {pais.name}
+                                {listPaises.map((pais, i) => (
+                                  <option key={i} value={pais}>
+                                    {pais}
                                   </option>
                                 ))}
                               </select>
@@ -249,6 +280,7 @@ const CreateMiembro = ({ history }) => {
                                 height="52"
                               />
                             </div>
+
                             <div className="frm-group">
                               <input type="submit" value="Crear" />
                             </div>

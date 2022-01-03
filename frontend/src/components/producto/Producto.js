@@ -25,9 +25,10 @@ const Producto = ({ producto, col }) => {
           </div>
         </div>
       </div>
-      <div className="product-store-cart">
-        <Link to={`/tienda/productos/${producto._id}`}>
+      <div className="product-store-cart" >
+        <Link to={`/tienda/productos/${producto._id}`} >
           {" "}
+
           <i className="fa fa-eye" />
         </Link>
       </div>

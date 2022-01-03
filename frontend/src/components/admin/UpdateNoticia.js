@@ -147,26 +147,26 @@ const UpdateNoticia = ({ match, history }) => {
                             encType="multipart/form-data"
                           >
                             <div className="frm-group">
-                              <label>Titulo:</label>
+                              <label>Titulo</label>
                               <input
                                 type="text"
-                                placeholder="Título de la noticia"
+                                placeholder="Ingresa el título"
                                 value={titulo}
                                 onChange={(e) => setTitulo(e.target.value)}
                               />
                             </div>
                             <div className="frm-group">
-                              <label>Descripción:</label>
+                              <label>Descripción</label>
                               <textarea
                                 name="descripcion"
-                                placeholder="Descripción de la noticia..."
+                                placeholder="Ingresa la descripción..."
                                 value={descripcion}
                                 rows={2}
                                 onChange={(e) => setDescripcion(e.target.value)}
                               ></textarea>
                             </div>
                             <div className="frm-group">
-                              <label>Imagen:</label>
+                              <label>Imagen</label>
 
                               <div className="custom-file">
                                 <input

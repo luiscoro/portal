@@ -120,20 +120,20 @@ const CreateNoticia = ({ history }) => {
                             encType="multipart/form-data"
                           >
                             <div className="frm-group">
-                              <label>Título:</label>
+                              <label>Título</label>
                               <input
                                 name="titulo"
                                 type="text"
-                                placeholder="Título de la noticia"
+                                placeholder="Ingresa el título"
                                 value={titulo}
                                 onChange={onChange}
                               />
                             </div>
                             <div className="frm-group">
-                              <label>Descripción:</label>
+                              <label>Descripción</label>
                               <textarea
                                 name="descripcion"
-                                placeholder="Descripción de la noticia..."
+                                placeholder="Ingresa la descripción..."
                                 value={descripcion}
                                 rows={2}
                                 onChange={onChange}
@@ -141,7 +141,7 @@ const CreateNoticia = ({ history }) => {
                             </div>
 
                             <div className="frm-group">
-                              <label>Imagen:</label>
+                              <label>Imagen</label>
 
                               <div className="custom-file">
                                 <input

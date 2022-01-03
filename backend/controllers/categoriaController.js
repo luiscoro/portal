@@ -82,14 +82,19 @@ exports.updateCategoria = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.deleteCategoria = catchAsyncErrors(async (req, res, next) => {
-  const categoria = await Categoria.findById(req.params.id);
+  const newCategoriaData = {
+    estado: "inactivo",
+  };
 
-  if (!categoria) {
-    return next(new ErrorHandler("Categoría no encontrada", 404));
-  }
-
-  await categoria.remove();
-
+  const categoria = await Categoria.findByIdAndUpdate(
+    req.params.id,
+    newCategoriaData,
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
   res.status(200).json({
     success: true,
   });

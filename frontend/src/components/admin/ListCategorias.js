@@ -110,6 +110,11 @@ const ListCategorias = ({ history }) => {
           sort: "asc",
         },
         {
+          label: "Estado",
+          field: "estado",
+          sort: "asc",
+        },
+        {
           label: "Acciones",
           field: "acciones",
         },
@@ -121,44 +126,55 @@ const ListCategorias = ({ history }) => {
       data.rows.push({
         id: categoria._id,
         nombre: categoria.nombre,
+        estado: categoria.estado,
         acciones: (
           <>
             <Link
               to={`/admin-categoria/${categoria._id}`}
               className="btn btn-primary py-1 px-2"
+              title="Editar"
             >
               <i className="fa fa-pencil"></i>
             </Link>
-            <button
+
+            {categoria.estado === "activa" ? (
+              <button
+                className="btn btn-danger py-1 px-2 ml-2"
+                title="Eliminar"
+                onClick={() => {
+                  MySwal.fire({
+                    background: "#f5ede4",
+                    title: "¿Está seguro de eliminar la categoría?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Si",
+                    cancelButtonText: "Cancelar",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      deleteCategoriaHandler(categoria._id);
+                      MySwal.fire({
+                        background: "#f5ede4",
+                        icon: "success",
+                        title: "La categoría ha sido eliminada con éxito",
+                        showConfirmButton: true,
+                        confirmButtonColor: "#3085d6",
+                        showCloseButton: false,
+                        timer: 3000,
+                      });
+                    }
+                  });
+                }}
+              >
+                <i className="fa fa-trash"></i>
+              </button>
+            ) : (<button
               className="btn btn-danger py-1 px-2 ml-2"
-              onClick={() => {
-                MySwal.fire({
-                  background: "#f5ede4",
-                  title: "¿Está seguro de eliminar la categoría?",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Si",
-                  cancelButtonText: "Cancelar",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    deleteCategoriaHandler(categoria._id);
-                    MySwal.fire({
-                      background: "#f5ede4",
-                      icon: "success",
-                      title: "La categoría ha sido eliminada con éxito",
-                      showConfirmButton: true,
-                      confirmButtonColor: "#3085d6",
-                      showCloseButton: false,
-                      timer: 3000,
-                    });
-                  }
-                });
-              }}
+              disabled
             >
               <i className="fa fa-trash"></i>
-            </button>
+            </button>)}
           </>
         ),
       });

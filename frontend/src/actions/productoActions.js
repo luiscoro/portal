@@ -33,29 +33,29 @@ import {
 
 export const getProductos =
   (keyword = "", currentPage = 1, precio, categoria, calificacion = 0) =>
-  async (dispatch) => {
-    try {
-      dispatch({ type: GET_PRODUCTOS_REQUEST });
+    async (dispatch) => {
+      try {
+        dispatch({ type: GET_PRODUCTOS_REQUEST });
 
-      let link = `/api/productos?keyword=${keyword}&page=${currentPage}&precio[lte]=${precio[1]}&precio[gte]=${precio[0]}&calificaciones[gte]=${calificacion}`;
+        let link = `/api/productos?keyword=${keyword}&page=${currentPage}&precio[lte]=${precio[1]}&precio[gte]=${precio[0]}&calificaciones[gte]=${calificacion}`;
 
-      if (categoria) {
-        link = `/api/productos?keyword=${keyword}&page=${currentPage}&precio[lte]=${precio[1]}&precio[gte]=${precio[0]}&categoria=${categoria}&calificaciones[gte]=${calificacion}`;
+        if (categoria) {
+          link = `/api/productos?keyword=${keyword}&page=${currentPage}&precio[lte]=${precio[1]}&precio[gte]=${precio[0]}&categoria=${categoria}&calificaciones[gte]=${calificacion}`;
+        }
+
+        const { data } = await axios.get(link);
+
+        dispatch({
+          type: GET_PRODUCTOS_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        dispatch({
+          type: GET_PRODUCTOS_FAIL,
+          payload: error.response.data.message,
+        });
       }
-
-      const { data } = await axios.get(link);
-
-      dispatch({
-        type: GET_PRODUCTOS_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: GET_PRODUCTOS_FAIL,
-        payload: error.response.data.message,
-      });
-    }
-  };
+    };
 
 export const createProducto = (productoData) => async (dispatch) => {
   try {

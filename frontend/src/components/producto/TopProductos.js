@@ -59,7 +59,7 @@ const TopProductos = () => {
           </div>
         </div>
         <OwlCarousel className="product-slider owl-carousel" {...options}>
-          {productos.map((producto) => (
+          {productos.filter(prod => prod.estado === "activo").map(producto => (
             <div className="product-item" key={producto._id}>
               <div className="product-thumb">
                 <img src={producto.imagenes[0].url} alt="" />

@@ -3,16 +3,15 @@ import Loader from "../section/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { getJugadores, clearErrors } from "../../actions/miembroActions";
 import OwlCarousel from "react-owl-carousel";
-import { getAdminPosiciones } from "../../actions/posicionActions";
+
 
 var ageCalculator = require("age-calculator");
 let { AgeFromDateString } = ageCalculator;
 const Directiva = () => {
   const dispatch = useDispatch();
-  const dispatch1 = useDispatch();
+
 
   const { loading, error, jugadores } = useSelector((state) => state.jugadores);
-  const { posiciones } = useSelector((state) => state.posiciones);
 
   const options = {
     animateOut: "fadeOut",
@@ -38,20 +37,20 @@ const Directiva = () => {
   };
 
   useEffect(() => {
-    dispatch1(getAdminPosiciones());
+
 
     dispatch(getJugadores());
     if (error) {
       dispatch(clearErrors());
     }
-  }, [dispatch, error, dispatch1]);
+  }, [dispatch, error]);
 
   return loading ? (
     <Loader />
   ) : (
     <section className="player-section base-overlay bg_img">
       <OwlCarousel className="single-player-slider owl-carousel" {...options}>
-        {jugadores.map((jugador) => (
+        {jugadores.map((jugador) => jugador.tipo && jugador.tipo.nombre === "jugador" && jugador.estado === "activo" ? (
           <div
             className="single-player-details-area d-flex flex-wrap"
             key={jugador._id}
@@ -68,15 +67,9 @@ const Directiva = () => {
               <ul className="details-list">
                 <li>
                   <span className="caption">Posición</span>
-                  {posiciones.map((posicion) =>
-                    posicion._id === jugador.posicion ? (
-                      <span className="list-description" key={posicion._id}>
-                        {posicion.nombre}
-                      </span>
-                    ) : (
-                      <></>
-                    )
-                  )}
+                  <span className="list-description">
+                    {jugador.posicion && jugador.posicion.nombre}
+                  </span>
                 </li>
                 <li>
                   <span className="caption">Camiseta</span>
@@ -104,6 +97,8 @@ const Directiva = () => {
               </ul>
             </div>
           </div>
+        ) : (
+          <></>
         ))}
       </OwlCarousel>
     </section>

@@ -13,6 +13,8 @@ import {
   clearErrors,
 } from "../../actions/clasificacionActions";
 import { DELETE_CLASIFICACION_RESET } from "../../constants/clasificacionConstants";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 var MySwal;
 var bandera;
@@ -131,7 +133,12 @@ const ListClasificaciones = ({ history }) => {
     clasificaciones.forEach((clasificacion) => {
       data.rows.push({
         pos: cont++,
-        equipo: clasificacion.equipo,
+        equipo: clasificacion.equipo &&
+          String(clasificacion.equipo).includes("3 de Julio") ? (
+          <p style={{ color: "blue" }}>{clasificacion.equipo}</p>
+        ) : (
+          clasificacion.equipo
+        ),
         puntos: clasificacion.puntos,
         golDiferencia: clasificacion.golDiferencia,
         acciones: (
@@ -139,11 +146,13 @@ const ListClasificaciones = ({ history }) => {
             <Link
               to={`/admin-clasificacion/${clasificacion._id}`}
               className="btn btn-primary py-1 px-2"
+              title="Editar"
             >
               <i className="fa fa-pencil"></i>
             </Link>
             <button
               className="btn btn-danger py-1 px-2 ml-2"
+              title="Eliminar"
               onClick={() => {
                 MySwal.fire({
                   background: "#f5ede4",
@@ -183,6 +192,43 @@ const ListClasificaciones = ({ history }) => {
   const deleteClasificacionHandler = (id) => {
     dispatch(deleteClasificacion(id));
   };
+
+  const exportPdf = () => {
+    let cont = 1;
+    var img = new Image(10, 10);
+    img.crossOrigin = "";
+    img.src = "//i.imgur.com/qU9CtWQ.png";
+
+    const unit = "pt";
+    const size = "A4";
+    const orientation = "portrait";
+
+    const doc = new jsPDF(orientation, unit, size);
+
+    doc.setFontSize(15);
+    const title = "Tabla de posiciones";
+    const headers = [["POSICIÓN", "NOMBRE DEL EQUIPO", "PUNTOS", "GOL DE DIFERENCIA"]];
+
+    const rows = [];
+
+    clasificaciones.forEach(pos => {
+      var temp = [cont++, pos.equipo, pos.puntos, pos.golDiferencia];
+      rows.push(temp);
+    }
+    );
+
+
+    let content = {
+      startY: 80,
+      head: headers,
+      body: rows
+    };
+
+    doc.addImage(img, 275, 5);
+    doc.text(title, 40, 70);
+    doc.autoTable(content);
+    doc.save("posiciones.pdf")
+  }
   return (
     <>
       <MetaData title={"Listar clasificaciones"} />
@@ -203,8 +249,19 @@ const ListClasificaciones = ({ history }) => {
                 >
                   Crear nueva
                 </Link>
-                <h3 className="my-4">Listado de clasificaciones</h3>
+                <h3 className="my-4">Tabla de posiciones</h3>
+                <div className="botonpdf">
+                  <button
+                    className="btn btn-danger py-1 px-2 ml-2"
+                    onClick={() => {
+                      exportPdf()
+                    }}
+                    title="Generar PDF"
+                  >
 
+                    <i className="fa fa-file-pdf-o"></i>
+                  </button>
+                </div>
                 <MDBDataTable
                   data={setClasificaciones()}
                   className="px-3"

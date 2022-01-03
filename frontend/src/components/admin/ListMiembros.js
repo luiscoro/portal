@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MDBDataTable } from "mdbreact";
 import MetaData from "../section/MetaData";
@@ -12,23 +12,36 @@ import {
   deleteMiembro,
   clearErrors,
 } from "../../actions/miembroActions";
+import { getAdminTipoMiembros } from "../../actions/tipoMiembroActions";
 import { DELETE_MIEMBRO_RESET } from "../../constants/miembroConstants";
-
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+var ageCalculator = require("age-calculator");
+let { AgeFromDateString } = ageCalculator;
 var MySwal;
 var bandera;
 
+
 const ListMiembros = ({ history }) => {
+
+  const [tipoId, setTipoId] = useState("");
+  const [est, setEst] = useState("");
   MySwal = withReactContent(Swal);
   bandera = parseInt(localStorage.getItem("actualizado"));
   const dispatch = useDispatch();
-  const { loading, error, miembros } = useSelector((state) => state.miembros);
+  const dispatch1 = useDispatch();
+
+  const { error, miembros } = useSelector((state) => state.miembros);
   const { error: deleteError, esEliminado } = useSelector(
     (state) => state.miembro
+  );
+  const { loading, tipoMiembros } = useSelector(
+    (state) => state.tipoMiembros
   );
 
   useEffect(() => {
     dispatch(getAdminMiembros());
-
+    dispatch1(getAdminTipoMiembros());
     if (bandera === 1) {
       localStorage.setItem("actualizado", 0);
       MySwal.fire({
@@ -88,18 +101,32 @@ const ListMiembros = ({ history }) => {
       dispatch(clearErrors());
     }
 
+    if (tipoId !== "") {
+      dispatch(getAdminMiembros());
+    }
+
     if (esEliminado) {
       history.push("/admin-miembros");
       dispatch({ type: DELETE_MIEMBRO_RESET });
     }
-  }, [dispatch, error, deleteError, esEliminado, history]);
+  }, [dispatch, dispatch1, tipoId, error, deleteError, esEliminado, history, est]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(getAdminMiembros());
+  };
+
 
   const setMiembros = () => {
     const data = {
       columns: [
         {
-          label: "Tipo",
-          field: "tipo",
+          label: "Identificación",
+          field: "cedula",
+        },
+        {
+          label: "Posición",
+          field: "posicion",
           sort: "asc",
         },
         {
@@ -108,11 +135,19 @@ const ListMiembros = ({ history }) => {
           sort: "asc",
         },
         {
+          label: "Edad",
+          field: "edad",
+          sort: "asc",
+        },
+        {
           label: "Nacionalidad",
           field: "nacionalidad",
           sort: "asc",
         },
-
+        {
+          label: "Camiseta",
+          field: "numeroCamiseta",
+        },
         {
           label: "Foto",
           field: "foto",
@@ -127,59 +162,68 @@ const ListMiembros = ({ history }) => {
     };
 
     miembros.forEach((miembro) => {
-      data.rows.push({
-        tipo: miembro.tipo,
-        nombre: miembro.nombre,
-        nacionalidad: miembro.nacionalidad,
-        foto: (
-          <img
-            alt=""
-            src={miembro.foto && miembro.foto.url}
-            width="55"
-            height="52"
-          />
-        ),
-        acciones: (
-          <>
-            <Link
-              to={`/admin-miembro/${miembro._id}`}
-              className="btn btn-primary py-1 px-2"
-            >
-              <i className="fa fa-pencil"></i>
-            </Link>
-            <button
-              className="btn btn-danger py-1 px-2 ml-2"
-              onClick={() => {
-                MySwal.fire({
-                  background: "#f5ede4",
-                  title: "¿Está seguro de eliminar al miembro?",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Si",
-                  cancelButtonText: "Cancelar",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    deleteMiembroHandler(miembro._id);
-                    MySwal.fire({
-                      background: "#f5ede4",
-                      icon: "success",
-                      title: "El miembro ha sido eliminada con éxito",
-                      showConfirmButton: true,
-                      confirmButtonColor: "#3085d6",
-                      showCloseButton: false,
-                      timer: 3000,
-                    });
-                  }
-                });
-              }}
-            >
-              <i className="fa fa-trash"></i>
-            </button>
-          </>
-        ),
-      });
+      if (miembro.tipo && miembro.tipo.nombre === tipoId && miembro.estado === est) {
+        data.rows.push({
+          cedula: miembro.cedula,
+          posicion: miembro.posicion && miembro.posicion.nombre,
+          edad: new AgeFromDateString(
+            miembro.fechaNacimiento.substring(0, 10)
+          ).age,
+          nombre: miembro.nombre,
+          nacionalidad: miembro.nacionalidad,
+          numeroCamiseta: (miembro.numeroCamiseta === null ? (<></>) : ("# " + miembro.numeroCamiseta)),
+          foto: (
+            <img
+              alt=""
+              src={miembro.foto && miembro.foto.url}
+              width="55"
+              height="52"
+            />
+          ),
+          acciones: (
+            <>
+              <Link
+                to={`/admin-miembro/${miembro._id}`}
+                className="btn btn-primary py-1 px-2"
+                title="Editar"
+              >
+                <i className="fa fa-pencil"></i>
+              </Link>
+              <button
+                className="btn btn-danger py-1 px-2 ml-2"
+                title="Eliminar"
+                onClick={() => {
+                  MySwal.fire({
+                    background: "#f5ede4",
+                    title: "¿Está seguro de eliminar al miembro?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Si",
+                    cancelButtonText: "Cancelar",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      deleteMiembroHandler(miembro._id);
+                      MySwal.fire({
+                        background: "#f5ede4",
+                        icon: "success",
+                        title: "El miembro ha sido eliminado con éxito",
+                        showConfirmButton: true,
+                        confirmButtonColor: "#3085d6",
+                        showCloseButton: false,
+                        timer: 3000,
+                      });
+                    }
+                  });
+                }}
+              >
+                <i className="fa fa-trash"></i>
+              </button>
+            </>
+          ),
+        });
+      }
     });
 
     return data;
@@ -188,6 +232,50 @@ const ListMiembros = ({ history }) => {
   const deleteMiembroHandler = (id) => {
     dispatch(deleteMiembro(id));
   };
+
+  const exportPdf = () => {
+
+    var img = new Image(10, 10);
+    img.crossOrigin = "";
+    img.src = "//i.imgur.com/qU9CtWQ.png";
+
+    const unit = "pt";
+    const size = "A4";
+    const orientation = "portrait";
+
+    const doc = new jsPDF(orientation, unit, size);
+
+    doc.setFontSize(15);
+    const title = "Listado de miembros";
+    const tipo = "Tipo: " + tipoId;
+    const headers = [["IDENTIFICACIÓN", "POSICIÓN", "NOMBRE", "EDAD", "NACIONALIDAD", "NÚMERO DE CAMISETA"]];
+
+    const rows = [];
+
+    miembros.forEach(miembro => {
+      if (miembro.tipo && miembro.tipo.nombre === tipoId && miembro.estado === est) {
+        var temp = [miembro.cedula, miembro.posicion && miembro.posicion.nombre, miembro.nombre, new AgeFromDateString(
+          miembro.fechaNacimiento.substring(0, 10)
+        ).age, miembro.nacionalidad, (miembro.numeroCamiseta === null ? (<></>) : ("# " + miembro.numeroCamiseta))];
+        rows.push(temp);
+      }
+    });
+
+
+    let content = {
+      startY: 80,
+      head: headers,
+      body: rows
+    };
+
+    doc.addImage(img, 275, 5);
+    doc.text(title, 40, 70);
+    doc.text(tipo, 275, 70);
+    doc.autoTable(content);
+    doc.save(tipoId + ".pdf")
+  }
+
+
   return (
     <>
       <MetaData title={"Listar miembros"} />
@@ -196,36 +284,100 @@ const ListMiembros = ({ history }) => {
           <Sidebar />
         </div>
         <div className="dashboard">
-          {loading ? (
-            <Loader />
-          ) : (
-            <div className="col-12 col-md-10">
-              <>
-                <br />
-                <Link
-                  to={`/admin-miembro`}
-                  className="btn btn-primary btn-radius"
-                >
-                  Crear nuevo
-                </Link>
-                <h3 className="my-4">Listado de miembros</h3>
+          <div className="col-12 col-md-10">
+            <>
+              <br />
+              <Link
+                to={`/admin-miembro`}
+                className="btn btn-primary btn-radius"
+              >
+                Crear nuevo
+              </Link>
+              <h3 className="my-4">Listado de miembros del club</h3>
 
-                <MDBDataTable
-                  data={setMiembros()}
-                  className="px-3"
-                  bordered
-                  striped
-                  searchLabel="Buscar"
-                  entriesLabel="Mostrando registros"
-                  paginationLabel={["Anterior", "Siguiente"]}
-                  infoLabel={["", "-", "de", "registros"]}
-                  noRecordsFoundLabel="No se encontró ningún registro"
-                />
-              </>
-            </div>
-          )}
+              <div className="row justify-content-center mt-5">
+                <div className="col-5">
+                  <form onSubmit={submitHandler}>
+                    <div className="frm-group">
+                      {loading ? (
+                        <Loader />
+                      ) : (
+                        <select
+                          value={tipoId}
+                          onChange={(e) => setTipoId(e.target.value)}
+                        >
+                          <option value={""}>Filtrar por tipo de miembro</option>
+                          {tipoMiembros.filter(tipoM => tipoM.estado === "activo").map(filtTipoM => (
+                            <option
+                              key={filtTipoM._id}
+                              value={filtTipoM.nombre}
+                            >
+                              {filtTipoM.nombre}
+                            </option>
+                          ))}
+
+                        </select>
+                      )}
+                    </div>
+                    <p></p>
+                    <div className="frm-group">
+                      {tipoId !== "" ? (
+                        <select
+                          value={est}
+                          onChange={(e) => setEst(e.target.value)}
+                        >
+                          <option value={""}>Filtrar por tipo</option>
+                          <option value="activo">activo</option>
+                          <option value="inactivo">inactivo</option>
+                        </select>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+
+              {est === "activo" ? (
+                <div className="botonpdf">
+                  <button
+                    className="btn btn-danger py-1 px-2 ml-2"
+                    onClick={() => {
+                      exportPdf()
+                    }}
+                    title="Generar PDF"
+                  >
+
+                    <i className="fa fa-file-pdf-o"></i>
+                  </button>
+                </div>
+              ) : (
+                <div className="botonpdf">
+                  <button
+                    className="btn btn-danger py-1 px-2 ml-2"
+                    disabled
+                  >
+
+                    <i className="fa fa-file-pdf-o"></i>
+                  </button>
+                </div>
+              )}
+              <MDBDataTable
+                data={setMiembros()}
+                className="px-3"
+                bordered
+                striped
+                searchLabel="Buscar"
+                entriesLabel="Mostrando registros"
+                paginationLabel={["Anterior", "Siguiente"]}
+                infoLabel={["", "-", "de", "registros"]}
+                noRecordsFoundLabel="No se encontró ningún registro"
+              />
+            </>
+          </div>
         </div>
-      </div>
+      </div >
     </>
   );
 };

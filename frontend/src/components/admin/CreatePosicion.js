@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from "react";
-
 import MetaData from "../section/MetaData";
 import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import Loader from "../section/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { createPosicion, clearErrors } from "../../actions/posicionActions";
 import { CREATE_POSICION_RESET } from "../../constants/posicionConstants";
+import { getAdminTipoMiembros } from "../../actions/tipoMiembroActions";
 
 var MySwal;
 
 const CreatePosicion = ({ history }) => {
   const [nombre, setNombre] = useState("");
+  const [tipo, setTipo] = useState("");
 
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
 
   const { error, success } = useSelector((state) => state.createPosicion);
+  const { loading, tipoMiembros } = useSelector((state) => state.tipoMiembros);
 
   useEffect(() => {
+    dispatch(getAdminTipoMiembros());
     if (error) {
       MySwal.fire({
         background: "#f5ede4",
@@ -56,7 +60,7 @@ const CreatePosicion = ({ history }) => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    dispatch(createPosicion(nombre));
+    dispatch(createPosicion(nombre, tipo));
   };
 
   return (
@@ -79,6 +83,30 @@ const CreatePosicion = ({ history }) => {
                         <div className="login-block-inner">
                           <h3 className="title">Nueva posición</h3>
                           <form className="login-form" onSubmit={submitHandler}>
+                            <div className="frm-group">
+                              <label>Tipo</label>
+                              {loading ? (
+                                <Loader />
+                              ) : (
+                                <select
+                                  name="tipo"
+                                  value={tipo}
+                                  onChange={(e) => setTipo(e.target.value)}
+                                >
+                                  <option value={""}>
+                                    Seleccione el tipo al cuál pertenece la posición
+                                  </option>
+                                  {tipoMiembros.map((tipo) => (
+                                    <option
+                                      key={tipo._id}
+                                      value={tipo._id}
+                                    >
+                                      {tipo.nombre}
+                                    </option>
+                                  ))}
+                                </select>
+                              )}
+                            </div>
                             <div className="frm-group">
                               <label>Nombre</label>
                               <input

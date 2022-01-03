@@ -47,6 +47,7 @@ const Header = () => {
               <div className="col-lg-4 col-sm-6">
                 <div className="header-top-right">
                   <div className="header-cart-menu-area">
+
                     {itemsCesta.length === 0 ? (
                       <>
                         <div className="header-cart-menu-btn toggle-close">
@@ -67,6 +68,7 @@ const Header = () => {
                             </Link>
                           </div>
                         </div>
+
                       </>
                     ) : (
                       <>
@@ -105,7 +107,7 @@ const Header = () => {
                                       {item.nombre}
                                     </Link>
                                   </h6>
-                                  <span className="price">{item.precio}</span>
+                                  <span className="price">$ {item.precio}</span>
                                   <span className="quantity">
                                     {item.cantidad}
                                   </span>

@@ -20,7 +20,7 @@ app.use(fileUpload());
 // Importación de las rutas para los servicios
 const informacion = require("./routes/informacion");
 const categoria = require("./routes/categoria");
-const productos = require("./routes/producto");
+const producto = require("./routes/producto");
 const usuario = require("./routes/usuario");
 const pago = require("./routes/pago");
 const pedido = require("./routes/pedido");
@@ -31,10 +31,12 @@ const dirigente = require("./routes/dirigente");
 const clasificacion = require("./routes/clasificacion");
 const posicion = require("./routes/posicion");
 const miembro = require("./routes/miembro");
+const tipoMiembro = require("./routes/tipoMiembro");
+const contrato = require("./routes/contrato");
 
 app.use("/api", informacion);
 app.use("/api", categoria);
-app.use("/api", productos);
+app.use("/api", producto);
 app.use("/api", usuario);
 app.use("/api", pago);
 app.use("/api", pedido);
@@ -45,6 +47,8 @@ app.use("/api", dirigente);
 app.use("/api", clasificacion);
 app.use("/api", posicion);
 app.use("/api", miembro);
+app.use("/api", tipoMiembro);
+app.use("/api", contrato);
 
 if (process.env.NODE_ENV === "PRODUCTION") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));

@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import Loader from "../section/Loader";
-
 import { useDispatch, useSelector } from "react-redux";
-
 import { getPartidosLast, clearErrors } from "../../actions/partidoActions";
 
 const LastResultados = () => {
@@ -32,7 +30,7 @@ const LastResultados = () => {
               </div>
               <div className="all-match-table-body">
                 <ul className="all-match-list">
-                  {resultados.map((partido) => (
+                  {resultados.filter(part => part.estado === "activo").map(partido => (
                     <li className="single-match" key={partido._id}>
                       <div className="single-team">
                         <div className="team-details">

@@ -112,6 +112,7 @@ const ListInformacion = ({ history }) => {
             <Link
               to={`/informacion/${info._id}`}
               className="btn btn-primary py-1 px-2"
+              title="Editar"
             >
               <i className="fa fa-pencil"></i>
             </Link>

@@ -140,11 +140,13 @@ const ListDirigentes = ({ history }) => {
             <Link
               to={`/admin-dirigente/${dirigente._id}`}
               className="btn btn-primary py-1 px-2"
+              title="Editar"
             >
               <i className="fa fa-pencil"></i>
             </Link>
             <button
               className="btn btn-danger py-1 px-2 ml-2"
+              title="Eliminar"
               onClick={() => {
                 MySwal.fire({
                   background: "#f5ede4",

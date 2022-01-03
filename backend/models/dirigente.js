@@ -4,10 +4,12 @@ const dirigenteSchema = new mongoose.Schema({
   nombre: {
     type: String,
     trim: true,
+    unique: true,
   },
   cargo: {
     type: String,
     trim: true,
+    unique: true,
   },
   foto: {
     public_id: {

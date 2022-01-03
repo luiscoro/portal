@@ -105,6 +105,7 @@ const ListUsuarios = ({ history }) => {
             <Link
               to={`/admin-usuario/${usuario._id}`}
               className="btn btn-primary py-1 px-2"
+              title="Editar"
             >
               <i className="fa fa-pencil"></i>
             </Link>

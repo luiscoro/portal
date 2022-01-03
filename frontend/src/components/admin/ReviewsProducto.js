@@ -115,8 +115,8 @@ const ReviewsProducto = () => {
           sort: "asc",
         },
         {
-          label: "Actions",
-          field: "actions",
+          label: "Acciones",
+          field: "acciones",
         },
       ],
       rows: [],
@@ -129,9 +129,10 @@ const ReviewsProducto = () => {
         comentario: revision.comentario,
         usuario: revision.nombre,
 
-        actions: (
+        acciones: (
           <button
             className="btn btn-danger py-1 px-2 ml-2"
+            title="Eliminar"
             onClick={() => {
               MySwal.fire({
                 background: "#f5ede4",

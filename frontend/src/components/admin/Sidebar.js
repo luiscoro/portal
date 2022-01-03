@@ -1,7 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Sidebar = () => {
+
+  const {
+    cantP
+  } = useSelector((state) => state.getPedidos);
+
   return (
     <div className="sidebar-wrapper">
       <nav id="sidebar">
@@ -22,6 +28,12 @@ const Sidebar = () => {
             </a>
             <ul className="collapse list-unstyled" id="miembroSubmenu">
               <li>
+                <Link to="/admin-tipomiembros">
+                  <i className="fa fa-universal-access"></i> Tipos
+                </Link>
+              </li>
+
+              <li>
                 <Link to="/admin-miembros">
                   <i className="fa fa-clipboard"></i> Listado
                 </Link>
@@ -37,15 +49,33 @@ const Sidebar = () => {
                   <i className="fa fa-universal-access"></i> Posiciones
                 </Link>
               </li>
-
-              <li>
-                <Link to="/admin-posicion">
-                  <i className="fa fa-plus"></i> Nueva posición
-                </Link>
-              </li>
             </ul>
           </li>
+          <li>
+            <a
+              href="#contratoSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              className="dropdown-toggle"
+            >
+              <i className="fa fa-briefcase"></i> Contratos
+            </a>
+            <ul className="collapse list-unstyled" id="contratoSubmenu">
 
+              <li>
+                <Link to="/admin-contratos">
+                  <i className="fa fa-clipboard"></i> Listado
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/admin-contrato">
+                  <i className="fa fa-plus"></i> Nuevo
+                </Link>
+              </li>
+
+            </ul>
+          </li>
           <li>
             <a
               href="#dirigenteSubmenu"
@@ -103,18 +133,12 @@ const Sidebar = () => {
                   <i className="fa fa-list-alt"></i> Categorías
                 </Link>
               </li>
-
-              <li>
-                <Link to="/admin-categoria">
-                  <i className="fa fa-plus"></i> Nueva categoría
-                </Link>
-              </li>
             </ul>
           </li>
 
           <li>
             <Link to="/admin-pedidos">
-              <i className="fa fa-shopping-basket"></i> Pedidos
+              <i className="fa fa-shopping-basket"></i> Pedidos({cantP} nuevos)
             </Link>
           </li>
 

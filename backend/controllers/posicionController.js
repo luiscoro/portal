@@ -7,7 +7,11 @@ function validNombre(n) {
 }
 
 exports.createPosicion = catchAsyncErrors(async (req, res, next) => {
-  const { nombre } = req.body;
+  const { tipo, nombre } = req.body;
+
+  if (!tipo) {
+    return next(new ErrorHandler("El tipo seleccionado al cuál pertenece la posición no es válido", 400));
+  }
 
   if (!nombre) {
     return next(new ErrorHandler("El nombre es obligatorio", 400));
@@ -50,20 +54,10 @@ exports.getSinglePosicion = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.updatePosicion = catchAsyncErrors(async (req, res, next) => {
-  const { nombre } = req.body;
-
-  if (!nombre) {
-    return next(new ErrorHandler("El nombre es obligatorio", 400));
-  }
-
-  if (!validNombre(nombre)) {
-    return next(
-      new ErrorHandler("El nombre solo admite letras y espacios", 400)
-    );
-  }
+  const { estado } = req.body;
 
   const newPosicionData = {
-    nombre: nombre,
+    estado: estado,
   };
 
   const posicion = await Posicion.findByIdAndUpdate(
@@ -82,13 +76,19 @@ exports.updatePosicion = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.deletePosicion = catchAsyncErrors(async (req, res, next) => {
-  const posicion = await Posicion.findById(req.params.id);
+  const newPosicionData = {
+    estado: "inactiva",
+  };
 
-  if (!posicion) {
-    return next(new ErrorHandler("Posición no encontrada", 404));
-  }
-
-  await posicion.remove();
+  const posicion = await Posicion.findByIdAndUpdate(
+    req.params.id,
+    newPosicionData,
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
 
   res.status(200).json({
     success: true,

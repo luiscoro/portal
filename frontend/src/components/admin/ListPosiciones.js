@@ -110,6 +110,11 @@ const ListPosiciones = ({ history }) => {
           sort: "asc",
         },
         {
+          label: "Estado",
+          field: "estado",
+          sort: "asc",
+        },
+        {
           label: "Acciones",
           field: "acciones",
         },
@@ -121,44 +126,57 @@ const ListPosiciones = ({ history }) => {
       data.rows.push({
         id: posicion._id,
         nombre: posicion.nombre,
+        estado: posicion.estado,
         acciones: (
           <>
             <Link
               to={`/admin-posicion/${posicion._id}`}
               className="btn btn-primary py-1 px-2"
+              title="Editar"
             >
               <i className="fa fa-pencil"></i>
             </Link>
-            <button
-              className="btn btn-danger py-1 px-2 ml-2"
-              onClick={() => {
-                MySwal.fire({
-                  background: "#f5ede4",
-                  title: "¿Está seguro de eliminar la posición?",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Si",
-                  cancelButtonText: "Cancelar",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    deletePosicionHandler(posicion._id);
-                    MySwal.fire({
-                      background: "#f5ede4",
-                      icon: "success",
-                      title: "La posición ha sido eliminada con éxito",
-                      showConfirmButton: true,
-                      confirmButtonColor: "#3085d6",
-                      showCloseButton: false,
-                      timer: 3000,
-                    });
-                  }
-                });
-              }}
-            >
-              <i className="fa fa-trash"></i>
-            </button>
+            {posicion.estado === "activa" ? (
+              <button
+                className="btn btn-danger py-1 px-2 ml-2"
+                title="Eliminar"
+                onClick={() => {
+                  MySwal.fire({
+                    background: "#f5ede4",
+                    title: "¿Está seguro de eliminar la posición?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Si",
+                    cancelButtonText: "Cancelar",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      deletePosicionHandler(posicion._id);
+                      MySwal.fire({
+                        background: "#f5ede4",
+                        icon: "success",
+                        title: "La posición ha sido eliminada con éxito",
+                        showConfirmButton: true,
+                        confirmButtonColor: "#3085d6",
+                        showCloseButton: false,
+                        timer: 3000,
+                      });
+                    }
+                  });
+                }}
+              >
+                <i className="fa fa-trash"></i>
+              </button>
+            ) : (
+              <button
+                className="btn btn-danger py-1 px-2 ml-2"
+                title="Eliminar"
+                disabled
+              >
+                <i className="fa fa-trash"></i>
+              </button>
+            )}
           </>
         ),
       });

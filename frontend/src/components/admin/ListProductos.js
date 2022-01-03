@@ -13,6 +13,8 @@ import {
   clearErrors,
 } from "../../actions/productoActions";
 import { DELETE_PRODUCTO_RESET } from "../../constants/productoConstants";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 var MySwal;
 var bandera;
@@ -98,6 +100,11 @@ const ListProductos = ({ history }) => {
     const data = {
       columns: [
         {
+          label: "Categoría",
+          field: "categoria",
+          sort: "asc",
+        },
+        {
           label: "Nombre",
           field: "nombre",
           sort: "asc",
@@ -117,7 +124,16 @@ const ListProductos = ({ history }) => {
           field: "stock",
           sort: "asc",
         },
-
+        {
+          label: "Marca",
+          field: "marca",
+          sort: "asc",
+        },
+        {
+          label: "Estado",
+          field: "estado",
+          sort: "asc",
+        },
         {
           label: "Foto",
           field: "foto",
@@ -131,60 +147,67 @@ const ListProductos = ({ history }) => {
     };
 
     productos.forEach((producto) => {
-      data.rows.push({
-        nombre: producto.nombre,
-        precio: `$${producto.precio}`,
-        descripcion: producto.descripcion,
-        stock: producto.stock,
-        foto: (
-          <img
-            alt=""
-            src={producto.imagenes && producto.imagenes[0].url}
-            width="55"
-            height="52"
-          />
-        ),
-        acciones: (
-          <>
-            <Link
-              to={`/admin-producto/${producto._id}`}
-              className="btn btn-primary py-1 px-2"
-            >
-              <i className="fa fa-pencil"></i>
-            </Link>
-            <button
-              className="btn btn-danger py-1 px-2 ml-2"
-              onClick={() => {
-                MySwal.fire({
-                  background: "#f5ede4",
-                  title: "¿Está seguro de eliminar el producto?",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Si",
-                  cancelButtonText: "Cancelar",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    deleteProductoHandler(producto._id);
-                    MySwal.fire({
-                      background: "#f5ede4",
-                      icon: "success",
-                      title: "El producto ha sido eliminado con éxito",
-                      showConfirmButton: true,
-                      confirmButtonColor: "#3085d6",
-                      showCloseButton: false,
-                      timer: 3000,
-                    });
-                  }
-                });
-              }}
-            >
-              <i className="fa fa-trash"></i>
-            </button>
-          </>
-        ),
-      });
+      if (producto.categoria && producto.categoria.estado === "activa") {
+        data.rows.push({
+          categoria: producto.categoria && producto.categoria.nombre,
+          nombre: producto.nombre,
+          precio: `$${producto.precio}`,
+          descripcion: producto.descripcion,
+          stock: producto.stock,
+          marca: producto.marca,
+          estado: producto.estado,
+          foto: (
+            <img
+              alt=""
+              src={producto.imagenes && producto.imagenes[0].url}
+              width="55"
+              height="52"
+            />
+          ),
+          acciones: (
+            <>
+              <Link
+                to={`/admin-producto/${producto._id}`}
+                className="btn btn-primary py-1 px-2"
+                title="Editar"
+              >
+                <i className="fa fa-pencil"></i>
+              </Link>
+              <button
+                className="btn btn-danger py-1 px-2 ml-2"
+                title="Eliminar"
+                onClick={() => {
+                  MySwal.fire({
+                    background: "#f5ede4",
+                    title: "¿Está seguro de eliminar el producto?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Si",
+                    cancelButtonText: "Cancelar",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      deleteProductoHandler(producto._id);
+                      MySwal.fire({
+                        background: "#f5ede4",
+                        icon: "success",
+                        title: "El producto ha sido eliminado con éxito",
+                        showConfirmButton: true,
+                        confirmButtonColor: "#3085d6",
+                        showCloseButton: false,
+                        timer: 3000,
+                      });
+                    }
+                  });
+                }}
+              >
+                <i className="fa fa-trash"></i>
+              </button>
+            </>
+          ),
+        });
+      }
     });
 
     return data;
@@ -193,6 +216,46 @@ const ListProductos = ({ history }) => {
   const deleteProductoHandler = (id) => {
     dispatch(deleteProducto(id));
   };
+
+
+  const exportPdf = () => {
+
+    var img = new Image(10, 10);
+    img.crossOrigin = "";
+    img.src = "//i.imgur.com/qU9CtWQ.png";
+
+    const unit = "pt";
+    const size = "A4";
+    const orientation = "portrait";
+
+    const doc = new jsPDF(orientation, unit, size);
+
+    doc.setFontSize(15);
+    const title = "Listado de productos";
+    const headers = [["CATEGORÍA", "NOMBRE", "PRECIO", "DESCRIPCIÓN", "CANTIDAD EXISTENTE", "MARCA", "ESTADO"]];
+
+    const rows = [];
+
+    productos.forEach(producto => {
+      if (producto.categoria && producto.categoria.estado === "activa") {
+        var temp = [producto.categoria && producto.categoria.nombre, producto.nombre, "$" + producto.precio, producto.descripcion, producto.stock, producto.marca, producto.estado];
+        rows.push(temp);
+      }
+    });
+
+
+    let content = {
+      startY: 80,
+      head: headers,
+      body: rows
+    };
+
+    doc.addImage(img, 275, 5);
+    doc.text(title, 40, 70);
+    doc.autoTable(content);
+    doc.save("productos.pdf")
+  }
+
   return (
     <>
       <MetaData title={"Listar productos"} />
@@ -211,9 +274,22 @@ const ListProductos = ({ history }) => {
                 Crear nuevo
               </Link>
               <h3 className="my-4">Listado de productos</h3>
+              <div className="botonpdf">
+                <button
+                  className="btn btn-danger py-1 px-2 ml-2"
+                  onClick={() => {
+                    exportPdf()
+                  }}
+                  title="Generar PDF"
+                >
+
+                  <i className="fa fa-file-pdf-o"></i>
+                </button>
+              </div>
               {loading ? (
                 <Loader />
               ) : (
+
                 <MDBDataTable
                   data={setProductos()}
                   className="px-3"

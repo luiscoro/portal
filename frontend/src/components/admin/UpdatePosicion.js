@@ -15,6 +15,7 @@ var MySwal;
 
 const UpdatePosicion = ({ history, match, location }) => {
   const [nombre, setNombre] = useState("");
+  const [estado, setEstado] = useState("");
 
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const UpdatePosicion = ({ history, match, location }) => {
       dispatch(getPosicionDetails(posicionId));
     } else {
       setNombre(posicion.nombre);
+      setEstado(posicion.estado);
     }
 
     if (error) {
@@ -98,6 +100,7 @@ const UpdatePosicion = ({ history, match, location }) => {
 
     const formData = new FormData();
     formData.set("nombre", nombre);
+    formData.set("estado", estado);
 
     dispatch(updatePosicion(posicion._id, formData));
   };
@@ -127,8 +130,19 @@ const UpdatePosicion = ({ history, match, location }) => {
                                 type="text"
                                 placeholder="Ingresa el nombre"
                                 value={nombre}
+                                disabled
                                 onChange={(e) => setNombre(e.target.value)}
                               />
+                            </div>
+                            <div className="frm-group">
+                              <label>Estado:</label>
+                              <select
+                                value={estado}
+                                onChange={(e) => setEstado(e.target.value)}
+                              >
+                                <option value="activa">activa</option>
+                                <option value="inactiva">inactiva</option>
+                              </select>
                             </div>
                             <div className="frm-group">
                               <input type="submit" value="Actualizar" />

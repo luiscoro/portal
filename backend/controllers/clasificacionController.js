@@ -6,6 +6,11 @@ function validNombre(n) {
   return /^[a-zA-Z áéíóúÁÉÍÓÚñÑ 0-9]+$/.test(n);
 }
 
+function validGoles(num) {
+  return /^-?[0-9]+$/.test(num);
+}
+
+
 exports.createClasificacion = catchAsyncErrors(async (req, res, next) => {
   const { equipo, puntos, golDiferencia } = req.body;
 
@@ -32,8 +37,12 @@ exports.createClasificacion = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  if (puntos < 0) {
-    new ErrorHandler("Los puntos no admiten valores menores a cero", 400);
+  if (!validGoles(puntos) || puntos < 0 || puntos > 100) {
+    return next(new ErrorHandler("Los puntos deben ser válidos y estar entre 0 y 100 ", 400));
+  }
+
+  if (!validGoles(golDiferencia)) {
+    return next(new ErrorHandler("El gol de diferencia debe ser válido ", 400));
   }
 
   const clasificacion = await Clasificacion.create(req.body);
@@ -95,8 +104,11 @@ exports.updateClasificacion = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  if (puntos < 0) {
-    new ErrorHandler("Los puntos no admiten valores menores a cero", 400);
+  if (!validGoles(puntos) || puntos < 0 || puntos > 100) {
+    return next(new ErrorHandler("Los puntos deben ser válidos y estar entre 0 y 100 ", 400));
+  }
+  if (!validGoles(golDiferencia)) {
+    return next(new ErrorHandler("El gol de diferencia debe ser válido ", 400));
   }
 
   const newClasificacionData = {

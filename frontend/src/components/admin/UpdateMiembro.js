@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { getCountries } from "country-list-spanish";
 import MetaData from "../section/MetaData";
 import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
@@ -11,6 +12,7 @@ import {
   clearErrors,
 } from "../../actions/miembroActions";
 import { getAdminPosiciones } from "../../actions/posicionActions";
+import { getAdminTipoMiembros } from "../../actions/tipoMiembroActions";
 import { UPDATE_MIEMBRO_RESET } from "../../constants/miembroConstants";
 
 var MySwal;
@@ -18,12 +20,15 @@ var ageCalculator = require("age-calculator");
 let { AgeFromDateString } = ageCalculator;
 
 const UpdateMiembro = ({ match, history }) => {
+  const listPaises = Object.values(getCountries());
+
   const [posicion, setPosicion] = useState("");
   const [tipo, setTipo] = useState("");
+  const [estado, setEstado] = useState("");
   const [nombre, setNombre] = useState("");
+  const [cedula, setCedula] = useState("");
   const [numeroCamiseta, setNumeroCamiseta] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
-
   const [nacionalidad, setNacionalidad] = useState("");
   const [foto, setFoto] = useState("");
   const [fotoPreview, setFotoPreview] = useState("");
@@ -31,28 +36,32 @@ const UpdateMiembro = ({ match, history }) => {
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
   const dispatch1 = useDispatch();
+  const dispatch2 = useDispatch();
 
   const { error, miembro } = useSelector((state) => state.miembroDetails);
   const { error: updateError, esActualizado } = useSelector(
     (state) => state.miembro
   );
-  const { loading, posiciones } = useSelector((state) => state.posiciones);
+  const { posiciones } = useSelector((state) => state.posiciones);
+  const { loading, tipoMiembros } = useSelector((state) => state.tipoMiembros);
 
   const miembroId = match.params.id;
 
   useEffect(() => {
     dispatch1(getAdminPosiciones());
-    console.log(miembro && miembro._id !== miembroId);
+    dispatch2(getAdminTipoMiembros());
     if (miembro && miembro._id !== miembroId) {
       dispatch(getMiembroDetails(miembroId));
     } else {
       setPosicion(miembro.posicion);
       setTipo(miembro.tipo);
       setNombre(miembro.nombre);
+      setCedula(miembro.cedula);
       setNumeroCamiseta(miembro.numeroCamiseta);
       setFechaNacimiento(miembro.fechaNacimiento);
       setNacionalidad(miembro.nacionalidad);
       setFotoPreview(miembro.foto.url);
+      setEstado(miembro.estado);
     }
 
     if (error) {
@@ -111,6 +120,7 @@ const UpdateMiembro = ({ match, history }) => {
     miembroId,
     miembro,
     dispatch1,
+    dispatch2,
   ]);
 
   const submitHandler = (e) => {
@@ -119,6 +129,8 @@ const UpdateMiembro = ({ match, history }) => {
     const formData = new FormData();
     formData.set("posicion", posicion);
     formData.set("tipo", tipo);
+    formData.set("cedula", cedula);
+    formData.set("estado", estado);
     formData.set("nombre", nombre);
     formData.set("numeroCamiseta", numeroCamiseta);
     formData.set("fechaNacimiento", fechaNacimiento);
@@ -169,38 +181,53 @@ const UpdateMiembro = ({ match, history }) => {
                           >
                             <div className="frm-group">
                               <label>Tipo</label>
-                              <select
-                                value={tipo}
-                                onChange={(e) => setTipo(e.target.value)}
-                              >
-                                <option>Seleccione el tipo de miembro</option>
-                                <option>Jugador</option>
-                                <option>Cuerpo técnico</option>
-                                <option>Cuerpo médico</option>
-                              </select>
-                            </div>
-                            <div className="frm-group">
-                              <label>Posición</label>
                               {loading ? (
                                 <Loader />
                               ) : (
                                 <select
-                                  value={posicion}
-                                  onChange={(e) => setPosicion(e.target.value)}
+                                  value={tipo}
+                                  onChange={(e) => setTipo(e.target.value)}
                                 >
                                   <option>
-                                    Seleccione la posición del miembro
+                                    Seleccione el tipo de miembro
                                   </option>
-                                  {posiciones.map((posicion) => (
+                                  {tipoMiembros.filter(tipoM => tipoM.estado === "activo").map(filtTipoM => (
                                     <option
-                                      key={posicion._id}
-                                      value={posicion._id}
+                                      key={filtTipoM._id}
+                                      value={filtTipoM._id}
                                     >
-                                      {posicion.nombre}
+                                      {filtTipoM.nombre}
                                     </option>
                                   ))}
                                 </select>
                               )}
+                            </div>
+                            <div className="frm-group">
+                              <label>Posición</label>
+                              {tipo === "" ? (
+                                <option value={""}>
+                                  Seleccione primero el tipo de miembro
+                                </option>
+                              ) : (
+                                <select
+                                  name="posicion"
+                                  value={posicion}
+                                  onChange={(e) => setPosicion(e.target.value)}
+                                >
+                                  <option value={""}>
+                                    Seleccione la posición del miembro
+                                  </option>
+                                  {posiciones.filter(posicion => posicion.tipo === tipo && posicion.estado === "activa").map(filtposicion => (
+                                    <option
+                                      key={filtposicion._id}
+                                      value={filtposicion._id}
+                                    >
+                                      {filtposicion.nombre}
+                                    </option>
+                                  ))}
+                                </select>
+                              )}
+
                             </div>
                             <div className="frm-group">
                               <label>Nombre</label>
@@ -212,12 +239,21 @@ const UpdateMiembro = ({ match, history }) => {
                               />
                             </div>
                             <div className="frm-group">
+                              <label>Identificación</label>
+                              <input
+                                type="text"
+                                placeholder="Ingresa el número de cédula"
+                                value={cedula}
+                                onChange={(e) => setCedula(e.target.value)}
+                                disabled
+                              />
+                            </div>
+                            <div className="frm-group">
                               <label>Número de camiseta</label>
                               <input
                                 type="number"
                                 placeholder="Ingresa el número de camiseta"
                                 value={numeroCamiseta}
-                                min="1"
                                 onChange={(e) =>
                                   setNumeroCamiseta(e.target.value)
                                 }
@@ -240,15 +276,32 @@ const UpdateMiembro = ({ match, history }) => {
                             </div>
                             <div className="frm-group">
                               <label>Nacionalidad</label>
-                              <input
-                                type="text"
-                                placeholder="Ingresa la nacionalidad"
+
+                              <select
+                                name="nacionalidad"
                                 value={nacionalidad}
                                 onChange={(e) =>
                                   setNacionalidad(e.target.value)
                                 }
-                              />
+                              >
+                                {listPaises.map((pais, i) => (
+                                  <option key={i} value={pais}>
+                                    {pais}
+                                  </option>
+                                ))}
+                              </select>
                             </div>
+                            <div className="frm-group">
+                              <label>Estado:</label>
+                              <select
+                                value={estado}
+                                onChange={(e) => setEstado(e.target.value)}
+                              >
+                                <option value="activo">activo</option>
+                                <option value="inactivo">inactivo</option>
+                              </select>
+                            </div>
+
                             <div className="frm-group">
                               <label>Foto</label>
 

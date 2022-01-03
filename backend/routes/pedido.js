@@ -6,6 +6,7 @@ const {
   getSinglePedido,
   Pedidos,
   getPedidos,
+  getPedidoMensual,
   updatePedido,
   deletePedido,
 } = require("../controllers/pedidoController");
@@ -16,6 +17,7 @@ router.route("/pedido/nuevo").post(authenticatedUsuario, createPedido);
 
 router.route("/pedido/:id").get(authenticatedUsuario, getSinglePedido);
 router.route("/pedidos").get(authenticatedUsuario, Pedidos);
+router.route("/pedidos/mensual/:anio").get(authenticatedUsuario, getPedidoMensual);
 
 router
   .route("/admin/pedidos/")

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../section/Loader";
 import MetaData from "../section/MetaData";
-import Banner from "../section/Banner";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Carousel } from "react-bootstrap";
@@ -16,11 +16,15 @@ import { addItemCesta } from "../../actions/cestaActions";
 import { CREATE_REVISION_RESET } from "../../constants/productoConstants";
 
 var MySwal;
+var cant;
+var idProd;
+var temporales;
 
 const DetailsProducto = ({ match }) => {
   const [cantidad, setCantidad] = useState(1);
   const [calificacion, setCalificacion] = useState(0);
   const [comentario, setComentario] = useState("");
+
 
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
@@ -33,8 +37,11 @@ const DetailsProducto = ({ match }) => {
     (state) => state.createRevision
   );
 
+
+
   useEffect(() => {
     dispatch(getProductoDetails(match.params.id));
+    localStorage.setItem("idProd", producto._id);
 
     if (error) {
       MySwal.fire({
@@ -83,7 +90,7 @@ const DetailsProducto = ({ match }) => {
         showCloseButton: true,
         icon: "success",
         iconColor: "green",
-        title: "Su revisión ha sido publicada con éxito",
+        title: "Su valoración ha sido registrada con éxito",
         position: "bottom",
         showConfirmButton: false,
         timer: 5000,
@@ -95,26 +102,84 @@ const DetailsProducto = ({ match }) => {
       });
       dispatch({ type: CREATE_REVISION_RESET });
     }
-  }, [dispatch, error, revisionError, match.params.id, success]);
+
+  }, [dispatch, error, revisionError, match.params.id, success, producto._id]);
+
 
   const addCesta = () => {
-    dispatch(addItemCesta(match.params.id, cantidad));
-    MySwal.fire({
-      background: "#f5ede4",
-      toast: true,
-      showCloseButton: true,
-      icon: "success",
-      iconColor: "green",
-      title: "El producto ha sido añadido a la cesta de pedidos.",
-      position: "bottom",
-      showConfirmButton: false,
-      timer: 5000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener("mouseover", Swal.stopTimer);
-        toast.addEventListener("mouseleave", Swal.resumeTimer);
-      },
-    });
+
+
+    idProd = localStorage.getItem("idProd");
+
+    var temp = localStorage.getItem("itemsCesta")
+
+    temporales = temp ? JSON.parse(temp) : [];
+
+    if (!Object.keys(temporales).length) {
+      cant = 0;
+    } else {
+      const res = temporales.some(item => item.producto === String(idProd));
+
+      if (res) {
+        const result = temporales.filter(tempo => tempo.producto === String(idProd));
+        cant = result[0].cantidad;
+      } else {
+        cant = 0;
+      }
+
+    }
+
+    cant = cant + cantidad;
+
+    if (cant > producto.stock) {
+      MySwal.fire({
+        background: "#f5ede4",
+        icon: "warning",
+        iconColor: "orange",
+        title: "Lo sentimos, no se puede agregar más de la cantidad disponible del producto",
+        html:
+          '<b>' + producto.nombre + '</b> ' +
+          '<p></p> ' +
+          'Cantidad disponible: ' + producto.stock + '<p></p> ' +
+          'Cantidad que deseas agregar : ' + cant,
+        showCancelButton: true,
+        confirmButtonColor: "#0047a5",
+        cancelButtonColor: "#008000",
+        confirmButtonText: "Ver cesta",
+        cancelButtonText: "Comprar otros productos",
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "/cesta";
+        } else {
+          window.location.href = "/tienda";
+        }
+      });
+    } else {
+
+      dispatch(addItemCesta(match.params.id, cant));
+      MySwal.fire({
+        background: "#f5ede4",
+        icon: "success",
+        iconColor: "green",
+        title: "El producto ha sido añadido a tu cesta de pedidos",
+        html:
+          '<b>' + producto.nombre + '</b> ' +
+          '<p></p> ' +
+          'Cantidad : ' + cant + '<p></p> ' +
+          'Precio : $' + producto.precio,
+        showCancelButton: true,
+        confirmButtonColor: "#0047a5",
+        cancelButtonColor: "#008000",
+        confirmButtonText: "Ver cesta",
+        cancelButtonText: "Continuar comprando",
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "/cesta";
+        }
+      });
+    }
   };
 
   const increaseCantidad = () => {
@@ -123,6 +188,7 @@ const DetailsProducto = ({ match }) => {
     if (count.valueAsNumber >= producto.stock) return;
 
     const cantidad = count.valueAsNumber + 1;
+
     setCantidad(cantidad);
   };
 
@@ -132,6 +198,7 @@ const DetailsProducto = ({ match }) => {
     if (count.valueAsNumber <= 1) return;
 
     const cantidad = count.valueAsNumber - 1;
+
     setCantidad(cantidad);
   };
 
@@ -186,7 +253,30 @@ const DetailsProducto = ({ match }) => {
   return (
     <>
       <MetaData title={producto.nombre} />
-      <Banner title={producto.nombre} />
+      <section className="inner-banner-section bg_img base-overlay">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
+              <div className="inner-banner-content text-center">
+                <h2 className="page-title">Detalles</h2>
+                <ol className="breadcum d-flex justify-content-center">
+                  <li>
+                    <Link to="/" style={{ textDecoration: "none" }}>
+                      Inicio
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/tienda" style={{ textDecoration: "none" }}>
+                      Tienda
+                    </Link>
+                  </li>
+                  <li>{producto.nombre}</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       {loading ? (
         <Loader />
       ) : (
@@ -196,7 +286,7 @@ const DetailsProducto = ({ match }) => {
               <div className="row">
                 <div className="col-lg-12">
                   <div className="product-details-area">
-                    <div className="col-12 col-lg-5 img-fluid">
+                    <div className="col-12 col-lg-5 img-fluid mt-5">
                       <Carousel pause="hover">
                         {producto.imagenes &&
                           producto.imagenes.map((imagen) => (
@@ -283,6 +373,7 @@ const DetailsProducto = ({ match }) => {
                       <hr />
 
                       <h4 className="mt-2">Descripción:</h4>
+
                       <p>{producto.descripcion}</p>
                       <hr />
                       <p id="product_seller mb-3">
@@ -391,7 +482,8 @@ const DetailsProducto = ({ match }) => {
             </div>
           </section>
         </>
-      )}
+      )
+      }
     </>
   );
 };

@@ -94,6 +94,21 @@ import {
   cuerpoMedicoReducer,
 } from "./reducers/miembroReducers";
 
+import {
+  createTipoMiembroReducer,
+  tipoMiembroDetailsReducer,
+  tipoMiembroReducer,
+  tipoMiembrosReducer,
+} from "./reducers/tipoMiembroReducers";
+
+import {
+  createContratoReducer,
+  contratoDetailsReducer,
+  contratosReducer,
+  contratoReducer,
+} from "./reducers/contratoReducers";
+
+
 const reducer = combineReducers({
   informacion: informacionReducer,
   informacionDetails: informacionDetailsReducer,
@@ -110,6 +125,8 @@ const reducer = combineReducers({
   clasificaciones: clasificacionesReducer,
   posiciones: posicionesReducer,
   miembros: miembrosReducer,
+  tipoMiembros: tipoMiembrosReducer,
+  contratos: contratosReducer,
   jugadores: jugadoresReducer,
   cuerpoTecnico: cuerpoTecnicoReducer,
   cuerpoMedico: cuerpoMedicoReducer,
@@ -121,6 +138,8 @@ const reducer = combineReducers({
   posicionDetails: posicionDetailsReducer,
   clasificacionDetails: clasificacionDetailsReducer,
   miembroDetails: miembroDetailsReducer,
+  tipoMiembroDetails: tipoMiembroDetailsReducer,
+  contratoDetails: contratoDetailsReducer,
   createCategoria: createCategoriaReducer,
   createProducto: createProductoReducer,
   categoria: categoriaReducer,
@@ -132,6 +151,8 @@ const reducer = combineReducers({
   clasificacion: clasificacionReducer,
   posicion: posicionReducer,
   miembro: miembroReducer,
+  tipoMiembro: tipoMiembroReducer,
+  contrato: contratoReducer,
   productoRevisiones: productoRevisionesReducer,
   revision: revisionReducer,
   auth: authReducer,
@@ -153,6 +174,8 @@ const reducer = combineReducers({
   createClasificacion: createClasificacionReducer,
   createPosicion: createPosicionReducer,
   createMiembro: createMiembroReducer,
+  createTipoMiembro: createTipoMiembroReducer,
+  createContrato: createContratoReducer,
 });
 
 let estadoInicial = {

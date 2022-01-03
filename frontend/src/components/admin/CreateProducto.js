@@ -130,7 +130,7 @@ const CreateProducto = ({ history }) => {
                             encType="multipart/form-data"
                           >
                             <div className="frm-group">
-                              <label>Categoría:</label>
+                              <label>Categoría</label>
                               {loading ? (
                                 <Loader />
                               ) : (
@@ -141,7 +141,7 @@ const CreateProducto = ({ history }) => {
                                   <option value={""}>
                                     Seleccione la categoría del producto
                                   </option>
-                                  {categorias.map((categoria) => (
+                                  {categorias.filter(cat => cat.estado === "activa").map(categoria => (
                                     <option
                                       key={categoria._id}
                                       value={categoria._id}
@@ -156,13 +156,13 @@ const CreateProducto = ({ history }) => {
                               <label>Nombre</label>
                               <input
                                 type="text"
-                                placeholder="Nombre del producto"
+                                placeholder="Ingresa el nombre del producto"
                                 value={nombre}
                                 onChange={(e) => setNombre(e.target.value)}
                               />
                             </div>
                             <div className="frm-group">
-                              <label>Precio ($):</label>
+                              <label>Precio ($)</label>
                               <input
                                 type="number"
                                 value={precio}
@@ -172,9 +172,9 @@ const CreateProducto = ({ history }) => {
                               />
                             </div>
                             <div className="frm-group">
-                              <label>Descripción:</label>
+                              <label>Descripción</label>
                               <textarea
-                                placeholder="Descripción del producto..."
+                                placeholder="Ingresa la descripción..."
                                 value={descripcion}
                                 rows={2}
                                 onChange={(e) => setDescripcion(e.target.value)}
@@ -182,7 +182,7 @@ const CreateProducto = ({ history }) => {
                             </div>
 
                             <div className="frm-group">
-                              <label>Cantidad existente:</label>
+                              <label>Cantidad existente</label>
                               <input
                                 type="number"
                                 value={stock}
@@ -192,16 +192,16 @@ const CreateProducto = ({ history }) => {
                             </div>
 
                             <div className="frm-group">
-                              <label>Marca:</label>
+                              <label>Marca</label>
                               <input
                                 type="text"
-                                placeholder="Marca del producto"
+                                placeholder="Ingresa la marca"
                                 value={marca}
                                 onChange={(e) => setMarca(e.target.value)}
                               />
                             </div>
                             <div className="frm-group">
-                              <label>Imágenes:</label>
+                              <label>Imágenes</label>
 
                               <div className="custom-file">
                                 <input
