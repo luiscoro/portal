@@ -115,7 +115,7 @@ const CreateContrato = ({ history }) => {
                                                                     <option value={""}>
                                                                         Seleccione el tipo de miembro
                                                                     </option>
-                                                                    {tipoMiembros.map((tipo) => (
+                                                                    {tipoMiembros.filter(tipom => tipom.estado === "activo").map(tipo => (
                                                                         <option
                                                                             key={tipo._id}
                                                                             value={tipo.nombre}

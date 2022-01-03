@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Bar } from 'react-chartjs-2';
 import MetaData from "../section/MetaData";
@@ -38,7 +38,9 @@ const Dashboard = () => {
     montoNoviembre,
     montoDiciembre
   } = pedido;
-  const anio = "2021";
+
+
+  const [anio, setAnio] = useState(new Date().getFullYear());
 
 
   useEffect(() => {
@@ -47,13 +49,13 @@ const Dashboard = () => {
     dispatch(getAdminNoticias());
     dispatch(getUsuarios());
     dispatch(getPedidosMensual(anio));
-  }, [dispatch]);
+  }, [dispatch, anio]);
 
   const grafico = {
     labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
     datasets: [
       {
-        label: 'Ventas por mes del año: ' + (new Date().getFullYear()),
+        label: 'Ventas por mes del año: ' + (anio),
         backgroundColor: 'rgba(75,181,67,1)',
         borderWidth: 0,
         data: [montoEnero, montoFebrero, montoMarzo, montoAbril, montoMayo, montoJunio, montoJulio, montoAgosto, montoSeptiembre, montoOctubre, montoNoviembre, montoDiciembre]
@@ -192,7 +194,23 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                <div className="row pr-4">
+
+                <div className="row justify-content-center pr-4">
+                  <form >
+                    <div className="frm-group">
+                      <option value={""}>
+                        Filtrar por año
+                      </option>
+                      <input
+                        type="number"
+                        value={anio}
+                        step="1"
+                        min="2021"
+                        max={new Date().getFullYear()}
+                        onChange={(e) => setAnio(e.target.value)}
+                      />
+                    </div>
+                  </form>
                   <Bar
                     data={grafico}
                     options={{

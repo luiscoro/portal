@@ -5,7 +5,6 @@ const contratoSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: "Miembro",
         required: true,
-        unique: true,
     },
     tipo: {
         type: String,

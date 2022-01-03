@@ -29,7 +29,6 @@ var bandera;
 const ListContratos = ({ history }) => {
 
     const [tipoId, setTipoId] = useState("");
-    const [est, setEst] = useState("");
     MySwal = withReactContent(Swal);
     bandera = parseInt(localStorage.getItem("actualizado"));
     const dispatch = useDispatch();
@@ -117,7 +116,7 @@ const ListContratos = ({ history }) => {
             history.push("/admin-contratos");
             dispatch({ type: DELETE_CONTRATO_RESET });
         }
-    }, [dispatch, tipoMiembroId, tipoId, error, deleteError, esEliminado, history, est]);
+    }, [dispatch, tipoMiembroId, tipoId, error, deleteError, esEliminado, history]);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -174,7 +173,7 @@ const ListContratos = ({ history }) => {
         doc.text("Fecha de fin : " + fecf, 40, 300);
         doc.text("4.- SUELDO", 40, 330);
         doc.text("A la cantidad de $: " + sue + " se incluirán las primas definidas de forma interna.", 40, 345);
-        doc.text("4.- CONDICIONES LABORALES", 40, 375);
+        doc.text("5.- CONDICIONES LABORALES", 40, 375);
         doc.text("El miembro reconoce expresamente que su relación laboral con el club se rige exclusivamente", 40, 390);
         doc.text("por lo dispuesto en el presente contrato, y por las disposiciones internas del club.", 40, 405);
         doc.text("________________________", 110, 550);
@@ -206,7 +205,7 @@ const ListContratos = ({ history }) => {
         const rows = [];
 
         contratos.forEach(contrato => {
-            if (contrato.miembro && contrato.miembro.tipo === tipoId && contrato.miembro.estado === "activo" && contrato.estado === est) {
+            if (contrato.miembro && contrato.miembro.tipo === tipoId && contrato.miembro.estado === "activo" && contrato.estado === "vigente") {
                 var temp = [contrato.tipo, contrato.miembro && contrato.miembro.nombre, "$ " + contrato.sueldo, String(contrato.fechaInicio).substring(0, 10), (contrato.fechaFin === null ? ("") : (String(contrato.fechaFin).substring(0, 10)))];
                 rows.push(temp);
             }
@@ -267,7 +266,7 @@ const ListContratos = ({ history }) => {
         };
 
         contratos.forEach((contrato) => {
-            if (contrato.miembro && contrato.miembro.tipo === tipoId && contrato.miembro.estado === "activo" && contrato.estado === est) {
+            if (contrato.miembro && contrato.miembro.tipo === tipoId && contrato.miembro.estado === "activo" && contrato.estado === "vigente") {
                 data.rows.push({
                     tipo: contrato.tipo,
                     nombre: contrato.miembro && contrato.miembro.nombre,
@@ -393,50 +392,21 @@ const ListContratos = ({ history }) => {
                                                 </select>
                                             )}
                                         </div>
-                                        <p></p>
-                                        <div className="frm-group">
-                                            {tipoId !== "" ? (
-                                                <select
-                                                    value={est}
-                                                    onChange={(e) => setEst(e.target.value)}
-                                                >
-                                                    <option value={""}>Filtrar por tipo de contrato</option>
-                                                    <option value="vigente">vigente</option>
-                                                    <option value="terminado">terminado</option>
-                                                </select>
-                                            ) : (
-                                                <></>
-                                            )}
-                                        </div>
-
                                     </form>
                                 </div>
                             </div>
+                            <div className="botonpdf">
+                                <button
+                                    className="btn btn-danger py-1 px-2 ml-2"
+                                    onClick={() => {
+                                        exportContratos()
+                                    }}
+                                    title="Generar PDF"
+                                >
 
-                            {est === "vigente" ? (
-                                <div className="botonpdf">
-                                    <button
-                                        className="btn btn-danger py-1 px-2 ml-2"
-                                        onClick={() => {
-                                            exportContratos()
-                                        }}
-                                        title="Generar PDF"
-                                    >
-
-                                        <i className="fa fa-file-pdf-o"></i>
-                                    </button>
-                                </div>
-                            ) : (
-                                <div className="botonpdf">
-                                    <button
-                                        className="btn btn-danger py-1 px-2 ml-2"
-                                        disabled
-                                    >
-
-                                        <i className="fa fa-file-pdf-o"></i>
-                                    </button>
-                                </div>
-                            )}
+                                    <i className="fa fa-file-pdf-o"></i>
+                                </button>
+                            </div>
                             <MDBDataTable
                                 data={setContratos()}
                                 className="px-3"

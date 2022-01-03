@@ -19,10 +19,18 @@ exports.createContrato = catchAsyncErrors(async (req, res, next) => {
 
     const { miembro, tipo, sueldo, fechaInicio, fechaFin } = req.body;
 
+    const contr = await Contrato.findOne({ 'miembro': miembro });
+
     var fechaIn = new Date(fechaInicio);
 
     if (!miembro) {
         return next(new ErrorHandler("El miembro seleccionado no es válido", 400));
+    }
+
+    if (contr) {
+        if (fechaActual.getFullYear() === fechaIn.getFullYear()) {
+            return next(new ErrorHandler("Ya existe un registro con el miembro ingresado", 400));
+        }
     }
 
     if (!tipo) {
