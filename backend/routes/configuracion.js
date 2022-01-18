@@ -8,10 +8,10 @@ const {
 
 const { authenticatedUsuario, authorizeRoles } = require("../middlewares/auth");
 
-router.route("/admin/configuracion").get(getAdminConfiguracion);
+router.route("/admin/config").get(getAdminConfiguracion);
 
 router
-    .route("/admin/configuracion")
+    .route("/admin/config")
     .put(authenticatedUsuario, authorizeRoles("administrador"), updateConfiguracion);
 
 module.exports = router;

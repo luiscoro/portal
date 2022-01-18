@@ -13,7 +13,7 @@ export const getAdminConfiguraciones = () => async (dispatch) => {
     try {
         dispatch({ type: ADMIN_CONFIGURACION_REQUEST });
 
-        const { data } = await axios.get(`/api/admin/configuracion`);
+        const { data } = await axios.get(`/api/admin/config`);
 
         dispatch({
             type: ADMIN_CONFIGURACION_SUCCESS,
@@ -38,7 +38,7 @@ export const updateConfiguracion = (configuracionData) => async (dispatch) => {
         };
 
         const { data } = await axios.put(
-            `/api/admin/configuracion`,
+            `/api/admin/config`,
             configuracionData,
             config
         );
