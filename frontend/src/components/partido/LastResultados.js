@@ -30,7 +30,7 @@ const LastResultados = () => {
               </div>
               <div className="all-match-table-body">
                 <ul className="all-match-list">
-                  {resultados.filter(part => part.estado === "activo").map(partido => (
+                  {resultados.map(partido => (
                     <li className="single-match" key={partido._id}>
                       <div className="single-team">
                         <div className="team-details">

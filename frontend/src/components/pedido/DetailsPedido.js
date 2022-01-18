@@ -138,7 +138,7 @@ const DetailsPedido = ({ match }) => {
                       <b>Envío:</b> ${pedido.precioEnvio}
                     </p>
                     <p>
-                      <b>Iva(12%):</b> ${pedido.precioImpuesto}
+                      <b>Iva({(pedido.precioImpuesto * 100) / pedido.precioItems}%):</b> ${pedido.precioImpuesto}
                     </p>
                     <p>
                       <b>Total:</b> ${precioTotal}

@@ -1,20 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import MetaData from "../section/MetaData";
 import Verificacion from "./Verificacion";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAdminConfiguraciones,
+} from "../../actions/configuracionActions";
 
 const ConfirmarPedido = ({ history }) => {
   const { itemsCesta } = useSelector((state) => state.cesta);
   const { usuario } = useSelector((state) => state.auth);
 
+  const dispatch = useDispatch();
+
   const precioItems = itemsCesta.reduce(
     (acc, item) => acc + item.precio * item.cantidad,
     0
   );
-  const precioEnvio = usuario && usuario.ciudad === "Santo Domingo" ? 0 : 5;
-  const precioImpuesto = Number((0.12 * precioItems).toFixed(2));
+
+  const { configuracion } = useSelector(
+    (state) => state.configuraciones
+  );
+
+  const precioEnvio = usuario && usuario.ciudad === "Santo Domingo" ? 0 : configuracion.costoEnvio;
+  const precioImpuesto = Number(((configuracion.porcentajeIva * precioItems) / 100).toFixed(2));
   const precioTotal = (precioItems + precioEnvio + precioImpuesto).toFixed(2);
+
+  useEffect(() => {
+    dispatch(getAdminConfiguraciones());
+  }, [
+    dispatch,
+  ]);
+
 
   const confirmarPedido = () => {
     const data = {
@@ -95,7 +112,7 @@ const ConfirmarPedido = ({ history }) => {
                     <span>${precioEnvio}</span>
                   </li>
                   <li>
-                    <span className="caption">iva(12%)</span>
+                    <span className="caption">iva({configuracion.porcentajeIva}%)</span>
                     <span>${precioImpuesto}</span>
                   </li>
                   <li>

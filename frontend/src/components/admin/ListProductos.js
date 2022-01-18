@@ -130,11 +130,6 @@ const ListProductos = ({ history }) => {
           sort: "asc",
         },
         {
-          label: "Estado",
-          field: "estado",
-          sort: "asc",
-        },
-        {
           label: "Foto",
           field: "foto",
         },
@@ -147,7 +142,7 @@ const ListProductos = ({ history }) => {
     };
 
     productos.forEach((producto) => {
-      if (producto.categoria && producto.categoria.estado === "activa") {
+      if (producto.categoria && producto.categoria.estado === "activa" && producto.estado === "activo") {
         data.rows.push({
           categoria: producto.categoria && producto.categoria.nombre,
           nombre: producto.nombre,
@@ -155,7 +150,6 @@ const ListProductos = ({ history }) => {
           descripcion: producto.descripcion,
           stock: producto.stock,
           marca: producto.marca,
-          estado: producto.estado,
           foto: (
             <img
               alt=""
@@ -232,13 +226,13 @@ const ListProductos = ({ history }) => {
 
     doc.setFontSize(15);
     const title = "Listado de productos";
-    const headers = [["CATEGORÍA", "NOMBRE", "PRECIO", "DESCRIPCIÓN", "CANTIDAD EXISTENTE", "MARCA", "ESTADO"]];
+    const headers = [["CATEGORÍA", "NOMBRE", "PRECIO", "DESCRIPCIÓN", "CANTIDAD EXISTENTE", "MARCA"]];
 
     const rows = [];
 
     productos.forEach(producto => {
-      if (producto.categoria && producto.categoria.estado === "activa") {
-        var temp = [producto.categoria && producto.categoria.nombre, producto.nombre, "$" + producto.precio, producto.descripcion, producto.stock, producto.marca, producto.estado];
+      if (producto.categoria && producto.categoria.estado === "activa" && producto.estado === "activo") {
+        var temp = [producto.categoria && producto.categoria.nombre, producto.nombre, "$" + producto.precio, producto.descripcion, producto.stock, producto.marca];
         rows.push(temp);
       }
     });

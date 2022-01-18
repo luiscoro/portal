@@ -17,6 +17,7 @@ const Dashboard = () => {
   const { productos } = useSelector((state) => state.productos);
   const { noticias } = useSelector((state) => state.noticias);
   const { usuarios } = useSelector((state) => state.getUsuarios);
+
   const {
     montoTotal,
     loading,

@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import MetaData from "../section/MetaData";
 import Banner from "../section/Banner";
 import { useDispatch, useSelector } from "react-redux";
 import { addItemCesta, removeItemCesta } from "../../actions/cestaActions";
+import {
+  getAdminConfiguraciones,
+} from "../../actions/configuracionActions";
 
 const Cesta = ({ history }) => {
 
@@ -14,6 +17,17 @@ const Cesta = ({ history }) => {
   const dispatch = useDispatch();
 
   const { itemsCesta } = useSelector((state) => state.cesta);
+
+  const { configuracion } = useSelector(
+    (state) => state.configuraciones
+  );
+
+  useEffect(() => {
+    dispatch(getAdminConfiguraciones());
+  }, [
+    dispatch,
+  ]);
+
 
   const removeCestaItemHandler = (id) => {
     dispatch(removeItemCesta(id));
@@ -166,7 +180,7 @@ const Cesta = ({ history }) => {
                         </span>
                       </li>
                       <li>
-                        <span className="caption">iva(12%)</span>
+                        <span className="caption">iva({configuracion.porcentajeIva}%)</span>
                         <span>
                           {" "}
                           $
@@ -175,7 +189,7 @@ const Cesta = ({ history }) => {
                               (acc, item) => acc + item.cantidad * item.precio,
                               0
                             )
-                            * 12 / (100)).toFixed(2)}
+                            * (configuracion.porcentajeIva) / (100)).toFixed(2)}
                         </span>
                       </li>
                       <li>
@@ -192,7 +206,7 @@ const Cesta = ({ history }) => {
                                 (acc, item) => acc + item.cantidad * item.precio,
                                 0
                               )
-                            * 12 / (100)
+                            * (configuracion.porcentajeIva) / (100)
                           ).toFixed(2)}
                         </span>
                       </li>

@@ -45,10 +45,6 @@ const partidoSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  estado: {
-    type: String,
-    default: "activo",
-  },
 });
 
 module.exports = mongoose.model("Partido", partidoSchema);

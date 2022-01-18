@@ -188,19 +188,13 @@ exports.updateContrato = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.deleteContrato = catchAsyncErrors(async (req, res, next) => {
-    const newContratoData = {
-        estado: "terminado",
-    };
+    const contrato = await Contrato.findById(req.params.id);
 
-    const contrato = await Contrato.findByIdAndUpdate(
-        req.params.id,
-        newContratoData,
-        {
-            new: true,
-            runValidators: true,
-            useFindAndModify: false,
-        }
-    );
+    if (!contrato) {
+        return next(new ErrorHandler("La contrato no ha sido encontrado", 400));
+    }
+
+    await contrato.remove();
 
     res.status(200).json({
         success: true,

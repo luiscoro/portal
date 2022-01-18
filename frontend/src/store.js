@@ -108,6 +108,11 @@ import {
   contratoReducer,
 } from "./reducers/contratoReducers";
 
+import {
+  configuracionReducer,
+  configuracionesReducer,
+} from "./reducers/configuracionReducers";
+
 
 const reducer = combineReducers({
   informacion: informacionReducer,
@@ -128,6 +133,7 @@ const reducer = combineReducers({
   tipoMiembros: tipoMiembrosReducer,
   contratos: contratosReducer,
   jugadores: jugadoresReducer,
+  configuraciones: configuracionesReducer,
   cuerpoTecnico: cuerpoTecnicoReducer,
   cuerpoMedico: cuerpoMedicoReducer,
   productoDetails: productoDetailsReducer,
@@ -153,6 +159,7 @@ const reducer = combineReducers({
   miembro: miembroReducer,
   tipoMiembro: tipoMiembroReducer,
   contrato: contratoReducer,
+  configuracion: configuracionReducer,
   productoRevisiones: productoRevisionesReducer,
   revision: revisionReducer,
   auth: authReducer,

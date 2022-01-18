@@ -24,7 +24,7 @@ const LastResultado = () => {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-lg-8">
-            {partidos.filter(part => part.estado === "activo").map(partido => (
+            {partidos.map(partido => (
               <div className="latest-match-result-area" key={partido._id}>
                 <div className="club-area d-flex flex-wrap align-items-center">
                   <div className="club-one d-flex flex-wrap justify-content-between align-items-center">

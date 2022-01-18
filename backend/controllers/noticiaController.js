@@ -183,19 +183,13 @@ exports.updateNoticia = catchAsyncErrors(async (req, res, next) => {
 
 exports.deleteNoticia = catchAsyncErrors(async (req, res, next) => {
 
-  const newNoticiaData = {
-    estado: "inactiva",
-  };
+  const noticia = await Noticia.findById(req.params.id);
 
-  const noticia = await Noticia.findByIdAndUpdate(
-    req.params.id,
-    newNoticiaData,
-    {
-      new: true,
-      runValidators: true,
-      useFindAndModify: false,
-    }
-  );
+  if (!noticia) {
+    return next(new ErrorHandler("La noticia no ha sido encontrada", 400));
+  }
+
+  await noticia.remove();
 
   res.status(200).json({
     success: true,

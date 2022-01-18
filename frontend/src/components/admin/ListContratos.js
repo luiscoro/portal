@@ -200,17 +200,16 @@ const ListContratos = ({ history }) => {
         doc.setFontSize(15);
         const title = "Listado de contratos";
         const tipo = "Tipo de miembro: " + tipoMiembro.nombre;
-        const headers = [["TIPO DE CONTRATO", "NOMBRE DEL MIEMBRO", "SUELDO", "FECHA INICIO", "FECHA DE FIN"]];
+        const headers = [["TIPO DE CONTRATO", "NOMBRE DEL MIEMBRO", "SUELDO", "FECHA INICIO", "FECHA DE FIN", "ESTADO"]];
 
         const rows = [];
 
         contratos.forEach(contrato => {
-            if (contrato.miembro && contrato.miembro.tipo === tipoId && contrato.miembro.estado === "activo" && contrato.estado === "vigente") {
-                var temp = [contrato.tipo, contrato.miembro && contrato.miembro.nombre, "$ " + contrato.sueldo, String(contrato.fechaInicio).substring(0, 10), (contrato.fechaFin === null ? ("") : (String(contrato.fechaFin).substring(0, 10)))];
+            if (contrato.miembro && contrato.miembro.tipo === tipoId && contrato.miembro.estado === "activo") {
+                var temp = [contrato.tipo, contrato.miembro && contrato.miembro.nombre, "$ " + contrato.sueldo, String(contrato.fechaInicio).substring(0, 10), (contrato.fechaFin === null ? ("") : (String(contrato.fechaFin).substring(0, 10))), contrato.estado];
                 rows.push(temp);
             }
         });
-
 
         let content = {
             startY: 80,
@@ -258,6 +257,12 @@ const ListContratos = ({ history }) => {
                 },
 
                 {
+                    label: "Estado",
+                    field: "estado",
+                    sort: "asc",
+                },
+
+                {
                     label: "Acciones",
                     field: "acciones",
                 },
@@ -266,13 +271,14 @@ const ListContratos = ({ history }) => {
         };
 
         contratos.forEach((contrato) => {
-            if (contrato.miembro && contrato.miembro.tipo === tipoId && contrato.miembro.estado === "activo" && contrato.estado === "vigente") {
+            if (contrato.miembro && contrato.miembro.tipo === tipoId && contrato.miembro.estado === "activo") {
                 data.rows.push({
                     tipo: contrato.tipo,
                     nombre: contrato.miembro && contrato.miembro.nombre,
                     sueldo: contrato.sueldo,
                     fechaInicio: String(contrato.fechaInicio).substring(0, 10),
                     fechaFin: (contrato.fechaFin === null ? (<></>) : (String(contrato.fechaFin).substring(0, 10))),
+                    estado: contrato.estado,
                     acciones: (
                         <>
                             <Link
@@ -282,7 +288,7 @@ const ListContratos = ({ history }) => {
                             >
                                 <i className="fa fa-pencil"></i>
                             </Link>
-                            {contrato.estado === "vigente" ? (
+                            {contrato.estado === "terminado" ? (
                                 <>
                                     <button
                                         className="btn btn-danger py-1 px-2 ml-2"
@@ -317,10 +323,7 @@ const ListContratos = ({ history }) => {
                                     </button>
                                     <button
                                         className="btn btn-danger py-1 px-2 ml-2"
-                                        title="Generar PDF"
-                                        onClick={() => {
-                                            exportPdf(contrato._id)
-                                        }}
+                                        disabled
                                     ><i className="fa fa-file-pdf-o"></i></button>
                                 </>) : (<>
 
@@ -332,7 +335,10 @@ const ListContratos = ({ history }) => {
                                     </button>
                                     <button
                                         className="btn btn-danger py-1 px-2 ml-2"
-                                        disabled
+                                        title="Generar PDF"
+                                        onClick={() => {
+                                            exportPdf(contrato._id)
+                                        }}
                                     ><i className="fa fa-file-pdf-o"></i></button></>)}
 
                         </>

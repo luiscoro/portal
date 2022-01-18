@@ -35,7 +35,9 @@ import CreateMiembro from "./components/admin/CreateMiembro";
 import CreateTipoMiembro from "./components/admin/CreateTipoMiembro";
 import CreateContrato from "./components/admin/CreateContrato";
 import ListCategorias from "./components/admin/ListCategorias";
+import ListCategoriasInactivas from "./components/admin/ListCategoriasInactivas";
 import ListProductos from "./components/admin/ListProductos";
+import ListProductosInactivos from "./components/admin/ListProductosInactivos";
 import ListInformacion from "./components/admin/ListInformacion";
 import ListNoticias from "./components/admin/ListNoticias";
 import ListPartidos from "./components/admin/ListPartidos";
@@ -63,6 +65,7 @@ import UpdateContrato from "./components/admin/UpdateContrato";
 import ListPedidos from "./components/admin/ListPedidos";
 import UpdatePedido from "./components/admin/UpdatePedido";
 import ReviewsProducto from "./components/admin/ReviewsProducto";
+import UpdateConfiguracion from "./components/admin/UpdateConfiguracion";
 
 //REGISTRADO
 import Login from "./components/usuario/Login";
@@ -82,6 +85,7 @@ import axios from "axios";
 // Pago
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -170,6 +174,12 @@ function App() {
           exact
         />
         <PrivateRoute
+          path="/admin-categorias-inactivas"
+          esAdmin={true}
+          component={ListCategoriasInactivas}
+          exact
+        />
+        <PrivateRoute
           path="/admin-categoria/:id"
           esAdmin={true}
           component={UpdateCategoria}
@@ -184,6 +194,12 @@ function App() {
           path="/admin-productos"
           esAdmin={true}
           component={ListProductos}
+          exact
+        />
+        <PrivateRoute
+          path="/admin-productos-inactivos"
+          esAdmin={true}
+          component={ListProductosInactivos}
           exact
         />
         <PrivateRoute
@@ -371,6 +387,11 @@ function App() {
           isAdmin={true}
           component={ReviewsProducto}
           exact
+        />
+        <PrivateRoute
+          path="/configuracion"
+          esAdmin={true}
+          component={UpdateConfiguracion}
         />
 
         {!loading &&

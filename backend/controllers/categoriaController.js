@@ -50,7 +50,7 @@ exports.getSingleCategoria = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.updateCategoria = catchAsyncErrors(async (req, res, next) => {
-  const { nombre } = req.body;
+  const { nombre, estado } = req.body;
 
   if (!nombre) {
     return next(new ErrorHandler("El nombre es obligatorio", 400));
@@ -62,8 +62,13 @@ exports.updateCategoria = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
+  if (!estado) {
+    return next(new ErrorHandler("El estado no es válido", 400));
+  }
+
   const newCategoriaData = {
     nombre: nombre,
+    estado: estado,
   };
 
   const categoria = await Categoria.findByIdAndUpdate(
@@ -83,7 +88,7 @@ exports.updateCategoria = catchAsyncErrors(async (req, res, next) => {
 
 exports.deleteCategoria = catchAsyncErrors(async (req, res, next) => {
   const newCategoriaData = {
-    estado: "inactivo",
+    estado: "inactiva",
   };
 
   const categoria = await Categoria.findByIdAndUpdate(

@@ -137,59 +137,57 @@ const ListPartidos = ({ history }) => {
     };
 
     partidos.forEach((partido) => {
-      if (partido.estado === "activo") {
-        data.rows.push({
-          nombreLocal: partido.nombreLocal,
-          resultado: partido.golesLocal + "-" + partido.golesVisitante,
-          nombreVisitante: partido.nombreVisitante,
-          fecha: partido.fecha,
-          hora: partido.hora,
-          estadio: partido.estadio,
+      data.rows.push({
+        nombreLocal: partido.nombreLocal,
+        resultado: partido.golesLocal + "-" + partido.golesVisitante,
+        nombreVisitante: partido.nombreVisitante,
+        fecha: partido.fecha,
+        hora: partido.hora,
+        estadio: partido.estadio,
 
-          acciones: (
-            <>
-              <Link
-                to={`/admin-partido/${partido._id}`}
-                className="btn btn-primary py-1 px-2"
-                title="Editar"
-              >
-                <i className="fa fa-pencil"></i>
-              </Link>
-              <button
-                className="btn btn-danger py-1 px-2 ml-2"
-                title="Eliminar"
-                onClick={() => {
-                  MySwal.fire({
-                    background: "#f5ede4",
-                    title: "¿Está seguro de eliminar el partido?",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Si",
-                    cancelButtonText: "Cancelar",
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      deletePartidoHandler(partido._id);
-                      MySwal.fire({
-                        background: "#f5ede4",
-                        icon: "success",
-                        title: "El partido ha sido eliminado con éxito",
-                        showConfirmButton: true,
-                        confirmButtonColor: "#3085d6",
-                        showCloseButton: false,
-                        timer: 3000,
-                      });
-                    }
-                  });
-                }}
-              >
-                <i className="fa fa-trash"></i>
-              </button>
-            </>
-          ),
-        });
-      }
+        acciones: (
+          <>
+            <Link
+              to={`/admin-partido/${partido._id}`}
+              className="btn btn-primary py-1 px-2"
+              title="Editar"
+            >
+              <i className="fa fa-pencil"></i>
+            </Link>
+            <button
+              className="btn btn-danger py-1 px-2 ml-2"
+              title="Eliminar"
+              onClick={() => {
+                MySwal.fire({
+                  background: "#f5ede4",
+                  title: "¿Está seguro de eliminar el partido?",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Si",
+                  cancelButtonText: "Cancelar",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    deletePartidoHandler(partido._id);
+                    MySwal.fire({
+                      background: "#f5ede4",
+                      icon: "success",
+                      title: "El partido ha sido eliminado con éxito",
+                      showConfirmButton: true,
+                      confirmButtonColor: "#3085d6",
+                      showCloseButton: false,
+                      timer: 3000,
+                    });
+                  }
+                });
+              }}
+            >
+              <i className="fa fa-trash"></i>
+            </button>
+          </>
+        ),
+      });
     });
 
     return data;
@@ -218,10 +216,8 @@ const ListPartidos = ({ history }) => {
     const rows = [];
 
     partidos.forEach(partido => {
-      if (partido.estado === "activo") {
-        var temp = [partido.nombreLocal, partido.golesLocal + "-" + partido.golesVisitante, partido.nombreVisitante, partido.fecha, partido.hora, partido.estadio];
-        rows.push(temp);
-      }
+      var temp = [partido.nombreLocal, partido.golesLocal + "-" + partido.golesVisitante, partido.nombreVisitante, partido.fecha, partido.hora, partido.estadio];
+      rows.push(temp);
     }
     );
 

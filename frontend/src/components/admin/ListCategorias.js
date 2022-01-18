@@ -110,11 +110,6 @@ const ListCategorias = ({ history }) => {
           sort: "asc",
         },
         {
-          label: "Estado",
-          field: "estado",
-          sort: "asc",
-        },
-        {
           label: "Acciones",
           field: "acciones",
         },
@@ -123,21 +118,19 @@ const ListCategorias = ({ history }) => {
     };
 
     categorias.forEach((categoria) => {
-      data.rows.push({
-        id: categoria._id,
-        nombre: categoria.nombre,
-        estado: categoria.estado,
-        acciones: (
-          <>
-            <Link
-              to={`/admin-categoria/${categoria._id}`}
-              className="btn btn-primary py-1 px-2"
-              title="Editar"
-            >
-              <i className="fa fa-pencil"></i>
-            </Link>
-
-            {categoria.estado === "activa" ? (
+      if (categoria.estado === "activa") {
+        data.rows.push({
+          id: categoria._id,
+          nombre: categoria.nombre,
+          acciones: (
+            <>
+              <Link
+                to={`/admin-categoria/${categoria._id}`}
+                className="btn btn-primary py-1 px-2"
+                title="Editar"
+              >
+                <i className="fa fa-pencil"></i>
+              </Link>
               <button
                 className="btn btn-danger py-1 px-2 ml-2"
                 title="Eliminar"
@@ -169,15 +162,10 @@ const ListCategorias = ({ history }) => {
               >
                 <i className="fa fa-trash"></i>
               </button>
-            ) : (<button
-              className="btn btn-danger py-1 px-2 ml-2"
-              disabled
-            >
-              <i className="fa fa-trash"></i>
-            </button>)}
-          </>
-        ),
-      });
+            </>
+          ),
+        });
+      }
     });
 
     return data;

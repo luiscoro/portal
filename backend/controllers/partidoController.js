@@ -322,21 +322,13 @@ exports.updatePartido = catchAsyncErrors(async (req, res, next) => {
 
 exports.deletePartido = catchAsyncErrors(async (req, res, next) => {
 
-  const newPartidoData = {
-    estado: "inactivo",
-  };
+  const partido = await Partido.findById(req.params.id);
 
+  if (!partido) {
+    return next(new ErrorHandler("La partido no ha sido encontrado", 400));
+  }
 
-  const partido = await Partido.findByIdAndUpdate(
-    req.params.id,
-    newPartidoData,
-    {
-      new: true,
-      runValidators: true,
-      useFindAndModify: false,
-    }
-  );
-
+  await partido.remove();
 
   res.status(200).json({
     success: true,

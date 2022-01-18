@@ -35,7 +35,6 @@ const UpdatePedido = ({ match, history }) => {
 
   useEffect(() => {
     dispatch(getPedidoDetails(pedidoId));
-
     if (error) {
       MySwal.fire({
         background: "#f5ede4",
@@ -204,7 +203,7 @@ const UpdatePedido = ({ match, history }) => {
                             <b>Envío:</b> ${pedido.precioEnvio}
                           </p>
                           <p>
-                            <b>Iva(12%):</b> ${pedido.precioImpuesto}
+                            <b>Iva({(pedido.precioImpuesto * 100) / pedido.precioItems}%):</b> ${pedido.precioImpuesto}
                           </p>
                           <p>
                             <b>Total:</b> ${precioTotal}

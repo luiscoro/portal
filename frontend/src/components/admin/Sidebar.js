@@ -8,6 +8,7 @@ const Sidebar = () => {
     cantP
   } = useSelector((state) => state.getPedidos);
 
+
   return (
     <div className="sidebar-wrapper">
       <nav id="sidebar">
@@ -15,6 +16,11 @@ const Sidebar = () => {
           <li>
             <Link to="/dashboard">
               <i className="fa fa-tachometer"></i> Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link to="/configuracion">
+              <i className="fa fa-gear"></i> Configuración
             </Link>
           </li>
           <li>
@@ -129,9 +135,32 @@ const Sidebar = () => {
               </li>
 
               <li>
-                <Link to="/admin-categorias">
-                  <i className="fa fa-list-alt"></i> Categorías
+                <Link to="/admin-productos-inactivos">
+                  <i className="fa fa-clipboard"></i> Inactivos
                 </Link>
+              </li>
+
+              <li>
+                <a
+                  href="#categoriasSubmenu"
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  className="dropdown-toggle"
+                >
+                  <i className="fa fa-list-alt"></i> Categorías
+                </a>
+                <ul className="collapse list-unstyled" id="categoriasSubmenu">
+                  <li>
+                    <Link to="/admin-categorias">
+                      <i className="fa fa-clipboard"></i> Listado
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/admin-categorias-inactivas">
+                      <i className="fa fa-clipboard"></i> Inactivas
+                    </Link>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>

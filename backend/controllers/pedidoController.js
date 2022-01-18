@@ -203,19 +203,13 @@ exports.updatePedido = catchAsyncErrors(async (req, res, next) => {
 
 exports.deletePedido = catchAsyncErrors(async (req, res, next) => {
 
-  const newPedidoData = {
-    estadoPedido: "entregado",
-  };
+  const pedido = await Pedido.findById(req.params.id);
 
-  const pedido = await Pedido.findByIdAndUpdate(
-    req.params.id,
-    newPedidoData,
-    {
-      new: true,
-      runValidators: true,
-      useFindAndModify: false,
-    }
-  );
+  if (!pedido) {
+    return next(new ErrorHandler("El pedido no ha sido encontrado", 400));
+  }
+
+  await pedido.remove();
 
   res.status(200).json({
     success: true,
