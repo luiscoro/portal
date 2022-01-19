@@ -9,7 +9,7 @@ const path = require("path");
 const errorMiddleware = require("./middlewares/error");
 
 // Configuración del entorno
-if (process.env.NODE_ENV !== "PRODUCTION")
+if (process.env.NODE_ENV === "PRODUCTION")
   require("dotenv").config({ path: "backend/config/config.env" });
 
 app.use(express.json());
@@ -33,6 +33,7 @@ const posicion = require("./routes/posicion");
 const miembro = require("./routes/miembro");
 const tipoMiembro = require("./routes/tipoMiembro");
 const contrato = require("./routes/contrato");
+const configuracion = require("./routes/configuracion");
 
 app.use("/api", informacion);
 app.use("/api", categoria);
@@ -49,8 +50,9 @@ app.use("/api", posicion);
 app.use("/api", miembro);
 app.use("/api", tipoMiembro);
 app.use("/api", contrato);
+app.use("/api", configuracion);
 
-if (process.env.NODE_ENV === "PRODUCTION") {
+if (process.env.NODE_ENV !== "PRODUCTION") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
 
   app.get("*", (req, res) => {

@@ -7,7 +7,7 @@ function validValor(valor) {
 }
 
 exports.getAdminConfiguracion = catchAsyncErrors(async (req, res, next) => {
-    const configuracion = await Configuracion.find({}).sort({ _id: -1 }).limit(1);
+    const configuracion = await Configuracion.findOne().sort({ field: 'asc', _id: -1 }).limit(1);
 
     res.status(200).json({
         success: true,
