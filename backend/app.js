@@ -52,7 +52,7 @@ app.use("/api", tipoMiembro);
 app.use("/api", contrato);
 app.use("/api", configuracion);
 
-if (process.env.NODE_ENV !== "PRODUCTION") {
+if (process.env.NODE_ENV === "PRODUCTION") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
 
   app.get("*", (req, res) => {
