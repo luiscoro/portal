@@ -85,6 +85,7 @@ import axios from "axios";
 // Pago
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import Pagar from "./components/cesta/Pagar";
 
 
 function App() {
@@ -124,6 +125,7 @@ function App() {
             <PrivateRoute path="/pago" component={Pago} />
           </Elements>
         )}
+        <PrivateRoute path="/pagar" component={Pagar} />
         <PrivateRoute path="/pedidos" component={Pedidos} exact />
         <PrivateRoute path="/pedido/:id" component={DetailsPedido} exact />
 

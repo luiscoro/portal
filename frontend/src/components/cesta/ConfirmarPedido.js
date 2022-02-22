@@ -42,7 +42,7 @@ const ConfirmarPedido = ({ history }) => {
     };
 
     sessionStorage.setItem("infoPedido", JSON.stringify(data));
-    history.push("/pago");
+    history.push("/pagar");
   };
   return (
     <>

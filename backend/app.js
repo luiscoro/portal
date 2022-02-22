@@ -51,8 +51,11 @@ app.use("/api", miembro);
 app.use("/api", tipoMiembro);
 app.use("/api", contrato);
 app.use("/api", configuracion);
+app.get('/api/config/paypal', (req, res) =>
+  res.send(process.env.PAYPAL_CLIENT_ID)
+)
 
-if (process.env.NODE_ENV === "PRODUCTION") {
+if (process.env.NODE_ENV !== "PRODUCTION") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
 
   app.get("*", (req, res) => {

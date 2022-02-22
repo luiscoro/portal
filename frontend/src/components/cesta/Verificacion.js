@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Banner from "../section/Banner";
 
-const Verificacion = ({ envio, confirmarPedido, pago }) => {
+const Verificacion = ({ envio, confirmarPedido, pagar }) => {
   return (
     <>
       <Banner title={"Verificar pedido"} />
@@ -36,8 +36,8 @@ const Verificacion = ({ envio, confirmarPedido, pago }) => {
           </Link>
         )}
 
-        {pago ? (
-          <Link to="/pago" className="float-right">
+        {pagar ? (
+          <Link to="/pagar" className="float-right">
             <div className="triangle2-active"></div>
             <div className="step active-step">Proceder a pagar</div>
             <div className="triangle-active"></div>
