@@ -21,3 +21,7 @@ exports.sendStripApi = catchAsyncErrors(async (req, res, next) => {
     stripeApiKey: process.env.STRIPE_API_KEY,
   });
 });
+
+exports.sendPaypalApi = catchAsyncErrors(async (req, res, next) => {
+  res.send(process.env.PAYPAL_CLIENT_ID);
+});

@@ -116,7 +116,7 @@ const Pagar = () => {
                     <div className="row">
                         <div className="col-lg-12">
                             <div className="login-block text-center">
-                                <div className="login-block-inner">
+                                <div className="login-block-inner col-lg-6">
                                     <h3 className="title">Pagar {` - $ ${infoPedido && infoPedido.precioTotal}`}</h3>
                                     {!sdkReady ? (
                                         <Loader />
