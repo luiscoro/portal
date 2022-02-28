@@ -24,7 +24,7 @@ const DetailsProducto = ({ match }) => {
   const [cantidad, setCantidad] = useState(1);
   const [calificacion, setCalificacion] = useState(0);
   const [comentario, setComentario] = useState("");
-
+  const [talla, setTalla] = useState("");
 
   MySwal = withReactContent(Swal);
   const dispatch = useDispatch();
@@ -36,8 +36,6 @@ const DetailsProducto = ({ match }) => {
   const { error: revisionError, success } = useSelector(
     (state) => state.createRevision
   );
-
-
 
   useEffect(() => {
     dispatch(getProductoDetails(match.params.id));
@@ -108,7 +106,6 @@ const DetailsProducto = ({ match }) => {
 
   const addCesta = () => {
 
-
     idProd = localStorage.getItem("idProd");
 
     var temp = localStorage.getItem("itemsCesta")
@@ -156,29 +153,48 @@ const DetailsProducto = ({ match }) => {
         }
       });
     } else {
+      if (talla === "" && producto.tallas && producto.tallas.length !== 0) {
+        MySwal.fire({
+          background: "#f5ede4",
+          toast: true,
+          showCloseButton: true,
+          icon: "warning",
+          iconColor: "orange",
+          title: "Se debe seleccionar la talla",
+          position: "bottom",
+          showConfirmButton: false,
+          timer: 5000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseover", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+      } else {
+        dispatch(addItemCesta(match.params.id, cant, talla));
+        MySwal.fire({
+          background: "#f5ede4",
+          icon: "success",
+          iconColor: "green",
+          title: "El producto ha sido añadido a tu cesta de pedidos",
+          html:
+            '<b>' + producto.nombre + '</b> ' +
+            '<p></p> ' +
+            'Cantidad : ' + cant + '<p></p> ' +
+            'Precio : $' + producto.precio + '<p></p> ' + (producto.tallas && producto.tallas.length !== 0 ?
+              'Talla: ' + talla : ''),
+          showCancelButton: true,
+          confirmButtonColor: "#0047a5",
+          cancelButtonColor: "#008000",
+          confirmButtonText: "Ver cesta",
+          cancelButtonText: "Continuar comprando",
 
-      dispatch(addItemCesta(match.params.id, cant));
-      MySwal.fire({
-        background: "#f5ede4",
-        icon: "success",
-        iconColor: "green",
-        title: "El producto ha sido añadido a tu cesta de pedidos",
-        html:
-          '<b>' + producto.nombre + '</b> ' +
-          '<p></p> ' +
-          'Cantidad : ' + cant + '<p></p> ' +
-          'Precio : $' + producto.precio,
-        showCancelButton: true,
-        confirmButtonColor: "#0047a5",
-        cancelButtonColor: "#008000",
-        confirmButtonText: "Ver cesta",
-        cancelButtonText: "Continuar comprando",
-
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = "/cesta";
-        }
-      });
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "/cesta";
+          }
+        });
+      }
     }
   };
 
@@ -354,7 +370,31 @@ const DetailsProducto = ({ match }) => {
                       >
                         Añadir a la cesta
                       </button>
-
+                      {producto.tallas && producto.tallas.length !== 0 ?
+                        <>
+                          <hr />
+                          <div className="frm-group">
+                            <select
+                              value={talla}
+                              onChange={(e) => setTalla(e.target.value)}
+                            >
+                              <option value="">
+                                Seleccione la talla
+                              </option>
+                              {producto.tallas &&
+                                producto.tallas.map((i) => (
+                                  <option
+                                    key={i._id}
+                                    value={i.talla}
+                                  >
+                                    {i.talla}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </>
+                        : <><input value={""} type="hidden" onChange={(e) => setTalla(e.target.value)} /></>
+                      }
                       <hr />
 
                       <p>
@@ -376,9 +416,6 @@ const DetailsProducto = ({ match }) => {
 
                       <p>{producto.descripcion}</p>
                       <hr />
-                      <p id="product_seller mb-3">
-                        Marca: <strong>{producto.marca}</strong>
-                      </p>
 
                       {usuario ? (
                         <button

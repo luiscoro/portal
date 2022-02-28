@@ -84,6 +84,7 @@ const Cesta = ({ history }) => {
                         <tr>
                           <th>Imagen</th>
                           <th>Producto</th>
+                          <th>Talla</th>
                           <th>Cantidad</th>
                           <th>Precio</th>
                           <th>Remover</th>
@@ -106,6 +107,9 @@ const Cesta = ({ history }) => {
                               <Link to={`/tienda/productos/${item.producto}`}>
                                 {item.nombre}
                               </Link>
+                            </td>
+                            <td>
+                              <span> {item.talla}</span>
                             </td>
                             <td>
                               <div className="stockCounter d-inline">

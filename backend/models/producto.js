@@ -35,10 +35,14 @@ const productoSchema = new mongoose.Schema({
     },
   ],
 
-  marca: {
-    type: String,
-    required: false,
-  },
+  tallas: [
+    {
+      talla: {
+        type: String,
+      },
+    },
+  ],
+
   stock: {
     type: Number,
     default: 0,

@@ -92,7 +92,7 @@ const ListPedidos = ({ history }) => {
 
     doc.setFontSize(12);
     const title = "PEDIDO N° " + id;
-    const headers = [["CANTIDAD", "DESCRIPCIÓN", "PRECIO UNITARIO", "PRECIO TOTAL"]];
+    const headers = [["CANTIDAD", "DESCRIPCIÓN", "TALLA", "PRECIO UNITARIO", "PRECIO TOTAL"]];
 
     const rows = [];
 
@@ -108,14 +108,14 @@ const ListPedidos = ({ history }) => {
         fecha = (pedido.fechaPago).toLocaleString();
         // eslint-disable-next-line
         pedido.itemsPedido.map((item) => {
-          var temp = [item.cantidad, item.nombre, item.precio, item.cantidad * item.precio];
+          var temp = [item.cantidad, item.nombre, item.talla, item.precio, item.cantidad * item.precio];
           rows.push(temp);
         })
         var temp1 = ["", "", "", ""]
         rows.push(temp1);
         temp1 = ["", "", "SUB TOTAL", pedido.precioItems]
         rows.push(temp1);
-        temp1 = ["", "", "I.V.A (" + (pedido.precioImpuesto * 100) / pedido.precioItems + "%)", pedido.precioImpuesto]
+        temp1 = ["", "", "IVA (" + (pedido.precioImpuesto * 100) / pedido.precioItems + "%)", pedido.precioImpuesto]
         rows.push(temp1);
         temp1 = ["", "", "PRECIO DE ENVÍO", pedido.precioEnvio]
         rows.push(temp1);

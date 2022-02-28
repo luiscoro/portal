@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { TagsInput } from "react-tag-input-component";
 import MetaData from "../section/MetaData";
 import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
@@ -18,7 +18,7 @@ const CreateProducto = ({ history }) => {
   const [descripcion, setDescripcion] = useState("");
   const [categoria, setCategoria] = useState("");
   const [stock, setStock] = useState(0);
-  const [marca, setMarca] = useState("");
+  const [tallas, setTallas] = useState([]);
   const [imagenes, setImagenes] = useState([]);
   const [imagenesPreview, setImagenesPreview] = useState([]);
 
@@ -76,7 +76,9 @@ const CreateProducto = ({ history }) => {
     formData.set("descripcion", descripcion);
     formData.set("categoria", categoria);
     formData.set("stock", stock);
-    formData.set("marca", marca);
+    tallas.forEach((talla) => {
+      formData.append("tallas", talla);
+    });
 
     imagenes.forEach((imagen) => {
       formData.append("imagenes", imagen);
@@ -192,17 +194,18 @@ const CreateProducto = ({ history }) => {
                             </div>
 
                             <div className="frm-group">
-                              <label>Marca</label>
-                              <input
+                              <label>Tallas</label>
+                              <TagsInput
                                 type="text"
-                                placeholder="Ingresa la marca"
-                                value={marca}
-                                onChange={(e) => setMarca(e.target.value)}
+                                value={tallas}
+                                onChange={setTallas}
+                                name="tallas"
+                                placeHolder="Ingresa una talla"
                               />
                             </div>
+
                             <div className="frm-group">
                               <label>Imágenes</label>
-
                               <div className="custom-file">
                                 <input
                                   type="file"

@@ -77,6 +77,27 @@ exports.createProducto = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
+  if (req.body.tallas !== undefined) {
+    let tallas = [];
+    if (typeof req.body.tallas === "string") {
+      tallas.push(req.body.tallas);
+    } else {
+      tallas = req.body.tallas;
+    }
+
+    let tallasPro = [];
+
+    for (let i = 0; i < tallas.length; i++) {
+      tallasPro.push({
+        talla: tallas[i],
+      });
+    }
+
+    req.body.tallas = tallasPro;
+  } else {
+    req.body.tallas = [];
+  }
+
   let imagenes = [];
   if (typeof req.body.imagenes === "string") {
     imagenes.push(req.body.imagenes);
@@ -223,6 +244,27 @@ exports.updateProducto = catchAsyncErrors(async (req, res, next) => {
       )
     );
   }
+
+  if (req.body.tallas !== undefined) {
+    let tallas = [];
+    if (typeof req.body.tallas === "string") {
+      tallas.push(req.body.tallas);
+    } else {
+      tallas = req.body.tallas;
+    }
+
+    let tallasPro = [];
+
+    for (let i = 0; i < tallas.length; i++) {
+      tallasPro.push({
+        talla: tallas[i],
+      });
+    }
+    req.body.tallas = tallasPro;
+  } else {
+    req.body.tallas = [];
+  }
+
 
   let imagenes = [];
   if (typeof req.body.imagenes === "string") {

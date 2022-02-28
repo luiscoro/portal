@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { TagsInput } from "react-tag-input-component";
 import MetaData from "../section/MetaData";
 import Sidebar from "./Sidebar";
 import Swal from "sweetalert2";
@@ -14,14 +15,15 @@ import { getAdminCategorias } from "../../actions/categoriaActions";
 import { UPDATE_PRODUCTO_RESET } from "../../constants/productoConstants";
 
 var MySwal;
-
+var tallp;
 const UpdateProducto = ({ match, history }) => {
+  tallp = JSON.parse(localStorage.getItem("tallas"));
   const [nombre, setNombre] = useState("");
   const [precio, setPrecio] = useState(1);
   const [descripcion, setDescripcion] = useState("");
   const [categoria, setCategoria] = useState("");
   const [stock, setStock] = useState(0);
-  const [marca, setMarca] = useState("");
+  const [tallas, setTallas] = useState(tallp || []);
   const [estado, setEstado] = useState("");
   const [imagenes, setImagenes] = useState([]);
   const [oldImagenes, setOldImagenes] = useState([]);
@@ -41,7 +43,6 @@ const UpdateProducto = ({ match, history }) => {
 
   useEffect(() => {
     dispatch1(getAdminCategorias());
-
     if (producto && producto._id !== productoId) {
       dispatch(getProductoDetails(productoId));
     } else {
@@ -49,11 +50,9 @@ const UpdateProducto = ({ match, history }) => {
       setPrecio(producto.precio);
       setDescripcion(producto.descripcion);
       setCategoria(producto.categoria);
-      setMarca(producto.marca);
       setStock(producto.stock);
       setEstado(producto.estado);
       setOldImagenes(producto.imagenes);
-
     }
 
     if (error) {
@@ -114,15 +113,20 @@ const UpdateProducto = ({ match, history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
     const formData = new FormData();
     formData.set("nombre", nombre);
     formData.set("precio", precio);
     formData.set("descripcion", descripcion);
     formData.set("categoria", categoria);
     formData.set("stock", stock);
-    formData.set("marca", marca);
     formData.set("estado", estado);
+
+    if (tallas !== undefined) {
+      tallas.forEach((talla) => {
+        formData.append("tallas", talla);
+      });
+    }
+
     imagenes.forEach((imagen) => {
       formData.append("imagenes", imagen);
     });
@@ -234,14 +238,14 @@ const UpdateProducto = ({ match, history }) => {
                                 onChange={(e) => setStock(e.target.value)}
                               />
                             </div>
-
                             <div className="frm-group">
-                              <label>Marca</label>
-                              <input
+                              <label>Tallas</label>
+                              <TagsInput
                                 type="text"
-                                placeholder="Ingresa la marca"
-                                value={marca}
-                                onChange={(e) => setMarca(e.target.value)}
+                                value={tallas}
+                                onChange={setTallas}
+                                name="tallas"
+                                placeHolder="Ingresa una talla"
                               />
                             </div>
                             <div className="frm-group">
@@ -250,7 +254,6 @@ const UpdateProducto = ({ match, history }) => {
                                 name="estado"
                                 value={estado}
                                 onChange={(e) => setEstado(e.target.value)}
-
                               >
                                 <option value="activo">activo</option>
                                 <option value="inactivo">inactivo</option>

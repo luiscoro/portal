@@ -30,7 +30,6 @@ const ListProductos = ({ history }) => {
 
   useEffect(() => {
     dispatch(getAdminProductos());
-
     if (bandera === 1) {
       localStorage.setItem("actualizado", 0);
       MySwal.fire({
@@ -96,6 +95,16 @@ const ListProductos = ({ history }) => {
     }
   }, [dispatch, error, deleteError, esEliminado, history]);
 
+  const sendTallas = (id) => {
+    var tallp;
+    productos.forEach(producto => {
+      if (producto._id === id) {
+        tallp = (producto.tallas).map(i => i.talla);
+        localStorage.setItem("tallas", JSON.stringify(tallp));
+      }
+    });
+  }
+
   const setProductos = () => {
     const data = {
       columns: [
@@ -120,13 +129,12 @@ const ListProductos = ({ history }) => {
           sort: "asc",
         },
         {
-          label: "Stock",
-          field: "stock",
-          sort: "asc",
+          label: "Tallas",
+          field: "tallas",
         },
         {
-          label: "Marca",
-          field: "marca",
+          label: "Stock",
+          field: "stock",
           sort: "asc",
         },
         {
@@ -143,18 +151,20 @@ const ListProductos = ({ history }) => {
 
     productos.forEach((producto) => {
       if (producto.categoria && producto.categoria.estado === "activa" && producto.estado === "activo") {
+        var tallp;
+        tallp = (producto.tallas).map(i => i.talla);
         data.rows.push({
           categoria: producto.categoria && producto.categoria.nombre,
           nombre: producto.nombre,
           precio: `$${producto.precio}`,
           descripcion: producto.descripcion,
+          tallas: tallp.join(", "),
           stock: producto.stock,
-          marca: producto.marca,
           foto: (
             <img
               alt=""
               src={producto.imagenes && producto.imagenes[0].url}
-              width="55"
+              width="35"
               height="52"
             />
           ),
@@ -164,6 +174,9 @@ const ListProductos = ({ history }) => {
                 to={`/admin-producto/${producto._id}`}
                 className="btn btn-primary py-1 px-2"
                 title="Editar"
+                onClick={() => {
+                  sendTallas(producto._id);
+                }}
               >
                 <i className="fa fa-pencil"></i>
               </Link>
@@ -226,13 +239,15 @@ const ListProductos = ({ history }) => {
 
     doc.setFontSize(15);
     const title = "Listado de productos";
-    const headers = [["CATEGORÍA", "NOMBRE", "PRECIO", "DESCRIPCIÓN", "CANTIDAD EXISTENTE", "MARCA"]];
+    const headers = [["CATEGORÍA", "NOMBRE", "PRECIO", "DESCRIPCIÓN", "CANTIDAD EXISTENTE", "TALLAS"]];
 
     const rows = [];
 
     productos.forEach(producto => {
+      var tallp;
+      tallp = (producto.tallas).map(i => i.talla);
       if (producto.categoria && producto.categoria.estado === "activa" && producto.estado === "activo") {
-        var temp = [producto.categoria && producto.categoria.nombre, producto.nombre, "$" + producto.precio, producto.descripcion, producto.stock, producto.marca];
+        var temp = [producto.categoria && producto.categoria.nombre, producto.nombre, "$" + producto.precio, producto.descripcion, producto.stock, tallp.join(", ")];
         rows.push(temp);
       }
     });
@@ -283,7 +298,6 @@ const ListProductos = ({ history }) => {
               {loading ? (
                 <Loader />
               ) : (
-
                 <MDBDataTable
                   data={setProductos()}
                   className="px-3"

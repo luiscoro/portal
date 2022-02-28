@@ -37,6 +37,10 @@ const pedidoSchema = mongoose.Schema({
         type: Number,
         required: true,
       },
+      talla: {
+        type: String,
+        required: false,
+      },
       imagen: {
         type: String,
         required: true,

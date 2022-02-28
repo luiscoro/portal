@@ -414,6 +414,17 @@ select:focus {
   outline: 1px solid #b1c904;
 }
 
+.rti--container{
+  outline: 1px solid #e5e5e5;
+  padding: 10px 20px;
+  width: 100%;
+  --rti-bg:#fff;
+  --rti-border: 1px solid #e5e5e5;
+  --rti-radius: 0.375rem;
+  --rti-s: 0.5rem;
+  --rti-tag: #edf2f7;
+}
+
 button {
   border: none;
 }

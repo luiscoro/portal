@@ -5,7 +5,7 @@ import {
   SAVE_INFO_ENVIO,
 } from "../constants/cestaConstants";
 
-export const addItemCesta = (id, cantidad) => async (dispatch, getState) => {
+export const addItemCesta = (id, cantidad, talla) => async (dispatch, getState) => {
   const { data } = await axios.get(`/api/producto/${id}`);
 
   dispatch({
@@ -17,6 +17,7 @@ export const addItemCesta = (id, cantidad) => async (dispatch, getState) => {
       imagen: data.producto.imagenes[0].url,
       stock: data.producto.stock,
       cantidad,
+      talla,
     },
   });
 

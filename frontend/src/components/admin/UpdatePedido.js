@@ -153,6 +153,10 @@ const UpdatePedido = ({ match, history }) => {
                                   >
                                     {item.nombre}
                                   </Link>
+                                  <p>
+                                    Talla :
+                                    <b> {item.talla}</b>
+                                  </p>
                                 </div>
 
                                 <div className="col-4 col-lg-3 mt-4 mt-lg-0">
