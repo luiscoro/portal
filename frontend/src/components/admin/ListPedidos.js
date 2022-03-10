@@ -113,13 +113,13 @@ const ListPedidos = ({ history }) => {
         })
         var temp1 = ["", "", "", ""]
         rows.push(temp1);
-        temp1 = ["", "", "SUB TOTAL", pedido.precioItems]
+        temp1 = ["", "", "", "SUB TOTAL", pedido.precioItems]
         rows.push(temp1);
-        temp1 = ["", "", "IVA (" + (pedido.precioImpuesto * 100) / pedido.precioItems + "%)", pedido.precioImpuesto]
+        temp1 = ["", "", "", "IVA (" + (pedido.precioImpuesto * 100) / pedido.precioItems + "%)", pedido.precioImpuesto]
         rows.push(temp1);
-        temp1 = ["", "", "PRECIO DE ENVÍO", pedido.precioEnvio]
+        temp1 = ["", "", "", "PRECIO DE ENVÍO", pedido.precioEnvio]
         rows.push(temp1);
-        temp1 = ["", "", "TOTAL PEDIDO ", "$ " + pedido.precioTotal]
+        temp1 = ["", "", "", "TOTAL PEDIDO ", "$ " + pedido.precioTotal]
         rows.push(temp1);
       }
 
